@@ -2553,3 +2553,11 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
   .view-bar .view-seasons .ic{ display:none; }
   .view-hint{ font-size:.66rem; padding:.3rem .7rem; max-width:60vw; }
 }
+
+/* phones: the riverfront runs edge to edge */
+@media (max-width:700px){
+  .rf{ margin-inline:calc(-1 * var(--pad)); border-radius:0; border-inline:0; box-shadow:none; }
+  .rf-frame{ -webkit-mask-image:none; mask-image:none; }
+  .rf-svg{ height:clamp(300px,82vw,380px); }
+  .rf-cap{ padding-inline:var(--pad); }
+}
