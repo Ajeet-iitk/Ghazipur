@@ -2093,3 +2093,58 @@ html[lang="hi"] .g2-stats i, html[lang="hi"] .g2-seg button, html[lang="hi"] .g2
 @media (max-width:620px){ .egg-diya{ bottom:7.6rem; right:.9rem; } }
 @media (pointer:coarse){ .egg-diya{ width:36px; height:36px; } }
 @media (prefers-reduced-motion:reduce){ .egg-diya, .bell-tip .ic{ animation:none; } }
+
+/* ══ the navbar, on the water ═════════════════════════════════ */
+/* the river along the foot of the header: your progress, with a boat at its head */
+.head-river{ position:absolute; left:0; right:0; bottom:-1px; height:2px; pointer-events:none; }
+.head-river::before{ content:""; position:absolute; inset:0; background:color-mix(in srgb, var(--ink) 8%, transparent); }
+.hr-fill{
+  position:absolute; left:0; top:0; bottom:0; width:var(--hp,0%);
+  background:linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 70%, transparent) 55%, var(--accent));
+  box-shadow:0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.hr-boat{ position:absolute; bottom:1px; left:0; width:26px; height:19px; margin-left:-13px; color:var(--ink); transition:left .12s linear; animation:hrBob 2.8s ease-in-out infinite; transform-origin:50% 100%; }
+.hr-boat svg{ width:100%; height:100%; overflow:visible; }
+.hr-sail{ fill:var(--paper-2); stroke:var(--accent); stroke-width:.8; } .hr-sail2{ fill:var(--accent); opacity:.55; }
+.hr-wake{ fill:none; stroke:var(--accent); stroke-width:1.2; opacity:.55; animation:hrWake 1.4s linear infinite; }
+@keyframes hrBob{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(1.5px) rotate(3deg); } }
+@keyframes hrWake{ from{ transform:translateX(0); } to{ transform:translateX(-8px); } }
+
+/* a wave that glides under the links */
+.site-nav{ position:relative; }
+.nav-wave{
+  position:absolute; left:0; bottom:-6px; height:9px; width:var(--ww,0); transform:translateX(var(--wx,0)); opacity:0; pointer-events:none;
+  transition:transform .55s var(--ease-out), width .55s var(--ease-out), opacity .3s; color:var(--accent);
+}
+.nav-wave.is-on{ opacity:1; } .nav-wave.no-ease{ transition:none; }
+.nav-wave svg{ display:block; width:100%; height:100%; overflow:visible; }
+.nav-wave path{ fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; vector-effect:non-scaling-stroke; animation:navWave 2.2s linear infinite; }
+@keyframes navWave{ from{ transform:translateX(0); } to{ transform:translateX(-30px); } }
+.nav-wave svg{ overflow:hidden; }
+.site-nav a::after{ display:none; }
+.site-nav a{ transition:opacity .3s, color .3s, transform .4s var(--ease-out); }
+.site-nav a:hover, .site-nav a:focus-visible{ transform:translateY(-2px); }
+
+/* the diya in the brand flickers, and wakes when you point at it */
+.brand-mark svg{ transform-origin:50% 90%; animation:brandSway 5s ease-in-out infinite; }
+@keyframes brandSway{ 0%,100%{ transform:rotate(-2.5deg); } 50%{ transform:rotate(2.5deg) scale(1.04); } }
+.brand.is-awake .brand-mark svg{ animation:brandWake .9s ease-in-out infinite; filter:drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 70%, transparent)); }
+@keyframes brandWake{ 0%,100%{ transform:rotate(-8deg) scale(1.1); } 50%{ transform:rotate(8deg) scale(1.2); } }
+.brand-text b{ transition:letter-spacing .5s var(--ease-out); } .brand:hover .brand-text b{ letter-spacing:.06em; }
+
+/* the links drop in one after another when the page opens */
+@media (min-width:901px){
+  html.is-ready .site-nav a{ animation:navDrop .7s var(--ease-out) backwards; }
+  html.is-ready .site-nav a:nth-child(1){ animation-delay:.25s; } html.is-ready .site-nav a:nth-child(2){ animation-delay:.32s; }
+  html.is-ready .site-nav a:nth-child(3){ animation-delay:.39s; } html.is-ready .site-nav a:nth-child(4){ animation-delay:.46s; }
+  html.is-ready .site-nav a:nth-child(5){ animation-delay:.53s; } html.is-ready .site-nav a:nth-child(6){ animation-delay:.6s; }
+  html.is-ready .site-nav a:nth-child(7){ animation-delay:.67s; }
+}
+@keyframes navDrop{ from{ opacity:0; transform:translateY(-14px) rotate(-2deg); } to{ opacity:.78; transform:none; } }
+html.is-ready .site-nav a.is-active, html.is-ready .site-nav .nav-explore{ --keep:1; }
+
+/* the sun and moon turn over when the theme changes */
+#themeBtn .ic{ animation:themeSpin .8s var(--ease-out); }
+@keyframes themeSpin{ from{ transform:rotate(-120deg) scale(.3); opacity:0; } to{ transform:none; opacity:1; } }
+@media (max-width:900px){ .nav-wave{ display:none; } .site-nav a:hover{ transform:none; } }
+@media (prefers-reduced-motion:reduce){ .hr-boat, .hr-wake, .nav-wave path, .brand-mark svg, #themeBtn .ic{ animation:none !important; } .site-nav a{ animation:none !important; } }
