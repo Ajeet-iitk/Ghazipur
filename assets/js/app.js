@@ -549,6 +549,7 @@
     }
     if (window.Naav && window.Naav.refresh) window.Naav.refresh();
     if (window.Nature && window.Nature.refresh) window.Nature.refresh();
+    if (window.Pillar && window.Pillar.refresh) window.Pillar.refresh();
 
     if (announce) {
       window.Ambient.chime();
@@ -887,6 +888,7 @@
       if (box) { box.checked = !box.checked; box.dispatchEvent(new Event('change')); }
     }
     else if (act === 'naav') { openNaav(); }
+    else if (act === 'pillar') { if (window.Pillar) window.Pillar.open(); }
     else if (act === 'monsoon') {
       scrollTo('top');
       setTimeout(function () { if (window.Nature) window.Nature.setSeason('monsoon'); }, 500);

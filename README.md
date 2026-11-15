@@ -8,6 +8,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 ## Highlights
 
 - **Day and night, blended smoothly.** By day, kids play on the ghat and a fisherman casts his net. At night, the Ganga Aarti begins, diyas are lit along the steps, and people sit and watch.
+- **The Ashoka Pillar at Latiya** — haul the ~30 ft pillar upright with a rope, then decode its Brahmi-style writing in a short game.
 - **Naav** — a small-boat game. Row, steer, collect floating diyas, with water and oar sound effects. A **Night lantern** level lights only your lamp, and cross-currents shove the boat sideways.
 - **Season switch** — Summer (the river thins, sandbars rise), Clear, or Monsoon (rain, thunder, a swollen river flooding the lower ghat steps).
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
@@ -39,5 +40,6 @@ python -m http.server 8000
 - `assets/js/naav.js` — boat game
 - `assets/js/nature.js` — season switch and wildlife spotting
 - `assets/js/yard.js` — the factory crew animation
+- `assets/js/pillar.js` — the Ashoka Pillar game
 - `assets/js/audio.js` — music and sound effects (Web Audio)
 - `assets/js/i18n.js`, `assets/js/app.js` — languages and interactions
