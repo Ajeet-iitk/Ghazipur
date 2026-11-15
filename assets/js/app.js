@@ -1179,19 +1179,11 @@
       window.Scene.setTime(themeMode === 'night' ? 0.995 : 0.16);
     }
 
-    var heroDiya = $('#heroDiya');
+    var heroDiya = $('#eggDiya');
     if (heroDiya) heroDiya.addEventListener('click', function () {
       if (window.Scene) window.Scene.releaseDiya(6);
       window.Ambient.plop();
       toast(tst('diya'));
-    });
-    var bells = $('#bells');
-    if (bells) bells.addEventListener('click', function (e) {
-      var b = e.target.closest('.bell');
-      if (!b) return;
-      b.classList.remove('is-ring'); void b.offsetWidth; b.classList.add('is-ring');
-      if (window.Ambient && window.Ambient.templeBell) window.Ambient.templeBell(+b.getAttribute('data-n'));
-      if (window.Scene && window.Scene.shake) window.Scene.shake();
     });
     var heroNaav = $('#heroNaav');
     if (heroNaav) heroNaav.addEventListener('click', openNaav);

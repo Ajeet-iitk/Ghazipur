@@ -130,24 +130,12 @@
         <svg class="ic"><use href="#i-sound"/></svg>
         <span data-i18n="hero.cta2">Turn on the river</span>
       </button>
-      <button class="btn btn-ghost" id="heroDiya" type="button">
-        <svg class="ic"><use href="#i-lamp"/></svg>
-        <span data-i18n="hero.diya">Release a diya</span>
-      </button>
       <button class="btn btn-ghost" id="heroNaav" type="button">
         <svg class="ic"><use href="#i-boat"/></svg>
         <span data-i18n="hero.cta3">Row the Naav</span>
       </button>
     </div>
-    <div class="bells rev" id="bells" role="group" data-i18n-aria="bells.label" aria-label="Temple bells. Tap to ring.">
-      <span class="bells-beam" aria-hidden="true"></span>
-      <button type="button" class="bell" data-n="0" aria-label="Bell 1"><svg viewBox="0 0 40 64"><path d="M20 0v10" class="b-rope"/><path d="M8 40c0-12 5-24 12-24s12 12 12 24z" class="b-body"/><rect x="5" y="40" width="30" height="5" rx="2.5" class="b-rim"/><circle cx="20" cy="52" r="4" class="b-clap"/></svg></button>
-      <button type="button" class="bell" data-n="1" aria-label="Bell 2"><svg viewBox="0 0 40 64"><path d="M20 0v10" class="b-rope"/><path d="M8 40c0-12 5-24 12-24s12 12 12 24z" class="b-body"/><rect x="5" y="40" width="30" height="5" rx="2.5" class="b-rim"/><circle cx="20" cy="52" r="4" class="b-clap"/></svg></button>
-      <button type="button" class="bell" data-n="2" aria-label="Bell 3"><svg viewBox="0 0 40 64"><path d="M20 0v10" class="b-rope"/><path d="M8 40c0-12 5-24 12-24s12 12 12 24z" class="b-body"/><rect x="5" y="40" width="30" height="5" rx="2.5" class="b-rim"/><circle cx="20" cy="52" r="4" class="b-clap"/></svg></button>
-      <button type="button" class="bell" data-n="3" aria-label="Bell 4"><svg viewBox="0 0 40 64"><path d="M20 0v10" class="b-rope"/><path d="M8 40c0-12 5-24 12-24s12 12 12 24z" class="b-body"/><rect x="5" y="40" width="30" height="5" rx="2.5" class="b-rim"/><circle cx="20" cy="52" r="4" class="b-clap"/></svg></button>
-      <button type="button" class="bell" data-n="4" aria-label="Bell 5"><svg viewBox="0 0 40 64"><path d="M20 0v10" class="b-rope"/><path d="M8 40c0-12 5-24 12-24s12 12 12 24z" class="b-body"/><rect x="5" y="40" width="30" height="5" rx="2.5" class="b-rim"/><circle cx="20" cy="52" r="4" class="b-clap"/></svg></button>
-      <p class="bells-hint" data-i18n="bells.hint">Ring the temple bells</p>
-    </div>
+    <p class="bell-tip rev"><svg class="ic"><use href="#i-bell"/></svg><span class="bt-desk" data-i18n="bells.hintDesk">Click the temple bells on the ghat</span><span class="bt-mob" data-i18n="bells.hintMob">Shake your phone to ring the temple bells</span></p>
     <div class="hero-weather rev">
       <div class="season" id="season" role="group" data-i18n-aria="season.label" aria-label="Season of the river">
         <button type="button" data-season="summer" aria-pressed="false"><svg class="ic"><use href="#i-sun"/></svg><span data-i18n="season.summer">Summer</span></button>
@@ -162,6 +150,8 @@
       <div><dt data-i18n="hero.f4">On the river</dt><dd>62 <small data-i18n="hero.riverU">m</small></dd></div>
     </dl>
   </div>
+
+  <button type="button" class="egg-diya" id="eggDiya" data-i18n-aria="hero.diya" aria-label="Release a diya" title="Release a diya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15q9 8 18 0z" fill="currentColor"/><path d="M12 13c-4-4-3-8 0-12 3 4 4 8 0 12z" fill="#ffd27a"/></svg></button>
 
   <div class="hero-foot">
     <span class="mono">GZP · UP-61</span>

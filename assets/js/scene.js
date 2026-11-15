@@ -547,6 +547,75 @@
   }
 
   /* the stone ghat in the bottom-right corner */
+  /* ── the temple bells, hung under the chhatri on the ghat ───────── */
+  var bellState = [{ a: 0, ph: 0 }, { a: 0, ph: 1.3 }, { a: 0, ph: 2.6 }], bellHits = [], curBob = 0, lastBellAt = 0;
+
+  function drawTempleBells(px0, py0, pw, ph, stone, p) {
+    var y0 = py0 - ph * 0.72 + 1, L = ph * 0.2, r = clamp(Math.min(W, H) / 900, 0.6, 1.4) * 7.5;
+    var brass = mix([222, 170, 70], p.hill, 0.12);
+    bellHits = [];
+    for (var i = 0; i < 3; i++) {
+      var x = px0 + pw * (0.2 + i * 0.3), b = bellState[i];
+      b.a *= 0.985;
+      var ang = b.a * Math.sin(time * 9 + b.ph) * 0.9;
+      var glint = 0.5 + 0.5 * Math.sin(time * 1.5 + i * 1.7);
+      ctx.save();
+      ctx.translate(x, y0); ctx.rotate(ang);
+      ctx.strokeStyle = rgba(stone, 0.8); ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, L); ctx.stroke();
+      if (b.a > 0.05 || glint > 0.9) {
+        var gl = ctx.createRadialGradient(0, L + r, 0, 0, L + r, r * 3.4);
+        gl.addColorStop(0, 'rgba(255,214,140,' + (0.1 + b.a * 0.5 + (glint > 0.9 ? 0.14 : 0)) + ')'); gl.addColorStop(1, 'rgba(255,200,120,0)');
+        ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(0, L + r, r * 3.4, 0, 6.283); ctx.fill();
+      }
+      ctx.fillStyle = rgba(brass);
+      ctx.beginPath(); ctx.arc(0, L + r * 0.6, r, Math.PI, 0); ctx.lineTo(r * 1.2, L + r * 1.5); ctx.lineTo(-r * 1.2, L + r * 1.5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = rgba(mix(brass, [120, 80, 30], 0.4)); ctx.fillRect(-r * 1.2, L + r * 1.4, r * 2.4, r * 0.28);
+      ctx.fillStyle = rgba(mix(brass, [255, 240, 200], 0.4), 0.8);
+      ctx.beginPath(); ctx.ellipse(-r * 0.35, L + r * 0.2, r * 0.18, r * 0.5, 0.2, 0, 6.283); ctx.fill();
+      ctx.restore();
+      bellHits.push({ x: x + pX * 20, y: y0 + L + r + pY * 10 + curBob, r: Math.max(26, r * 3.4) });
+    }
+  }
+
+  function ringBell(i, amp) {
+    bellState[i].a = Math.max(bellState[i].a, amp || 0.8);
+    if (window.Ambient && window.Ambient.templeBell) window.Ambient.templeBell(i * 2 + Math.floor(Math.random() * 2));
+  }
+  function ringAllBells() {
+    var now = performance.now();
+    if (now - lastBellAt < 700) return;
+    lastBellAt = now;
+    [0, 1, 2].forEach(function (i) { setTimeout(function () { ringBell(i, 0.9); }, i * 140 + Math.random() * 50); });
+  }
+  function bellAt(x, y) {
+    for (var i = 0; i < bellHits.length; i++) {
+      var h = bellHits[i];
+      if (Math.hypot(x - h.x, y - h.y) < h.r) { ringBell(i, 0.85); return true; }
+    }
+    return false;
+  }
+
+  /* shake the phone: a sharp swing of the accelerometer rings every bell */
+  var shakeOn = false, lastAcc = null;
+  function onMotion(e) {
+    var a = e.accelerationIncludingGravity;
+    if (!a || a.x == null) return;
+    if (lastAcc) {
+      var d = Math.abs(a.x - lastAcc.x) + Math.abs(a.y - lastAcc.y) + Math.abs(a.z - lastAcc.z);
+      if (d > 24) ringAllBells();
+    }
+    lastAcc = { x: a.x, y: a.y, z: a.z };
+  }
+  function enableShake() {
+    if (shakeOn || typeof DeviceMotionEvent === 'undefined') return;
+    var go = function () { shakeOn = true; window.addEventListener('devicemotion', onMotion); };
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      DeviceMotionEvent.requestPermission().then(function (s) { if (s === 'granted') go(); }).catch(function () {});
+    } else go();
+  }
+  window.addEventListener('pointerdown', function (e) { if (e.pointerType === 'touch') enableShake(); }, { once: true, passive: true });
+
   function drawGhat(p) {
     var stone = mix([54, 62, 58], p.hill, 0.42);
     var warm = p.warm;
@@ -598,6 +667,7 @@
     for (var c = 0; c < 3; c++) {
       ctx.fillRect(px0 + pw * (0.14 + c * 0.30), py0 - ph * 0.70, Math.max(2, pw * 0.045), ph * 0.7);
     }
+    drawTempleBells(px0, py0, pw, ph, stone, p);
 
     /* a small brass lamp on the step */
     var lampA = 0.35 + smooth(0.62, 0.86, day) * 0.65;
@@ -617,80 +687,194 @@
   }
 
   /* ── life on the steps and in the water ───────────────────── */
-  function drawKid(x, y, s, ph, dark) {
+  /* ── three boys, one football: a proper game of passes ───────── */
+  var fb = { holder: 0, target: 1, phase: 'hold', t0: -1, passes: 0, cheer: 0, puffs: [], spin: 0 };
+  var KIDCOL = [[196, 84, 70], [70, 112, 168], [226, 178, 66]];
+
+  function drawKid(x, y, s, ph, dark, o) {
+    o = o || {};
+    var dir = o.dir || 1, kick = o.kick || 0, cheer = o.cheer || 0, moving = o.moving ? 1 : 0;
+    var sw = Math.sin(time * 6 + ph) * (moving ? 1 : 0.25);
+    var jump = cheer ? Math.abs(Math.sin(time * 9 + ph)) * 6 : (moving ? Math.abs(Math.sin(time * 6 + ph)) * 2.2 : 0);
+    var shirt = rgba(mix(dark, KIDCOL[o.v || 0], 0.5), 0.97), shorts = rgba(mix(dark, [240, 236, 224], 0.18), 0.97);
+    var skin = rgba(mix(dark, [150, 98, 64], 0.45), 0.97);
+
+    /* shadow */
     ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(s, s);
-    ctx.translate(0, -Math.abs(Math.sin(time * 3.4 + ph)) * 3.4);
-    ctx.fillStyle = rgba(dark, 0.96);
-    ctx.strokeStyle = rgba(dark, 0.96);
+    ctx.globalAlpha *= 0.28; ctx.fillStyle = rgba(dark);
+    ctx.beginPath(); ctx.ellipse(x, y + 1.5, 9 * s, 2.6 * s, -0.17, 0, 6.283); ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(x, y - jump * s);
+    ctx.scale(dir * s, s);
     ctx.lineCap = 'round';
-    var sw = Math.sin(time * 5.6 + ph);
 
-    /* legs */
-    ctx.lineWidth = 4.2;
+    /* legs: planted + swinging or kicking */
+    ctx.strokeStyle = skin; ctx.lineWidth = 3.6;
+    var fx = kick > 0 ? 3 + kick * 9 : sw * 4.4, fy = kick > 0 ? 4.2 - kick * 5 : 4.5;
     ctx.beginPath();
-    ctx.moveTo(0, -5); ctx.lineTo(sw * 4.4, 4.5);
-    ctx.moveTo(0, -5); ctx.lineTo(-sw * 4.4, 4.5);
+    ctx.moveTo(1, -6); ctx.lineTo(kick > 0 ? -2 : -sw * 4.4, 4.5);
+    ctx.moveTo(1, -6); ctx.lineTo(fx, fy);
+    ctx.stroke();
+    /* boots */
+    ctx.fillStyle = rgba(dark, 0.98);
+    ctx.beginPath(); ctx.ellipse(kick > 0 ? -2 : -sw * 4.4, 4.9, 2.4, 1.3, 0, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(fx + 0.6, fy + 0.5, 2.4, 1.3, kick * 0.8, 0, 6.283); ctx.fill();
+
+    /* shorts and shirt */
+    ctx.fillStyle = shorts;
+    ctx.beginPath(); ctx.moveTo(-3.2, -9.5); ctx.lineTo(3.8, -9.5); ctx.lineTo(4.2, -4.6); ctx.lineTo(-3.6, -4.6); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = shirt;
+    ctx.beginPath();
+    ctx.moveTo(-3.2, -17); ctx.quadraticCurveTo(0.4, -19, 3.6, -17);
+    ctx.lineTo(3.6, -9.2); ctx.lineTo(-3.2, -9.2); ctx.closePath(); ctx.fill();
+    /* a stripe on the shirt */
+    ctx.strokeStyle = rgba(mix(shirt.match ? [255, 255, 255] : [255, 255, 255], KIDCOL[o.v || 0], 0.2), 0.55); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(-3, -13.4); ctx.lineTo(3.4, -13.4); ctx.stroke();
+
+    /* arms */
+    ctx.strokeStyle = skin; ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    if (cheer) {
+      ctx.moveTo(-2.4, -16); ctx.lineTo(-7, -24 - Math.sin(time * 12 + ph) * 1.5);
+      ctx.moveTo(3, -16); ctx.lineTo(8, -24 + Math.sin(time * 12 + ph) * 1.5);
+    } else if (kick > 0) {
+      ctx.moveTo(-2.4, -16); ctx.lineTo(-7 - kick * 2, -13);
+      ctx.moveTo(3, -16); ctx.lineTo(7 + kick * 3, -19 - kick * 2);
+    } else {
+      ctx.moveTo(-2.4, -16); ctx.lineTo(-5.5 - sw * 3, -12 + sw * 1.8);
+      ctx.moveTo(3, -16); ctx.lineTo(6 + sw * 3, -12 - sw * 1.8);
+    }
     ctx.stroke();
 
-    /* little kurta */
-    ctx.beginPath();
-    ctx.moveTo(-2.7, -15);
-    ctx.quadraticCurveTo(0, -12, 2.7, -15);
-    ctx.lineTo(2.5, -4.4); ctx.lineTo(-2.5, -4.4);
-    ctx.closePath(); ctx.fill();
-
-    /* arms, thrown out while running */
-    ctx.lineWidth = 2.8;
-    ctx.beginPath();
-    ctx.moveTo(-1, -13); ctx.lineTo(-5 - sw * 3, -17 + sw * 2);
-    ctx.moveTo(1, -13); ctx.lineTo(5 + sw * 3, -17 - sw * 2);
-    ctx.stroke();
-
-    /* head */
-    ctx.beginPath(); ctx.arc(0, -19.4, 3.5, 0, 6.283); ctx.fill();
+    /* head, hair or cap */
+    ctx.fillStyle = skin;
+    ctx.beginPath(); ctx.arc(0.6, -22.2, 3.7, 0, 6.283); ctx.fill();
+    if (o.v === 1) {                                   /* a cap */
+      ctx.fillStyle = rgba(mix(dark, [240, 232, 210], 0.4), 0.98);
+      ctx.beginPath(); ctx.arc(0.4, -23, 3.8, Math.PI, 0); ctx.fill();
+      ctx.fillRect(1, -23.4, 5, 1.5);
+    } else {
+      ctx.fillStyle = rgba(dark, 0.98);
+      ctx.beginPath(); ctx.arc(0.2, -23.2, 3.9, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
+      if (o.v === 2) { ctx.beginPath(); ctx.arc(-2.6, -21.4, 1.8, 0, 6.283); ctx.fill(); }
+    }
     ctx.restore();
   }
 
   function drawKids(p, a) {
     if (a < 0.01) return;
     var dark = figureInk(p);
-    var sc = clamp(Math.min(W, H) / 900, 0.55, 1.5) * 1.18;
-    var x1 = W * 0.648, x2 = W * 0.716, x3 = W * 0.784;
-    var y1 = ghatEdgeY(0.648) + H * 0.008;
-    var y2 = ghatEdgeY(0.716) + H * 0.010;
-    var y3 = ghatEdgeY(0.784) + H * 0.012;
+    var sc = clamp(Math.min(W, H) / 900, 0.55, 1.5) * 1.5;
+    var base = [0.648, 0.716, 0.784];
+    var HOLD = 1.1, PASS = 0.9;
+    if (fb.t0 < 0) fb.t0 = time;
 
-    var b = (Math.sin(time * 0.62) + 1) / 2;
-    var bx = lerp(x1, x3, b);
-    var by = lerp(y1, y3, b) - H * 0.052 * Math.sin(Math.PI * b);
-    var br = 3.4 * sc;
+    /* the state of the game */
+    var el = time - fb.t0;
+    if (fb.phase === 'hold' && el > HOLD) {
+      var others = [0, 1, 2].filter(function (i) { return i !== fb.holder; });
+      fb.target = others[Math.random() < 0.5 ? 0 : 1];
+      fb.phase = 'pass'; fb.t0 = time; el = 0;
+    } else if (fb.phase === 'pass' && el > PASS) {
+      fb.holder = fb.target; fb.phase = 'hold'; fb.t0 = time; el = 0; fb.passes++;
+      if (fb.passes % 6 === 0) fb.cheer = time + 1.7;
+    }
+    var cheering = time < fb.cheer;
+
+    /* the boys drift a little toward the play */
+    var pos = base.map(function (b, i) { return { x: W * b, y: ghatEdgeY(b) + H * (0.008 + i * 0.002) }; });
+    var lead = fb.phase === 'pass' ? fb.target : fb.holder;
+    pos[lead].x += W * 0.006 * Math.sin(time * 1.6);
+    pos.forEach(function (q, i) { q.x += Math.sin(time * 0.9 + i * 2.1) * W * 0.0025; });
+
+    /* where the ball is */
+    var foot = function (i, d) { return { x: pos[i].x + d * 9 * sc, y: pos[i].y + 0.5 }; };
+    var bp, grounded = false, br = 4.3 * sc;
+    var from = foot(fb.holder, pos[fb.target].x >= pos[fb.holder].x ? 1 : -1);
+    if (fb.phase === 'hold') {
+      var d1 = (pos[(fb.holder + 1) % 3].x > pos[fb.holder].x) ? 1 : -1;
+      bp = foot(fb.holder, d1);
+      var hop = Math.abs(Math.sin(time * 8)) * 3.4 * sc;
+      bp.y -= hop + br * 0.4; grounded = hop < 0.6;
+    } else {
+      var u = el / PASS, dst = foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1);
+      var e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      bp = { x: lerp(from.x, dst.x, u), y: lerp(from.y, dst.y, u) - H * 0.075 * Math.sin(Math.PI * u) * (1 - 0.3 * u) - br * 0.4 };
+    }
+    fb.spin += (fb.phase === 'pass' ? 0.4 : 0.12);
+
+    /* kicks and dust */
+    var kicker = fb.holder, kk = 0;
+    if (fb.phase === 'hold' && el > HOLD - 0.28) kk = (el - (HOLD - 0.28)) / 0.28;
+    else if (fb.phase === 'pass' && el < 0.22) kk = 1 - el / 0.22;
+    if (fb.phase === 'pass' && el < 0.04 && (!fb.puffs.length || time - fb.puffs[fb.puffs.length - 1].t > 0.5)) {
+      fb.puffs.push({ x: from.x, y: from.y + 3, t: time });
+      if (fb.puffs.length > 5) fb.puffs.shift();
+    }
 
     ctx.save();
     ctx.globalAlpha = a;
 
-    /* a long evening shadow */
-    ctx.globalAlpha = a * 0.22;
-    ctx.fillStyle = rgba(dark);
-    ctx.beginPath(); ctx.ellipse((x1 + x3) / 2, (y1 + y3) / 2 + 4, W * 0.09, 4, -0.17, 0, 6.283); ctx.fill();
+    /* a long evening shadow across the steps */
+    ctx.globalAlpha = a * 0.18; ctx.fillStyle = rgba(dark);
+    ctx.beginPath(); ctx.ellipse((pos[0].x + pos[2].x) / 2, (pos[0].y + pos[2].y) / 2 + 5, W * 0.1, 4, -0.17, 0, 6.283); ctx.fill();
     ctx.globalAlpha = a;
 
-    drawKid(x1, y1, sc, 0.2, dark);
-    drawKid(x2, y2, sc * 0.96, 2.1, dark);
-    drawKid(x3, y3, sc * 0.92, 4.4, dark);
+    /* dust kicked up */
+    for (var i = fb.puffs.length - 1; i >= 0; i--) {
+      var pf = fb.puffs[i], k = (time - pf.t) / 0.7;
+      if (k > 1) { fb.puffs.splice(i, 1); continue; }
+      ctx.globalAlpha = a * (1 - k) * 0.35;
+      ctx.fillStyle = rgba(mix(p.haze, [230, 214, 190], 0.4));
+      ctx.beginPath(); ctx.ellipse(pf.x - k * 6, pf.y - k * 7, 4 + k * 12, 2 + k * 5, 0, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = a;
 
-    /* the ball, catching the last of the sun */
-    var glow = ctx.createRadialGradient(bx, by, 0, bx, by, br * 3.6);
-    glow.addColorStop(0, 'rgba(255,218,150,0.30)');
-    glow.addColorStop(1, 'rgba(255,190,110,0)');
-    ctx.fillStyle = glow;
-    ctx.beginPath(); ctx.arc(bx, by, br * 3.6, 0, 6.283); ctx.fill();
-    ctx.fillStyle = rgba(mix([244, 236, 210], p.sun, 0.25));
-    ctx.beginPath(); ctx.arc(bx, by, br, 0, 6.283); ctx.fill();
-    ctx.strokeStyle = sunRim(p, 0.5);
-    ctx.lineWidth = 0.8;
-    ctx.beginPath(); ctx.arc(bx, by, br, -0.9, 0.9); ctx.stroke();
+    /* the ball's shadow stays on the ground */
+    var gy0 = (fb.phase === 'hold' ? pos[fb.holder].y : lerp(from.y, foot(fb.target, 1).y, (time - fb.t0) / PASS)) + 3;
+    var hAbove = clamp((gy0 - bp.y) / (H * 0.08), 0, 1);
+    ctx.globalAlpha = a * (0.3 - hAbove * 0.18); ctx.fillStyle = rgba(dark);
+    ctx.beginPath(); ctx.ellipse(bp.x, gy0, br * (1.1 - hAbove * 0.4), br * 0.34, 0, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = a;
+
+    /* the boys, back to front */
+    var order = [0, 1, 2].sort(function (m, n) { return pos[m].y - pos[n].y; });
+    order.forEach(function (i) {
+      var faceX = bp.x >= pos[i].x ? 1 : -1;
+      var receiving = fb.phase === 'pass' && i === fb.target;
+      drawKid(pos[i].x, pos[i].y, sc * (1 - i * 0.03), i * 2.3 + 0.4, dark, {
+        v: i, dir: faceX, kick: i === kicker ? kk : 0, cheer: cheering, moving: !cheering && (receiving || (fb.phase === 'hold' && i === fb.holder))
+      });
+    });
+
+    /* the ball: a glow, a trail, a white ball with turning patches */
+    var glow = ctx.createRadialGradient(bp.x, bp.y, 0, bp.x, bp.y, br * 4);
+    glow.addColorStop(0, 'rgba(255,218,150,0.32)'); glow.addColorStop(1, 'rgba(255,190,110,0)');
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(bp.x, bp.y, br * 4, 0, 6.283); ctx.fill();
+    if (fb.phase === 'pass') {
+      for (var t = 1; t <= 4; t++) {
+        var uu = clamp((time - fb.t0) / PASS - t * 0.035, 0, 1);
+        var tx = lerp(from.x, foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1).x, uu);
+        var ty = lerp(from.y, foot(fb.target, 1).y, uu) - H * 0.075 * Math.sin(Math.PI * uu) * (1 - 0.3 * uu) - br * 0.4;
+        ctx.globalAlpha = a * (0.22 - t * 0.045); ctx.fillStyle = rgba([255, 244, 220]);
+        ctx.beginPath(); ctx.arc(tx, ty, br * (1 - t * 0.12), 0, 6.283); ctx.fill();
+      }
+      ctx.globalAlpha = a;
+    }
+    ctx.save();
+    ctx.translate(bp.x, bp.y); ctx.rotate(fb.spin);
+    ctx.fillStyle = rgba(mix([246, 242, 228], p.sun, 0.2));
+    ctx.beginPath(); ctx.arc(0, 0, br, 0, 6.283); ctx.fill();
+    ctx.fillStyle = rgba(mix([40, 40, 46], p.hill, 0.3), 0.85);
+    ctx.beginPath(); ctx.arc(0, 0, br * 0.36, 0, 6.283); ctx.fill();
+    for (var q = 0; q < 5; q++) {
+      var an = q * 1.2566; ctx.beginPath(); ctx.arc(Math.cos(an) * br * 0.78, Math.sin(an) * br * 0.78, br * 0.2, 0, 6.283); ctx.fill();
+    }
+    ctx.restore();
+    ctx.strokeStyle = sunRim(p, 0.55); ctx.lineWidth = 0.9;
+    ctx.beginPath(); ctx.arc(bp.x, bp.y, br, -0.9, 0.9); ctx.stroke();
 
     ctx.restore();
     ctx.globalAlpha = 1;
@@ -1191,6 +1375,7 @@
 
     /* slight vertical drift, like breathing */
     var bob = Math.sin(now * 0.22) * 2.2;
+    curBob = bob;
 
     drawSky(P);
     drawBodies(P);
@@ -1593,6 +1778,7 @@
     },
     getSeason: function () { return seasonTarget === 0 ? 'summer' : seasonTarget === 1 ? 'monsoon' : 'normal'; },
     callWild: function (id) { spawnWild(id); },
+    ringBells: ringAllBells,
     ripple: function (x, y) {
       ripples.push({ x: x, y: y, t: 0 });
       if (ripples.length > 14) ripples.shift();
@@ -1647,6 +1833,7 @@
   document.addEventListener('click', function (e) {
     var el = e.target.closest('a,button,input,label,select,textarea,[data-no-ripple]');
     if (el) return;
+    if (bellAt(e.clientX, e.clientY)) return;
     if (spotAt(e.clientX, e.clientY)) { if (window.Ambient && window.Ambient.coin) window.Ambient.coin(); return; }
     var y = e.clientY;
     if (y > horizonY() * 0.92) {

@@ -114,6 +114,8 @@
 
       "hero.cta3": "Row the Naav",
       "hero.diya": "Release a diya",
+      "bells.hintDesk": "Click the temple bells on the ghat",
+      "bells.hintMob": "Shake your phone to ring the temple bells",
       "bells.label": "Temple bells. Tap to ring.",
       "bells.hint": "Ring the temple bells",
 
@@ -350,6 +352,8 @@
 
       "hero.cta3": "नाव चलाइए",
       "hero.diya": "दीया बहाइए",
+      "bells.hintDesk": "घाट पर मंदिर की घंटियाँ बजाइए",
+      "bells.hintMob": "फ़ोन हिलाइए, मंदिर की घंटियाँ बजेंगी",
       "bells.label": "मंदिर की घंटियाँ। बजाने के लिए टैप कीजिए।",
       "bells.hint": "मंदिर की घंटियाँ बजाइए",
 
@@ -586,6 +590,8 @@
 
       "hero.cta3": "Naav chalaiye",
       "hero.diya": "Diya bahaiye",
+      "bells.hintDesk": "Ghat par mandir ki ghantiyan bajaiye",
+      "bells.hintMob": "Phone hilaiye, mandir ki ghantiyan bajengi",
       "bells.label": "Mandir ki ghantiyan. Bajane ke liye tap kijiye.",
       "bells.hint": "Mandir ki ghantiyan bajaiye",
 
