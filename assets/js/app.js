@@ -682,6 +682,7 @@
     if (window.Naav && window.Naav.refresh) window.Naav.refresh();
     if (window.Nature && window.Nature.refresh) window.Nature.refresh();
     if (window.Pillar && window.Pillar.refresh) window.Pillar.refresh();
+    if (window.ArtNook && window.ArtNook.build) window.ArtNook.build();
 
     if (announce) {
       window.Ambient.chime();
