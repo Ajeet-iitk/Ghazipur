@@ -590,7 +590,7 @@
     });
 
     var ph = $('#paletteInput');
-    if (ph) ph.placeholder = lang === 'hi' ? 'ग़ाज़ीपुर में खोजिए…' : lang === 'eh' ? 'Ghazipur mein dhoondhiye…' : 'Search Ghazipur…';
+    if (ph) ph.placeholder = lang === 'hi' ? 'गाजीपुर में खोजिए…' : lang === 'eh' ? 'Ghazipur mein dhoondhiye…' : 'Search Ghazipur…';
 
     $$('.lang button').forEach(function (b) {
       var on = b.getAttribute('data-lang') === lang;

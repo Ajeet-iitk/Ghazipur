@@ -233,7 +233,7 @@
 
       "river.kicker": "अध्याय एक · नदी",
       "river.title": "एक नदी, जिसे जल्दी नहीं है",
-      "river.lede": "गाज़ीपुर गंगा के किनारे एक पतली पट्टी की तरह बढ़ा — साढ़े पाँच किलोमीटर पक्के घाट, नावें और नदी की रोशनी। यह पानी शहर का सबसे पुराना पता है।",
+      "river.lede": "गाजीपुर गंगा के किनारे एक पतली पट्टी की तरह बढ़ा — साढ़े पाँच किलोमीटर पक्के घाट, नावें और नदी की रोशनी। यह पानी शहर का सबसे पुराना पता है।",
       "river.body1": "पुराना शहर पूरब में खुदैपुरा से पश्चिम में पीरनगर तक फैला था — चौड़ाई में डेढ़ किलोमीटर से ज़्यादा नहीं। कारोबार नदी किनारे था, घर उससे मुँह मोड़े खड़े थे। घाटों के पार बाग़, उपवन और चौड़ा, गाद भरा मैदान।",
       "river.body2": "ज़िले में आठ नदियाँ बहती हैं — गंगा, गोमती, गाँगी, बेसन, मगई, भैंसई, टोंस और कर्मनाशा। इनके बीच धान, गुलाब और आम उगते हैं, और चैत की हवा में नदी और फूल दोनों की महक होती है।",
       "river.quote": "“भोर में घाट नदी के होते हैं, हमारे नहीं।”",
@@ -254,7 +254,7 @@
 
       "places.kicker": "अध्याय तीन · पत्थर और बाग़",
       "places.title": "नवाबों ने जो खड़ा छोड़ा",
-      "places.lede": "अठारहवीं सदी में गाज़ीपुर के अपने नवाब थे, और उन्होंने बनवाया — चालीस खंभों का महल, मक़बरे, हौज़, इमामबाड़े और कासिमाबाद का क़िला। कुछ आज भी आसमान थामे है।",
+      "places.lede": "अठारहवीं सदी में गाजीपुर के अपने नवाब थे, और उन्होंने बनवाया — चालीस खंभों का महल, मक़बरे, हौज़, इमामबाड़े और कासिमाबाद का क़िला। कुछ आज भी आसमान थामे है।",
       "places.note": "किसी भी जगह को खोलकर पढ़िए। इस पन्ने के चित्र इस परियोजना के लिए हाथ से बनाए गए हैं, तस्वीरें नहीं।",
 
       "poppy.kicker": "अध्याय चार · रसायन",
@@ -288,9 +288,9 @@
       "atlas.lede": "एक चित्रित, जानबूझकर बिना पैमाने वाला नक्शा। नाम पर माउस लाइए या टैप कीजिए।",
       "atlas.note": "स्थितियाँ चित्रण के लिए हैं, सर्वेक्षण नहीं। केवल तहसील मुख्यालय।",
       "atlas.reachTitle": "कैसे पहुँचें",
-      "atlas.r1k": "रेल से", "atlas.r1v": "गाज़ीपुर सिटी · डिल्डारनगर जंक्शन",
+      "atlas.r1k": "रेल से", "atlas.r1v": "गाजीपुर सिटी · डिल्डारनगर जंक्शन",
       "atlas.r2k": "सड़क से", "atlas.r2v": "एनएच-19 और एनएच-29 · वाराणसी से 80 किमी",
-      "atlas.r3k": "हवाई मार्ग", "atlas.r3v": "वाराणसी (बबतपुर); गाज़ीपुर हवाई पट्टी आपातकाल के लिए",
+      "atlas.r3k": "हवाई मार्ग", "atlas.r3v": "वाराणसी (बबतपुर); गाजीपुर हवाई पट्टी आपातकाल के लिए",
       "atlas.r4k": "मंडल", "atlas.r4v": "वाराणसी मंडल · पिन 233001",
 
       "explore.kicker": "खोज का पन्ना",
@@ -299,7 +299,7 @@
 
       "credits.title": "यह कैसे बना",
       "credits.p1": "एक एचटीएमएल पन्ना, एक स्टाइलशीट, पाँच छोटी स्क्रिप्ट। कोई फ़्रेमवर्क नहीं, कोई बिल्ड नहीं, कोई ट्रैकिंग नहीं। दृश्य कैनवास पर एक-एक फ़्रेम बनता है; संगीत वेब ऑडियो एपीआई से बनता है; हर चित्र हाथ से लिखा एसवीजी है।",
-      "credits.p2": "तथ्य गाज़ीपुर के विकिपीडिया पन्ने, 1909 के ज़िला गजेटियर, 2011 की जनगणना और ghazipur.nic.in से लिए गए हैं। यह एक स्वतंत्र श्रद्धांजलि है, सरकारी साइट नहीं।",
+      "credits.p2": "तथ्य गाजीपुर के विकिपीडिया पन्ने, 1909 के ज़िला गजेटियर, 2011 की जनगणना और ghazipur.nic.in से लिए गए हैं। यह एक स्वतंत्र श्रद्धांजलि है, सरकारी साइट नहीं।",
 
       "footer.line": "गंगा किनारे बसे एक ज़िले के नाम, एक प्रेम-पत्र।",
       "footer.note": "एक स्वतंत्र श्रद्धांजलि · 2026",
@@ -347,7 +347,7 @@
       "naav.quit": "घाट पर लौटिए",
       "naav.bestLine": "सर्वश्रेष्ठ: {d} दीये",
       "naav.sec": "से",
-      "pillar.kicker": "लटिया · ग़ाज़ीपुर से लगभग 30 किमी",
+      "pillar.kicker": "लटिया · गाजीपुर से लगभग 30 किमी",
       "pillar.title": "अशोक स्तंभ",
       "pillar.close": "बंद करें",
       "pillar.raiseTip": "बटन दबाए रखिए, या कहीं भी दबाकर रखिए, रस्सी खिंचती जाएगी। छोड़ेंगे तो फिसलकर पीछे आ जाएगा।",
@@ -389,7 +389,7 @@
       "fest.again": "फिर बाँटिए",
       "rs.alt": "ऊपर से देखा ज़िले का नदी-तंत्र: पूरे पन्ने पर गंगा और उसमें बहती सात और नदियाँ",
       "rs.hint": "किसी नदी पर घूमिए या टैप कीजिए",
-      "rs.city": "ग़ाज़ीपुर",
+      "rs.city": "गाजीपुर",
       "rs.fine": "स्थितियाँ चित्रात्मक हैं, सर्वेक्षण नहीं। नाम ज़िला गजेटियर और 2011 की जनगणना के अनुसार।",
       "season.label": "नदी का मौसम",
       "season.summer": "गर्मी",
@@ -681,7 +681,7 @@
         t: { en: "A city is founded", hi: "एक शहर बसता है", eh: "Ek sheher banta hai" },
         d: {
           en: "Sayyid Masud and his forty ghazis take Raja Mandhata's fort at Kathot. A new city rises on the battlefield and is named Ghazipur, after Ghazi Malik.",
-          hi: "सैयद मसूद और उनके चालीस ग़ाज़ी कठोत में राजा मांधाता का क़िला लेते हैं। युद्धभूमि पर नया शहर बसता है, और ग़ाज़ी मलिक के नाम पर ग़ाज़ीपुर कहलाता है।",
+          hi: "सैयद मसूद और उनके चालीस ग़ाज़ी कठोत में राजा मांधाता का क़िला लेते हैं। युद्धभूमि पर नया शहर बसता है, और ग़ाज़ी मलिक के नाम पर गाजीपुर कहलाता है।",
           eh: "Sayyid Masud aur unke chalees ghazi Kathot mein Raja Mandhata ka qila lete hain. Yuddhabhoomi par naya sheher banta hai, aur Ghazi Malik ke naam par Ghazipur kehlata hai."
         }
       },
@@ -699,7 +699,7 @@
         t: { en: "Akbar's sarkar", hi: "अकबर की सरकार", eh: "Akbar ki sarkar" },
         d: {
           en: "After Khan Zaman's revolt, Munim Khan takes charge. The Ain-i-Akbari lists Ghazipur as a sarkar of the Allahabad subah.",
-          hi: "ख़ान ज़मान के विद्रोह के बाद मुनीम ख़ान को कमान मिलती है। आइन-ए-अकबरी में ग़ाज़ीपुर इलाहाबाद सूबे की एक सरकार के रूप में दर्ज है।",
+          hi: "ख़ान ज़मान के विद्रोह के बाद मुनीम ख़ान को कमान मिलती है। आइन-ए-अकबरी में गाजीपुर इलाहाबाद सूबे की एक सरकार के रूप में दर्ज है।",
           eh: "Khan Zaman ke vidroh ke baad Munim Khan ko command milti hai. Ain-i-Akbari mein Ghazipur Allahabad subah ki ek sarkar ke roop mein darj hai."
         }
       },
@@ -717,7 +717,7 @@
         t: { en: "Cornwallis dies here", hi: "कॉर्नवॉलिस यहीं चल बसे", eh: "Cornwallis yahin chal base" },
         d: {
           en: "The Governor-General — twice master of British India — dies at Ghazipur. His domed tomb on twelve Doric columns still overlooks the river.",
-          hi: "गवर्नर-जनरल — दो बार ब्रिटिश भारत के शासक — ग़ाज़ीपुर में चल बसते हैं। बारह डोरिक खंभों पर टिका उनका गुंबद आज भी नदी को देखता है।",
+          hi: "गवर्नर-जनरल — दो बार ब्रिटिश भारत के शासक — गाजीपुर में चल बसते हैं। बारह डोरिक खंभों पर टिका उनका गुंबद आज भी नदी को देखता है।",
           eh: "Governor-General — do baar British India ke ruler — Ghazipur mein chal base. Barah Doric khambhon par tika unka gumbad aaj bhi nadi ko dekhta hai."
         }
       },
@@ -726,7 +726,7 @@
         t: { en: "District and factory", hi: "ज़िला और कारख़ाना", eh: "Zila aur karkhana" },
         d: {
           en: "The British constitute Ghazipur district. Two years later the East India Company opens its opium factory, which has run ever since.",
-          hi: "अंग्रेज़ ग़ाज़ीपुर ज़िला बनाते हैं। दो साल बाद ईस्ट इंडिया कंपनी अपना अफ़ीम कारख़ाना खोलती है, जो आज तक चल रहा है।",
+          hi: "अंग्रेज़ गाजीपुर ज़िला बनाते हैं। दो साल बाद ईस्ट इंडिया कंपनी अपना अफ़ीम कारख़ाना खोलती है, जो आज तक चल रहा है।",
           eh: "Angrez Ghazipur zila banate hain. Do saal baad East India Company apna afeem karkhana kholti hai, jo aaj tak chal raha hai."
         }
       },
@@ -744,7 +744,7 @@
         t: { en: "Science, first", hi: "विज्ञान, सबसे पहले", eh: "Vigyan, sabse pehle" },
         d: {
           en: "Sir Syed Ahmed Khan founds the Scientific Society of Ghazipur — the first of its kind in India — before it moves to Aligarh.",
-          hi: "सर सैयद अहमद ख़ान ग़ाज़ीपुर की साइंटिफ़िक सोसाइटी बनाते हैं — भारत में अपनी तरह की पहली — जो बाद में अलीगढ़ चली जाती है।",
+          hi: "सर सैयद अहमद ख़ान गाजीपुर की साइंटिफ़िक सोसाइटी बनाते हैं — भारत में अपनी तरह की पहली — जो बाद में अलीगढ़ चली जाती है।",
           eh: "Sir Syed Ahmed Khan Ghazipur ki Scientific Society banate hain — India mein apni tarah ki pehli — jo baad mein Aligarh chali jaati hai."
         }
       }
@@ -777,7 +777,7 @@
         n: { en: "Tomb of Lord Cornwallis", hi: "लॉर्ड कॉर्नवॉलिस का मक़बरा", eh: "Lord Cornwallis ka Maqbara" },
         d: {
           en: "Charles Cornwallis died at Ghazipur in 1805. His tomb — a heavy dome on twelve Doric columns, with a cenotaph carved by John Flaxman — stands above the Ganga and is conserved by the Archaeological Survey of India.",
-          hi: "चार्ल्स कॉर्नवॉलिस 1805 में ग़ाज़ीपुर में चल बसे। उनका मक़बरा — बारह डोरिक खंभों पर भारी गुंबद, और जॉन फ़्लैक्समैन का तराशा हुआ स्मारक-पट्ट — गंगा के ऊपर खड़ा है, भारतीय पुरातत्व सर्वेक्षण के संरक्षण में।",
+          hi: "चार्ल्स कॉर्नवॉलिस 1805 में गाजीपुर में चल बसे। उनका मक़बरा — बारह डोरिक खंभों पर भारी गुंबद, और जॉन फ़्लैक्समैन का तराशा हुआ स्मारक-पट्ट — गंगा के ऊपर खड़ा है, भारतीय पुरातत्व सर्वेक्षण के संरक्षण में।",
           eh: "Charles Cornwallis 1805 mein Ghazipur mein chal base. Unka maqbara — barah Doric khambhon par bhaari gumbad, aur John Flaxman ka tarasha cenotaph — Ganga ke oopar khada hai, ASI ke sanrakshan mein."
         }
       },
@@ -875,7 +875,7 @@
         w: { en: "all year", hi: "साल भर", eh: "saal bhar" },
         d: {
           en: "Ghazipur's rose-scented spray is famous across India — a small, fragrant export from a district better known for heavier things.",
-          hi: "ग़ाज़ीपुर का गुलाब-सुगंधित छिड़काव पूरे भारत में मशहूर है — भारी-भरकम चीज़ों के लिए जाने जाने वाले ज़िले से एक छोटा, महकता निर्यात।",
+          hi: "गाजीपुर का गुलाब-सुगंधित छिड़काव पूरे भारत में मशहूर है — भारी-भरकम चीज़ों के लिए जाने जाने वाले ज़िले से एक छोटा, महकता निर्यात।",
           eh: "Ghazipur ka gulab-sugandhit spray poore India mein mashhoor hai — bhaari-bhar kam cheezon ke liye jaane jaane wale zile se ek chhota, mehakta export."
         }
       }
@@ -924,7 +924,7 @@
       {
         mono: "MS", n: { en: "Manoj Sinha", hi: "मनोज सिन्हा", eh: "Manoj Sinha" },
         r: { en: "Lieutenant Governor", hi: "उपराज्यपाल", eh: "Lieutenant Governor" },
-        note: { en: "Jammu & Kashmir; former MP, Ghazipur.", hi: "जम्मू-कश्मीर; ग़ाज़ीपुर से पूर्व सांसद।", eh: "Jammu & Kashmir; Ghazipur se former MP." }
+        note: { en: "Jammu & Kashmir; former MP, Ghazipur.", hi: "जम्मू-कश्मीर; गाजीपुर से पूर्व सांसद।", eh: "Jammu & Kashmir; Ghazipur se former MP." }
       },
       {
         mono: "SY", n: { en: "Suryakumar Yadav", hi: "सूर्यकुमार यादव", eh: "Suryakumar Yadav" },
@@ -936,7 +936,7 @@
     spots: [
       {
         x: 468, y: 402,
-        n: { en: "Ghazipur", hi: "ग़ाज़ीपुर", eh: "Ghazipur" },
+        n: { en: "Ghazipur", hi: "गाजीपुर", eh: "Ghazipur" },
         kind: { en: "District headquarters", hi: "ज़िला मुख्यालय", eh: "Zila headquarters" },
         d: { en: "The old city and district headquarters: the ghats, Chihal Satun, the riverfront — and the opium works across the water.", hi: "पुराना शहर और ज़िला मुख्यालय: घाट, चिहल सतून, किनारा — और पार अफ़ीम कारख़ाना।", eh: "Purana sheher aur zila headquarters: ghat, Chihal Satun, kinara — aur paar afeem karkhana." }
       },
