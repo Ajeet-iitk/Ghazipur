@@ -179,6 +179,11 @@
     svg.classList.toggle('is-night', cur >= 10);
     svg.classList.toggle('is-fire', cur === 9);
     Array.prototype.forEach.call(host.querySelectorAll('.tm-layer'), function (b) { b.classList.toggle('is-on', +b.getAttribute('data-i') === cur); b.classList.toggle('is-past', +b.getAttribute('data-i') < cur); });
+    var strip = host.querySelector('.tm-strata'), on = strip && strip.querySelector('.tm-layer.is-on');
+    if (strip && on && strip.scrollWidth > strip.clientWidth) {
+      var want = on.offsetLeft - (strip.clientWidth - on.offsetWidth) / 2;
+      try { strip.scrollTo({ left: want, behavior: reduced ? 'auto' : 'smooth' }); } catch (e) { strip.scrollLeft = want; }
+    }
     var cnt = host.querySelector('#tmCount'); if (cnt) cnt.textContent = tpl(L('tm.of'), { n: cur + 1, t: tl.length });
     var ti = host.querySelector('#tmTitle'); if (ti) ti.textContent = pick(e.t);
     var tx = host.querySelector('#tmText'); if (tx) tx.textContent = pick(e.d);
