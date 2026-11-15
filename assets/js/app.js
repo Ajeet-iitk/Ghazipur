@@ -548,6 +548,7 @@
       yardLabel.textContent = L(yardTrain.getAttribute('aria-pressed') === 'true' ? 'poppy.yardTrainStop' : 'poppy.yardTrain');
     }
     if (window.Naav && window.Naav.refresh) window.Naav.refresh();
+    if (window.Nature && window.Nature.refresh) window.Nature.refresh();
 
     if (announce) {
       window.Ambient.chime();
@@ -886,6 +887,14 @@
       if (box) { box.checked = !box.checked; box.dispatchEvent(new Event('change')); }
     }
     else if (act === 'naav') { openNaav(); }
+    else if (act === 'monsoon') {
+      scrollTo('top');
+      setTimeout(function () { if (window.Nature) window.Nature.setSeason('monsoon'); }, 500);
+    }
+    else if (act === 'wildlife') {
+      scrollTo('top');
+      setTimeout(function () { if (window.Nature) window.Nature.call(); }, 600);
+    }
     else if (act === 'aarti') { aarti(); }
     else if (act === 'yard-siren') {
       scrollTo('poppy');

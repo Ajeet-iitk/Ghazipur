@@ -1185,6 +1185,7 @@
   function draw(now) {
     if (!W || !H) return;
     P = paletteAt(clamp(day + Math.sin(now * 0.07) * 0.004, 0, 1));
+    applySeason(P);
 
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
@@ -1194,6 +1195,7 @@
     drawSky(P);
     drawBodies(P);
     drawClouds(P);
+    drawStorm(P);
     ctx.save();
     ctx.translate(0, bob);
     drawHills(P);
@@ -1201,14 +1203,19 @@
     drawBirds(P);
     drawMist(P);
     drawWater(P);
+    drawSandbars(P);
     drawBoat(P);
+    drawWildlife(P);
     drawRipples();
     drawDiyas();
     drawGhat(P);
     drawGhatLife(P);
+    drawFlood(P);
     drawMotes(P);
     drawReeds(P);
     drawBranch(P);
+    drawRain();
+    drawLightning();
     drawVignette(P);
     ctx.restore();
   }
@@ -1226,8 +1233,350 @@
     pX += (tpX - pX) * Math.min(1, dt * 0.0022);
     pY += (tpY - pY) * Math.min(1, dt * 0.0022);
 
+    updateNature(dt / 1000);
     draw(now / 1000);
     raf = requestAnimationFrame(loop);
+  }
+
+
+  /* ── seasons: summer sandbars, monsoon rain and flood ─────────── */
+  var season = 0.5, seasonTarget = 0.5, mon = 0, sum = 0;
+  var drops = [], splashes = [], bolt = null, flashA = 0, nextBolt = 5;
+  var wildlife = [], nextWild = 7;
+
+  function R(a, b) { return a + Math.random() * (b - a); }
+  function lum(c) { return (c[0] + c[1] + c[2]) / 3; }
+  function greyer(c, m) { var g = lum(c); return mix(c, [g * 0.84 + 4, g * 0.92 + 9, g + 17], m); }
+  function muddier(c, m) { var g = lum(c); return mix(c, [g * 1.05 + 20, g * 0.82 + 12, g * 0.55 + 6], m); }
+
+  function applySeason(p) {
+    mon = clamp((season - 0.5) * 2, 0, 1);
+    sum = clamp((0.5 - season) * 2, 0, 1);
+    if (mon > 0.001) {
+      var m = mon * 0.62;
+      p.top = greyer(p.top, m); p.bot = greyer(p.bot, m); p.haze = greyer(p.haze, m);
+      p.far = greyer(p.far, m * 0.8); p.sun = greyer(p.sun, m);
+      p.water = muddier(p.water, mon * 0.7); p.deep = muddier(p.deep, mon * 0.6);
+      p.star *= 1 - mon * 0.85; p.warm *= 1 - mon * 0.7;
+    }
+    if (sum > 0.001) {
+      var dayness = 1 - p.star;
+      p.bot = mix(p.bot, [255, 214, 150], sum * 0.22 * dayness);
+      p.haze = mix(p.haze, [255, 226, 176], sum * 0.3 * dayness);
+      p.water = mix(p.water, [150, 190, 176], sum * 0.18 * dayness);
+    }
+  }
+
+  /* the river shrinks: pale sandbars rise out of it */
+  var BARS = [[0.22, 0.26, 0.22, 0.032], [0.50, 0.40, 0.28, 0.042], [0.30, 0.60, 0.32, 0.058], [0.76, 0.50, 0.20, 0.046], [0.10, 0.82, 0.24, 0.052]];
+  function drawSandbars(p) {
+    if (sum < 0.02) return;
+    var hz = horizonY();
+    var sand = mix(mix([226, 202, 156], p.haze, 0.18), p.deep, p.star * 0.78);
+    var hi = mix(sand, [255, 244, 214], 0.35);
+    /* a dry strip under the far bank */
+    var sg = ctx.createLinearGradient(0, hz, 0, hz + H * 0.03);
+    sg.addColorStop(0, rgba(sand, 0.0));
+    sg.addColorStop(0.3, rgba(sand, 0.55 * sum));
+    sg.addColorStop(1, rgba(sand, 0));
+    ctx.fillStyle = sg;
+    ctx.fillRect(0, hz, W, H * 0.03);
+    for (var i = 0; i < BARS.length; i++) {
+      var b = BARS[i];
+      var depth = 0.55 + b[1] * 0.9;
+      var cx = b[0] * W + pX * 10 * depth;
+      var cy = hz + (H - hz) * b[1];
+      var rx = W * b[2] * 0.5 * sum, ry = H * b[3] * sum * depth;
+      var g = ctx.createLinearGradient(0, cy - ry, 0, cy + ry);
+      g.addColorStop(0, rgba(hi, 0.96));
+      g.addColorStop(1, rgba(sand, 0.96));
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.4), 0.3 * sum);
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.ellipse(cx, cy + 1, rx * 1.03, ry * 1.12, 0, 0.1, Math.PI - 0.1); ctx.stroke();
+      /* sedge tufts */
+      ctx.strokeStyle = rgba(mix([96, 120, 72], p.deep, p.star * 0.7), 0.85 * sum);
+      ctx.lineWidth = 1.1;
+      for (var k = 0; k < 6; k++) {
+        var tx = cx + (k - 2.5) * rx * 0.26, ty = cy - ry * 0.35 + (k % 2) * ry * 0.3;
+        ctx.beginPath();
+        ctx.moveTo(tx, ty); ctx.lineTo(tx - 2, ty - 7 * depth);
+        ctx.moveTo(tx, ty); ctx.lineTo(tx + 2.5, ty - 6 * depth);
+        ctx.stroke();
+      }
+    }
+  }
+
+  /* the monsoon river climbs the ghat steps */
+  function drawFlood(p) {
+    if (mon < 0.02) return;
+    var yl = H + 4 - H * 0.415 * (0.10 + 0.62 * mon);
+    ctx.save();
+    ctx.translate(pX * 20, pY * 10);
+    var baseX = W * 0.60;
+    ctx.beginPath();
+    ctx.moveTo(baseX - W * 0.04, H + 4); ctx.lineTo(W + 4, H * 0.585); ctx.lineTo(W + 4, H + 4); ctx.closePath();
+    ctx.clip();
+    var col = muddier(mix(p.water, p.deep, 0.15), 0.75);
+    var g = ctx.createLinearGradient(0, yl, 0, H);
+    g.addColorStop(0, rgba(col, 0.9));
+    g.addColorStop(1, rgba(mix(col, p.deep, 0.5), 0.96));
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(0, H + 8);
+    for (var x = 0; x <= W + 8; x += 14) {
+      ctx.lineTo(x, yl + Math.sin(x * 0.021 + time * 1.7) * 3 + Math.sin(x * 0.047 - time * 2.3) * 1.6);
+    }
+    ctx.lineTo(W + 8, H + 8);
+    ctx.closePath();
+    ctx.fill();
+    /* foam and swirl */
+    ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5), 0.34);
+    ctx.lineWidth = 1.2;
+    for (var f = 0; f < 9; f++) {
+      var fx = ((f * 0.131 + time * 0.035) % 1.1) * W;
+      var fy = yl + 8 + (f % 4) * 15;
+      ctx.beginPath();
+      ctx.moveTo(fx, fy); ctx.quadraticCurveTo(fx + 14, fy - 3, fx + 30, fy);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawStorm(p) {
+    if (mon < 0.02) return;
+    var hz = horizonY();
+    var g = ctx.createLinearGradient(0, 0, 0, hz + 4);
+    g.addColorStop(0, rgba([34, 42, 58], 0.64 * mon));
+    g.addColorStop(1, rgba([76, 86, 102], 0.14 * mon));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, hz + 4);
+  }
+
+  function drawRain() {
+    if (mon < 0.02) return;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(214,226,240,1)';
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i];
+      ctx.globalAlpha = d.a * mon;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x + d.len * 0.18, d.y + d.len);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(230,238,248,1)';
+    for (var j = 0; j < splashes.length; j++) {
+      var s = splashes[j];
+      ctx.globalAlpha = (1 - s.t) * 0.45 * mon;
+      ctx.beginPath();
+      ctx.ellipse(s.x, s.y, 2 + s.t * 9, 0.8 + s.t * 3, 0, 0, 6.283);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function strike() {
+    flashA = 1;
+    var x = R(0.12, 0.88) * W, y = 0, pts = [[x, 0]];
+    var end = horizonY() * R(0.8, 1.0);
+    while (y < end) { y += R(14, 34); x += R(-22, 22); pts.push([x, y]); }
+    bolt = pts;
+    nextBolt = R(5, 12);
+    setTimeout(function () { if (window.Ambient && window.Ambient.thunder) window.Ambient.thunder(); }, R(350, 1500));
+  }
+
+  function drawLightning() {
+    if (flashA <= 0.01) return;
+    var f = flashA * (0.72 + 0.28 * Math.sin(time * 70));
+    ctx.fillStyle = 'rgba(214,226,255,' + (0.36 * f) + ')';
+    ctx.fillRect(0, 0, W, H);
+    if (bolt && flashA > 0.4) {
+      ctx.lineJoin = 'round';
+      [[7, 0.14], [3.2, 0.35], [1.4, 0.95]].forEach(function (o) {
+        ctx.strokeStyle = 'rgba(236,242,255,' + (o[1] * flashA) + ')';
+        ctx.lineWidth = o[0];
+        ctx.beginPath();
+        ctx.moveTo(bolt[0][0], bolt[0][1]);
+        for (var i = 1; i < bolt.length; i++) ctx.lineTo(bolt[i][0], bolt[i][1]);
+        ctx.stroke();
+      });
+    }
+  }
+
+  /* ── wildlife: Gangetic dolphin, bar-headed geese, ruddy shelduck ── */
+  function wk() { return clamp(Math.min(W, H) / 900, 0.6, 1.3); }
+
+  function spawnWild(id) {
+    var hz = horizonY(), dir = Math.random() < 0.5 ? -1 : 1;
+    var r = Math.random();
+    if (!id) id = r < 0.42 ? 'dolphin' : r < 0.74 ? 'geese' : 'ducks';
+    var u = (H - hz);
+    if (id === 'dolphin') {
+      var f = R(0.30, 0.58);
+      wildlife.push({ id: id, t: 0, dur: R(1.5, 1.9), dir: dir, x0: (dir > 0 ? R(0.12, 0.58) : R(0.42, 0.86)) * W, yb: hz + u * f, k: wk() * (0.7 + f * 0.7), in: false, out: false, hx: -999, hy: -999, vis: false });
+    } else if (id === 'geese') {
+      wildlife.push({ id: id, t: 0, dur: R(17, 23), dir: dir, y: R(0.10, 0.26) * H, n: 5 + Math.floor(R(0, 3)), pts: [] });
+    } else {
+      var f2 = R(0.2, 0.5);
+      wildlife.push({ id: 'ducks', t: 0, dur: R(22, 28), dir: dir, yb: hz + u * f2, k: wk() * (0.7 + f2 * 0.7), n: 3 + Math.floor(R(0, 2)), pts: [] });
+    }
+  }
+
+  function updateNature(dt) {
+    season += (seasonTarget - season) * Math.min(1, dt * 1.1);
+    if (Math.abs(seasonTarget - season) < 0.002) season = seasonTarget;
+
+    var m = clamp((season - 0.5) * 2, 0, 1);
+    var want = Math.floor(230 * m);
+    while (drops.length < want) drops.push({ x: R(-0.1, 1.1) * W, y: R(-H, H), v: R(900, 1350), len: R(11, 22), a: R(0.18, 0.42) });
+    while (drops.length > want) drops.pop();
+    var hz = horizonY();
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i];
+      d.y += d.v * dt; d.x -= d.v * 0.18 * dt;
+      if (d.y > H) {
+        d.y = R(-60, -10); d.x = R(0, 1.2) * W;
+        if (splashes.length < 70 && Math.random() < 0.45) splashes.push({ x: R(0, 1) * W, y: hz + R(0.05, 0.95) * (H - hz), t: 0 });
+      }
+    }
+    for (var j = splashes.length - 1; j >= 0; j--) {
+      splashes[j].t += dt * 2.2;
+      if (splashes[j].t >= 1) splashes.splice(j, 1);
+    }
+    if (m > 0.6) { nextBolt -= dt; if (nextBolt <= 0) strike(); }
+    flashA = Math.max(0, flashA - dt * 1.9);
+
+    /* wildlife */
+    nextWild -= dt;
+    if (nextWild <= 0) {
+      if (wildlife.length < 3) spawnWild();
+      nextWild = R(14, 28);
+    }
+    for (var w = wildlife.length - 1; w >= 0; w--) {
+      var a = wildlife[w];
+      a.t += dt;
+      if (a.t >= a.dur) wildlife.splice(w, 1);
+    }
+  }
+
+  function wildInk(p, a) {
+    return rgba(mix(mix([226, 228, 234], p.hill, 0.2), p.deep, p.star * 0.6), a === undefined ? 1 : a);
+  }
+
+  function drawDolphin(p, a) {
+    var u = a.t / a.dur, k = a.k;
+    var span = W * 0.11, ah = H * 0.05 * (0.7 + k * 0.3);
+    var x = a.x0 + a.dir * u * span;
+    var y = a.yb - Math.sin(Math.PI * u) * ah;
+    var ang = Math.atan2(-Math.cos(Math.PI * u) * Math.PI * ah, span);
+    if (!a.in && u > 0.05) { a.in = true; ripples.push({ x: a.x0 + a.dir * 0.05 * span, y: a.yb, t: 0 }); if (window.Ambient && window.Ambient.splash) window.Ambient.splash(0.7); }
+    if (!a.out && u > 0.95) { a.out = true; ripples.push({ x: a.x0 + a.dir * span, y: a.yb, t: 0 }); if (window.Ambient && window.Ambient.splash) window.Ambient.splash(1); }
+    a.hx = x; a.hy = y; a.vis = u > 0.06 && u < 0.94;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, W, a.yb + 1); ctx.clip();
+    ctx.translate(x, y);
+    ctx.scale(a.dir, 1);
+    ctx.rotate(ang);
+    var body = mix(mix([104, 112, 120], p.hill, 0.2), p.deep, p.star * 0.55);
+    ctx.fillStyle = rgba(body);
+    ctx.beginPath(); ctx.ellipse(0, 0, 16 * k, 5.6 * k, 0, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(14 * k, -1.4 * k); ctx.lineTo(31 * k, 0.2 * k); ctx.lineTo(14 * k, 2.6 * k); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-3 * k, -4.8 * k); ctx.lineTo(-8 * k, -10 * k); ctx.lineTo(-10.5 * k, -3.6 * k); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-14 * k, 0); ctx.lineTo(-25 * k, -5.5 * k); ctx.lineTo(-22 * k, 0); ctx.lineTo(-25 * k, 5.5 * k); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = rgba(mix(body, [236, 232, 226], 0.35), 0.8);
+    ctx.beginPath(); ctx.ellipse(1 * k, 2.4 * k, 12 * k, 2.2 * k, 0, 0, 6.283); ctx.fill();
+    ctx.fillStyle = 'rgba(20,24,26,0.8)';
+    ctx.beginPath(); ctx.arc(11 * k, -1.4 * k, 0.9 * k, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGeese(p, a) {
+    var u = a.t / a.dur, k = wk();
+    var x = a.dir > 0 ? -0.08 * W + u * 1.16 * W : 1.08 * W - u * 1.16 * W;
+    var y = a.y + Math.sin(u * 7) * H * 0.008;
+    a.pts = [];
+    ctx.strokeStyle = wildInk(p, 0.92);
+    ctx.fillStyle = wildInk(p, 0.92);
+    ctx.lineCap = 'round';
+    for (var i = 0; i < a.n; i++) {
+      var rank = Math.ceil(i / 2), side = i === 0 ? 0 : (i % 2 ? 1 : -1);
+      var bx = x - a.dir * rank * W * 0.017;
+      var by = y + side * rank * H * 0.013 + Math.sin(time * 1.3 + i) * 1.5;
+      a.pts.push([bx, by]);
+      var fl = Math.sin(time * 5.2 + i * 0.9) * 0.55;
+      var wl = 9 * k;
+      ctx.lineWidth = 1.7 * k;
+      ctx.beginPath();
+      ctx.moveTo(bx - wl, by - fl * wl);
+      ctx.quadraticCurveTo(bx - wl * 0.4, by - fl * wl * 0.5 - 1.5, bx, by);
+      ctx.quadraticCurveTo(bx + wl * 0.4, by - fl * wl * 0.5 - 1.5, bx + wl, by - fl * wl);
+      ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(bx, by, 2.8 * k, 1.5 * k, 0, 0, 6.283); ctx.fill();
+      ctx.beginPath(); ctx.arc(bx + a.dir * 3.6 * k, by - 0.6 * k, 1.1 * k, 0, 6.283); ctx.fill();
+    }
+  }
+
+  function drawDucks(p, a) {
+    var u = a.t / a.dur, k = a.k;
+    var x = a.dir > 0 ? -0.06 * W + u * 1.12 * W : 1.06 * W - u * 1.12 * W;
+    a.pts = [];
+    var fade = Math.min(1, u * 8, (1 - u) * 8);
+    var orange = mix([204, 112, 52], p.deep, p.star * 0.6);
+    var cream = mix([228, 196, 152], p.deep, p.star * 0.6);
+    for (var i = 0; i < a.n; i++) {
+      var bx = x - a.dir * i * 20 * k;
+      var by = a.yb + (i % 2 ? 7 : -3) * k + Math.sin(time * 1.8 + i * 1.4) * 1.2;
+      a.pts.push([bx, by - 3 * k]);
+      ctx.globalAlpha = fade;
+      ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.4), 0.3);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(bx - a.dir * 8 * k, by + 1.5 * k); ctx.lineTo(bx - a.dir * (20 + i * 2) * k, by - 1 * k);
+      ctx.moveTo(bx - a.dir * 8 * k, by + 2.5 * k); ctx.lineTo(bx - a.dir * (20 + i * 2) * k, by + 5 * k);
+      ctx.stroke();
+      ctx.fillStyle = rgba(orange, 0.95);
+      ctx.beginPath(); ctx.ellipse(bx, by, 7.4 * k, 3.6 * k, 0, 0, 6.283); ctx.fill();
+      ctx.beginPath(); ctx.arc(bx + a.dir * 6.4 * k, by - 3.4 * k, 2.5 * k, 0, 6.283); ctx.fill();
+      ctx.fillStyle = rgba(cream, 0.95);
+      ctx.beginPath(); ctx.arc(bx + a.dir * 7 * k, by - 3.8 * k, 1.6 * k, 0, 6.283); ctx.fill();
+      ctx.fillStyle = 'rgba(30,26,22,0.9)';
+      ctx.beginPath(); ctx.ellipse(bx - a.dir * 6 * k, by - 0.4 * k, 1.8 * k, 1.5 * k, 0, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = 0.18 * fade;
+      ctx.fillStyle = rgba(orange);
+      ctx.beginPath(); ctx.ellipse(bx, by + 5 * k, 6 * k, 1.6 * k, 0, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function drawWildlife(p) {
+    for (var i = 0; i < wildlife.length; i++) {
+      var a = wildlife[i];
+      if (a.id === 'dolphin') drawDolphin(p, a);
+      else if (a.id === 'geese') drawGeese(p, a);
+      else drawDucks(p, a);
+    }
+  }
+
+  /* a tap that lands on an animal logs it in the field journal */
+  function spotAt(x, y) {
+    for (var i = wildlife.length - 1; i >= 0; i--) {
+      var a = wildlife[i], hit = false, r = 40 * wk();
+      if (a.id === 'dolphin') {
+        hit = a.vis && Math.hypot(x - a.hx, y - a.hy) < r * 1.1;
+      } else {
+        var pts = a.pts || [];
+        for (var q = 0; q < pts.length; q++) { if (Math.hypot(x - pts[q][0], y - pts[q][1]) < r * 0.8) { hit = true; break; } }
+      }
+      if (hit) {
+        ripples.push({ x: x, y: y, t: 0 });
+        document.dispatchEvent(new CustomEvent('gzp:spot', { detail: { id: a.id } }));
+        return true;
+      }
+    }
+    return false;
   }
 
   /* ── public ───────────────────────────────────────────────── */
@@ -1237,6 +1586,13 @@
       if (reduced) { time = target; draw(performance.now() / 1000); }
     },
     setScroll: function (p) { scrollProg = p; },
+    setSeason: function (name) {
+      seasonTarget = name === 'summer' ? 0 : name === 'monsoon' ? 1 : 0.5;
+      if (reduced) { season = seasonTarget; draw(performance.now() / 1000); }
+      else if (name === 'monsoon') nextBolt = Math.min(nextBolt, 3.5);
+    },
+    getSeason: function () { return seasonTarget === 0 ? 'summer' : seasonTarget === 1 ? 'monsoon' : 'normal'; },
+    callWild: function (id) { spawnWild(id); },
     ripple: function (x, y) {
       ripples.push({ x: x, y: y, t: 0 });
       if (ripples.length > 14) ripples.shift();
@@ -1291,6 +1647,7 @@
   document.addEventListener('click', function (e) {
     var el = e.target.closest('a,button,input,label,select,textarea,[data-no-ripple]');
     if (el) return;
+    if (spotAt(e.clientX, e.clientY)) { if (window.Ambient && window.Ambient.coin) window.Ambient.coin(); return; }
     var y = e.clientY;
     if (y > horizonY() * 0.92) {
       api.ripple(e.clientX, y);

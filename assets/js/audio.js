@@ -435,6 +435,82 @@
     nz.start(when); nz.stop(when + 0.1);
   }
 
+
+  /* ── weather: rain, thunder, and a splash for the river's own animals ── */
+  var rainNode = null, rainLevel = 0;
+
+  function applyRain() {
+    if (!rainNode || !ctx) return;
+    var v = sfxOn ? rainLevel : 0;
+    rainNode.g.gain.setTargetAtTime(Math.max(0.0001, v * 0.13), t(), 0.9);
+  }
+
+  function setRain(level) {
+    rainLevel = Math.max(0, Math.min(1, level));
+    if (!rainNode) {
+      if (rainLevel <= 0 || !ensureFx()) return;
+      var white = makeNoise(3, false);
+      var hiSrc = ctx.createBufferSource(); hiSrc.buffer = white; hiSrc.loop = true;
+      var hp = filter('highpass', 1100, 0.5), lp = filter('lowpass', 7600, 0.5);
+      var g = gainNode(0.0001);
+      hiSrc.connect(hp); hp.connect(lp); lp.connect(g);
+      /* the low patter on leaves and roofs */
+      var loSrc = ctx.createBufferSource(); loSrc.buffer = noiseBuf; loSrc.loop = true;
+      var bp = filter('bandpass', 520, 0.7);
+      var lg = gainNode(0.9);
+      loSrc.connect(bp); bp.connect(lg); lg.connect(g);
+      g.connect(fx);
+      var send = gainNode(0.18); g.connect(send); send.connect(verb);
+      hiSrc.start(); loSrc.start();
+      rainNode = { g: g };
+    }
+    applyRain();
+  }
+
+  function thunder() {
+    if (!sfxOn || !ensureFx()) return;
+    var when = t() + 0.02, dur = 3.6;
+    var nz = ctx.createBufferSource(); nz.buffer = noiseBuf;
+    var lp = filter('lowpass', 900, 0.7);
+    lp.frequency.setValueAtTime(900, when);
+    lp.frequency.exponentialRampToValueAtTime(90, when + dur);
+    var g = gainNode(0.0001);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(0.55, when + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.16, when + 0.7);
+    g.gain.exponentialRampToValueAtTime(0.34, when + 1.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    nz.connect(lp); lp.connect(g); g.connect(fx);
+    var send = gainNode(0.5); g.connect(send); send.connect(verb);
+    nz.start(when); nz.stop(when + dur + 0.1);
+
+    var o = ctx.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(62, when);
+    o.frequency.exponentialRampToValueAtTime(30, when + 1.5);
+    var og = gainNode(0.0001);
+    og.gain.setValueAtTime(0.0001, when);
+    og.gain.exponentialRampToValueAtTime(0.24, when + 0.1);
+    og.gain.exponentialRampToValueAtTime(0.0001, when + 1.7);
+    o.connect(og); og.connect(fx);
+    o.start(when); o.stop(when + 1.8);
+  }
+
+  function splash(size) {
+    if (!sfxOn || !ensureFx()) return;
+    var when = t() + 0.005, a = 0.05 * (size === undefined ? 1 : size);
+    var nz = ctx.createBufferSource(); nz.buffer = noiseBuf;
+    var bp = filter('bandpass', 1500, 0.8);
+    bp.frequency.setValueAtTime(1900, when);
+    bp.frequency.exponentialRampToValueAtTime(380, when + 0.4);
+    var g = gainNode(0.0001);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(a, when + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + 0.45);
+    nz.connect(bp); bp.connect(g); g.connect(fx);
+    var send = gainNode(0.3); g.connect(send); send.connect(verb);
+    nz.start(when); nz.stop(when + 0.5);
+  }
+
   /* an electromechanical factory siren: a rotor, a horn, and a warning */
   function siren() {
     if (!sfxOn || !ensureFx()) return;
@@ -566,7 +642,10 @@
       }
       if (ctx && fx) fx.gain.setTargetAtTime(0.82 * Math.max(0.05, masterLevel), t(), 0.1);
     },
-    setSfx: function (on) { sfxOn = !!on; },
+    setSfx: function (on) { sfxOn = !!on; applyRain(); },
+    setRain: setRain,
+    thunder: thunder,
+    splash: splash,
     sfxEnabled: function () { return sfxOn; },
     getMaster: function () { return masterLevel; },
     bell: bellSound,

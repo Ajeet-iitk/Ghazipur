@@ -41,7 +41,11 @@
   var DURATION = 75;
   var timeLeft = DURATION;
   var score = 0, dist = 0;
-  var best = parseInt(store.get('gzp.naav.best') || '0', 10) || 0;
+  var night = store.get('gzp.naav.level') === 'night';
+  function bestKey() { return night ? 'gzp.naav.best.night' : 'gzp.naav.best'; }
+  function loadBest() { return parseInt(store.get(bestKey()) || (night ? '0' : store.get('gzp.naav.best')) || '0', 10) || 0; }
+  var best = loadBest();
+  var currents = [], cT = 6;
 
   var boat = { x: 0.5, speed: 0, heading: 0, stroke: 0, cool: 0, bob: 0 };
   var steer = 0, rowHeld = false;
@@ -85,11 +89,13 @@
     flash = 0;
     boat.x = 0.5; boat.speed = 0; boat.heading = 0; boat.stroke = 0; boat.cool = 0;
     steer = 0; rowHeld = false;
-    diyas = []; logs = []; rings = []; sparks = []; fishes = [];
-    spawnT = 0.4; logT = 5; fishT = 2.5; wakeT = 0; hudT = 0;
+    diyas = []; logs = []; rings = []; sparks = []; fishes = []; currents = [];
+    spawnT = 0.4; logT = night ? 3.5 : 5; fishT = 2.5; wakeT = 0; hudT = 0; cT = night ? 4.5 : 7;
+    best = loadBest();
     if (el.over) el.over.hidden = true;
     root.classList.remove('is-over');
     if (el.tip) {
+      el.tip.textContent = L(night ? 'naav.tipNight' : 'naav.tip');
       el.tip.style.opacity = '';
       clearTimeout(tipTimer);
       tipTimer = setTimeout(function () {
@@ -97,6 +103,14 @@
       }, 4200);
     }
     hud(true);
+  }
+
+  function showTip(text) {
+    if (!el.tip) return;
+    el.tip.textContent = text;
+    el.tip.style.opacity = '1';
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(function () { if (el.tip) el.tip.style.opacity = '0'; }, 3200);
   }
 
   function hud(force) {
@@ -114,7 +128,7 @@
     steer = 0;
     boat.speed *= 0.4;
     var isBest = score > best;
-    if (isBest) { best = score; store.set('gzp.naav.best', String(best)); }
+    if (isBest) { best = score; store.set(bestKey(), String(best)); }
     if (el.result) el.result.textContent = tpl(L('naav.result'), { m: Math.round(dist), d: score });
     if (el.bestLine) {
       var line = tpl(L('naav.bestLine'), { d: best });
@@ -203,7 +217,7 @@
     /* the occasional drifting log */
     logT -= dt;
     if (logT <= 0 && !over) {
-      logT = rnd(5.5, 9);
+      logT = night ? rnd(3.6, 6.4) : rnd(5.5, 9);
       logs.push({ x: rnd(0.18, 0.82) * W, y: -40, vx: rnd(-14, 14), vy: 74 + boat.speed * 0.15, rot: rnd(-0.4, 0.4), len: rnd(38, 62) });
     }
     for (var j = logs.length - 1; j >= 0; j--) {
@@ -219,6 +233,28 @@
         shake = 0.5;
         rings.push({ x: g.x, y: g.y, r: 8, life: 1, alpha: 0.4 });
         if (window.Ambient && window.Ambient.thud) window.Ambient.thud();
+      }
+    }
+
+    /* cross-currents: a band of fast water that shoves the boat sideways */
+    cT -= dt;
+    if (cT <= 0 && !over) {
+      cT = night ? rnd(5.5, 8.5) : rnd(8, 12);
+      currents.push({ y: -70, h: rnd(84, 124), dir: Math.random() < 0.5 ? -1 : 1, str: rnd(0.17, 0.27) * (night ? 1.25 : 1), warned: false });
+    }
+    for (var ci = currents.length - 1; ci >= 0; ci--) {
+      var cu = currents[ci];
+      cu.y += (70 + boat.speed * 0.15) * dt;
+      if (cu.y - cu.h > H + 20) { currents.splice(ci, 1); continue; }
+      if (!cu.warned && cu.y > 30) {
+        cu.warned = true;
+        showTip(L('naav.current'));
+      }
+      if (!over && Math.abs(cu.y - by) < cu.h / 2) {
+        var edge = 1 - Math.abs(cu.y - by) / (cu.h / 2) * 0.4;
+        boat.x = clamp(boat.x + cu.dir * cu.str * edge * dt, 0.13, 0.87);
+        boat.heading += cu.dir * 0.9 * dt;
+        if (Math.random() < dt * 14) rings.push({ x: bx + rnd(-26, 26), y: by + rnd(10, 36), r: 3, life: 0.8, alpha: 0.4 });
       }
     }
 
@@ -258,32 +294,40 @@
   function drawSky() {
     var hz = H * 0.30;
     var g = ctx.createLinearGradient(0, 0, 0, hz + 6);
-    g.addColorStop(0, '#20303c');
-    g.addColorStop(0.45, '#6c4d5a');
-    g.addColorStop(0.78, '#cf835c');
-    g.addColorStop(1, '#f2bd82');
+    if (night) {
+      g.addColorStop(0, '#0b1535');
+      g.addColorStop(0.5, '#1c2e68');
+      g.addColorStop(0.85, '#3a5594');
+      g.addColorStop(1, '#6a86bc');
+    } else {
+      g.addColorStop(0, '#20303c');
+      g.addColorStop(0.45, '#6c4d5a');
+      g.addColorStop(0.78, '#cf835c');
+      g.addColorStop(1, '#f2bd82');
+    }
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, hz + 6);
 
     /* the last star */
     ctx.fillStyle = 'rgba(255,246,224,0.5)';
-    for (var i = 0; i < 18; i++) {
+    var ns = night ? 64 : 18;
+    for (var i = 0; i < ns; i++) {
       var x = ((i * 0.173 + 0.03) % 1) * W;
       var y = (0.03 + (i * 0.061) % 0.17) * H;
-      ctx.globalAlpha = 0.25 + 0.35 * Math.abs(Math.sin(clock * 0.8 + i));
-      ctx.fillRect(x, y, 1.4, 1.4);
+      ctx.globalAlpha = (night ? 0.4 : 0.25) + 0.4 * Math.abs(Math.sin(clock * 0.8 + i));
+      ctx.fillRect(x, y, night ? 1.9 : 1.4, night ? 1.9 : 1.4);
     }
     ctx.globalAlpha = 1;
 
     /* the low sun */
     var sx = W * 0.74, sy = hz - H * 0.055;
     var sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, Math.min(W, H) * 0.30);
-    sg.addColorStop(0, 'rgba(255,226,168,0.55)');
-    sg.addColorStop(0.3, 'rgba(255,190,124,0.16)');
-    sg.addColorStop(1, 'rgba(255,180,110,0)');
+    sg.addColorStop(0, night ? 'rgba(206,224,255,0.50)' : 'rgba(255,226,168,0.55)');
+    sg.addColorStop(0.3, night ? 'rgba(150,180,240,0.16)' : 'rgba(255,190,124,0.16)');
+    sg.addColorStop(1, night ? 'rgba(130,160,230,0)' : 'rgba(255,180,110,0)');
     ctx.fillStyle = sg;
     ctx.fillRect(0, 0, W, hz + 10);
-    ctx.fillStyle = 'rgba(255,228,172,0.85)';
+    ctx.fillStyle = night ? 'rgba(238,244,255,0.92)' : 'rgba(255,228,172,0.85)';
     ctx.beginPath(); ctx.arc(sx, sy, Math.min(W, H) * 0.035, 0, 6.283); ctx.fill();
   }
 
@@ -293,7 +337,7 @@
 
     /* far bank: domes, a temple, a low ridge */
     ctx.save();
-    ctx.fillStyle = 'rgba(52,40,40,0.92)';
+    ctx.fillStyle = night ? 'rgba(12,18,42,0.95)' : 'rgba(52,40,40,0.92)';
     ctx.beginPath();
     ctx.moveTo(-60, hz + 6);
     for (var x = -60; x < W + 80; x += 52) {
@@ -309,7 +353,7 @@
       var bx = ((i * 0.16 * W + off * 0.55) % (W + 180)) - 90;
       var bw = 26 + (i % 3) * 12;
       var bh = 20 + (i % 4) * 9;
-      ctx.fillStyle = 'rgba(44,35,36,0.95)';
+      ctx.fillStyle = night ? 'rgba(10,15,36,0.97)' : 'rgba(44,35,36,0.95)';
       ctx.fillRect(bx, hz - bh, bw, bh);
       ctx.beginPath();
       ctx.arc(bx + bw / 2, hz - bh, bw * 0.42, Math.PI, 0);
@@ -323,9 +367,10 @@
 
     /* mist at the join */
     var mg = ctx.createLinearGradient(0, hz - 12, 0, hz + 20);
-    mg.addColorStop(0, 'rgba(255,220,178,0)');
-    mg.addColorStop(0.55, 'rgba(255,220,178,0.20)');
-    mg.addColorStop(1, 'rgba(255,220,178,0)');
+    var mc = night ? '150,176,230' : '255,220,178';
+    mg.addColorStop(0, 'rgba(' + mc + ',0)');
+    mg.addColorStop(0.55, 'rgba(' + mc + ',0.20)');
+    mg.addColorStop(1, 'rgba(' + mc + ',0)');
     ctx.fillStyle = mg;
     ctx.fillRect(0, hz - 12, W, 34);
   }
@@ -333,10 +378,17 @@
   function drawWater() {
     var hz = H * 0.30;
     var g = ctx.createLinearGradient(0, hz, 0, H);
-    g.addColorStop(0, '#d9a273');
-    g.addColorStop(0.18, '#9c9790');
-    g.addColorStop(0.55, '#536c6d');
-    g.addColorStop(1, '#22383d');
+    if (night) {
+      g.addColorStop(0, '#5a76ac');
+      g.addColorStop(0.18, '#2c4380');
+      g.addColorStop(0.55, '#1a2a5c');
+      g.addColorStop(1, '#0d1738');
+    } else {
+      g.addColorStop(0, '#d9a273');
+      g.addColorStop(0.18, '#9c9790');
+      g.addColorStop(0.55, '#536c6d');
+      g.addColorStop(1, '#22383d');
+    }
     ctx.fillStyle = g;
     ctx.fillRect(0, hz, W, H - hz);
 
@@ -347,7 +399,7 @@
       var y = hz + Math.pow(q, 1.6) * (H - hz) * 0.9;
       var ww = Math.min(W, H) * 0.03 * (1.2 - q) * (0.55 + 0.45 * Math.sin(i * 1.7 + clock * 2));
       ctx.globalAlpha = 0.22 * (1 - q * 0.8);
-      ctx.fillStyle = '#ffe6b4';
+      ctx.fillStyle = night ? '#dfe9ff' : '#ffe6b4';
       ctx.beginPath();
       if (ctx.roundRect) { ctx.roundRect(sx - ww / 2, y, ww, 1.8, 1.8); ctx.fill(); }
       else ctx.fillRect(sx - ww / 2, y, ww, 1.8);
@@ -363,7 +415,7 @@
       var len = W * (0.02 + (1 - f) * 0.07) * (0.5 + 0.5 * Math.sin(k * 2.1 + clock * 0.9));
       var xx = ((k * 0.173 + clock * 0.02) % 1.1) * W - len * 0.5;
       ctx.globalAlpha = (1 - f) * 0.16 + 0.02;
-      ctx.strokeStyle = '#ffeacc';
+      ctx.strokeStyle = night ? '#bcd0ff' : '#ffeacc';
       ctx.lineWidth = Math.max(0.7, (1 - f) * 1.8);
       ctx.beginPath();
       ctx.moveTo(xx, yy);
@@ -384,10 +436,10 @@
     ctx.lineTo(W + 4, H + 4);
     ctx.lineTo(topX - W * 0.10, H + 4);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(58,60,56,0.92)';
+    ctx.fillStyle = night ? 'rgba(24,28,52,0.95)' : 'rgba(58,60,56,0.92)';
     ctx.fill();
 
-    ctx.strokeStyle = 'rgba(240,226,200,0.16)';
+    ctx.strokeStyle = night ? 'rgba(170,190,240,0.14)' : 'rgba(240,226,200,0.16)';
     ctx.lineWidth = 1.2;
     for (var i = 1; i <= 7; i++) {
       var f = i / 8;
@@ -630,6 +682,63 @@
     ctx.globalAlpha = 1;
   }
 
+  function drawCurrents() {
+    for (var i = 0; i < currents.length; i++) {
+      var c = currents[i];
+      var top = c.y - c.h / 2;
+      var g = ctx.createLinearGradient(0, top, 0, top + c.h);
+      var col = night ? '170,200,255' : '255,238,208';
+      g.addColorStop(0, 'rgba(' + col + ',0)');
+      g.addColorStop(0.5, 'rgba(' + col + ',0.17)');
+      g.addColorStop(1, 'rgba(' + col + ',0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, top, W, c.h);
+      /* chevrons racing the way the water pushes */
+      ctx.strokeStyle = 'rgba(' + col + ',0.5)';
+      ctx.lineWidth = 1.4;
+      ctx.lineCap = 'round';
+      for (var row = 0; row < 3; row++) {
+        var yy = top + c.h * (0.28 + row * 0.22);
+        for (var k = 0; k < 9; k++) {
+          var xx = (((k * 0.125 + row * 0.04) * W + clock * c.dir * 130) % (W + 40) + (W + 40)) % (W + 40) - 20;
+          ctx.beginPath();
+          ctx.moveTo(xx - c.dir * 7, yy - 5);
+          ctx.lineTo(xx, yy);
+          ctx.lineTo(xx - c.dir * 7, yy + 5);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function drawNightMask() {
+    var u = clamp(Math.min(W, H) / 620, 0.72, 1.45);
+    var bx = boat.x * W, by = H * 0.72 + boat.bob - 30 * u;
+    var flick = 0.95 + 0.05 * Math.sin(clock * 7) + 0.025 * Math.sin(clock * 19);
+    var r = Math.min(W, H) * 0.44 * flick;
+    var g = ctx.createRadialGradient(bx, by, r * 0.1, bx, by, r);
+    g.addColorStop(0, 'rgba(4,8,24,0)');
+    g.addColorStop(0.55, 'rgba(4,8,24,0.46)');
+    g.addColorStop(1, 'rgba(4,8,24,0.76)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function drawLanternGlow() {
+    var u = clamp(Math.min(W, H) / 620, 0.72, 1.45);
+    var bx = boat.x * W, by = H * 0.72 + boat.bob - 34 * u;
+    var flick = 0.92 + 0.08 * Math.sin(clock * 9) + 0.04 * Math.sin(clock * 23);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    var g = ctx.createRadialGradient(bx, by, 0, bx, by, 150 * u * flick);
+    g.addColorStop(0, 'rgba(255,196,120,0.38)');
+    g.addColorStop(0.5, 'rgba(255,150,70,0.10)');
+    g.addColorStop(1, 'rgba(255,140,60,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(bx, by, 150 * u, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+
   function draw() {
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     if (shake > 0) {
@@ -642,11 +751,13 @@
       drawBank();
     }
     drawWater();
+    drawCurrents();
     drawGhat();
     drawLogs();
-    drawDiyas();
+    if (!night) drawDiyas();
     drawFish();
     drawBoat();
+    if (night) { drawNightMask(); drawDiyas(); drawLanternGlow(); }
     drawParticles();
     drawReeds();
 
@@ -707,6 +818,24 @@
     rowBtn.addEventListener('pointerleave', function () { rowHeld = false; });
     rowBtn.addEventListener('pointercancel', function () { rowHeld = false; });
   }
+  function setLevel(isNight) {
+    night = !!isNight;
+    store.set('gzp.naav.level', night ? 'night' : 'dusk');
+    syncLevelUI();
+    if (open) reset();
+  }
+  function syncLevelUI() {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-naav-level]'), function (b) {
+      var on = (b.getAttribute('data-naav-level') === 'night') === night;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.classList.toggle('is-on', on);
+    });
+    root.classList.toggle('is-night', night);
+  }
+  Array.prototype.forEach.call(root.querySelectorAll('[data-naav-level]'), function (b) {
+    b.addEventListener('click', function () { setLevel(b.getAttribute('data-naav-level') === 'night'); });
+  });
+  syncLevelUI();
   if (el.close) el.close.addEventListener('click', close);
   if (el.quit) el.quit.addEventListener('click', close);
   if (el.again) el.again.addEventListener('click', function () { reset(); });
@@ -743,6 +872,7 @@
   }
 
   function refresh() {
+    if (el.tip && !over && clock < 4) el.tip.textContent = L(night ? 'naav.tipNight' : 'naav.tip');
     if (over) {
       if (el.result) el.result.textContent = tpl(L('naav.result'), { m: Math.round(dist), d: score });
       if (el.bestLine) el.bestLine.textContent = tpl(L('naav.bestLine'), { d: best });
