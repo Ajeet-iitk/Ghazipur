@@ -11,7 +11,7 @@
 
   var W = 1600, H = 540;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var host = null, svg = null, cur = 0, auto = true, autoTimer = null, built = false, visible = false;
+  var host = null, svg = null, scroller = null, cur = 0, auto = true, autoTimer = null, built = false, visible = false;
   var CITY_X = 880;
 
   function lang() { return document.documentElement.getAttribute('data-lang') || 'en'; }
@@ -128,7 +128,7 @@
     var data = window.DATA.rivers;
     host.innerHTML =
       '<div class="rs-title"><h3>' + esc(L('river.riversTitle')) + '</h3><p>' + esc(L('rs.hint')) + '</p></div>' +
-      '<svg class="rs-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + esc(L('rs.alt')) + '">' + scene(data) + '</svg>' +
+      '<div class="rs-scroll" id="rsScroll"><svg class="rs-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + esc(L('rs.alt')) + '">' + scene(data) + '</svg></div>' +
       '<div class="rs-bar"><div class="rs-chips" id="rsChips" role="group" aria-label="' + esc(L('river.riversTitle')) + '">' +
       data.map(function (r, i) {
         return '<button type="button" class="rs-chip' + (i === cur ? ' is-on' : '') + '" data-i="' + i + '"><i style="background:' + COLORS[i] + '"></i>' + esc(lang() === 'hi' ? r.hi : r.n) + '</button>';
@@ -136,9 +136,11 @@
       '<p class="rs-now" id="rsNow" aria-live="polite"></p>' +
       '<p class="fine rs-fine">' + esc(L('rs.fine')) + '</p></div>';
     svg = host.querySelector('.rs-svg');
+    scroller = host.querySelector('#rsScroll');
     built = true;
     mark();
     bind();
+    setTimeout(function () { reveal(cur, false); }, 40);
   }
 
   function mark() {
@@ -151,16 +153,29 @@
     if (now) now.innerHTML = '<b>' + esc(lang() === 'hi' ? r.hi : r.n) + '</b> — ' + esc(pick(r.t));
   }
 
+  /* on a phone the panorama is a swipeable strip: glide it to the river you picked */
+  function focusX(i) { return i === 0 ? 800 : RIV[i].ex; }
+  function reveal(i, smooth) {
+    if (!scroller || !svg || scroller.scrollWidth <= scroller.clientWidth + 2) return;
+    var scale = svg.getBoundingClientRect().width / W;
+    var left = focusX(i) * scale - scroller.clientWidth / 2;
+    try { scroller.scrollTo({ left: left, behavior: smooth && !reduced ? 'smooth' : 'auto' }); } catch (e) { scroller.scrollLeft = left; }
+  }
+
   function select(i, user) {
     cur = i;
     if (user) { auto = false; clearInterval(autoTimer); }
     mark();
+    reveal(i, true);
   }
 
   function bind() {
     svg.addEventListener('pointerover', function (e) {
-      var g = e.target.closest('.rs-r'); if (g) select(+g.getAttribute('data-i'), true);
+      if (e.pointerType === 'touch') return;
+      var g = e.target.closest('.rs-r'); if (g && +g.getAttribute('data-i') !== cur) select(+g.getAttribute('data-i'), true);
     });
+    scroller.addEventListener('pointerdown', function () { auto = false; clearInterval(autoTimer); }, { passive: true });
+    window.addEventListener('resize', function () { reveal(cur, false); });
     svg.addEventListener('click', function (e) {
       var g = e.target.closest('.rs-r'); if (g) { select(+g.getAttribute('data-i'), true); if (window.Ambient && window.Ambient.splash) window.Ambient.splash(0.4); }
     });

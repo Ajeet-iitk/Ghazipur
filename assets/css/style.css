@@ -2061,3 +2061,16 @@ html[lang="hi"] .g2-stats i, html[lang="hi"] .g2-seg button, html[lang="hi"] .g2
   .atlas-water{ font-size:26px; }
   html[lang="hi"] .spot-label{ font-size:24px; }
 }
+
+/* ── phones: the river panorama is a swipeable strip; the opium yard fills the screen ── */
+.rs-scroll{ overflow-x:auto; overflow-y:hidden; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; }
+.rs-scroll::-webkit-scrollbar{ display:none; }
+@media (max-width:900px){
+  .rs-svg{ width:auto; max-width:none; height:clamp(330px,88vw,430px); aspect-ratio:1600/540; }
+}
+@media (max-width:700px){
+  .yard{ margin-inline:calc(-1 * var(--pad)); border-radius:0; border-inline:0; }
+  .yard-frame{ overflow:hidden; scroll-snap-type:none; }
+  .yard-frame svg{ width:100%; max-width:100%; }
+}
+@media (max-width:700px){ .rs-title{ display:none; } }

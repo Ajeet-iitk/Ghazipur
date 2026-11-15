@@ -28,6 +28,9 @@
   /* on a phone the yard is a swipeable strip; start near the middle of it */
   if (frame.scrollWidth > frame.clientWidth) frame.scrollLeft = (frame.scrollWidth - frame.clientWidth) * 0.42;
 
+  /* on a phone the whole yard fits the screen, so its people are drawn a little larger */
+  var MOB = frame.clientWidth && frame.clientWidth < 700 ? 1.7 : 1;
+
   var crew = el('g', { id: 'yardCrew' }, svg);
   var back = el('g', {}, crew);      /* crane, machines */
   var people = el('g', {}, crew);    /* workers, sorted by depth */
@@ -39,7 +42,7 @@
   /* ── a worker ─────────────────────────────────────────────── */
   function Worker(o) {
     var w = this;
-    w.x = o.x; w.y = o.y; w.s = (o.s || (0.82 + (o.y - 400) / 34 * 0.3)) * 1.3;
+    w.x = o.x; w.y = o.y; w.s = (o.s || (0.82 + (o.y - 400) / 34 * 0.3)) * 1.3 * MOB;
     w.dir = o.dir || 1; w.mode = o.mode || 'idle'; w.carry = false;
     w.p = Math.random() * 6.28; w.route = o.route || null; w.i = 0; w.wait = Math.random() * 1.2;
     w.speed = o.speed || 34; w.lamp = !!o.lamp; w.lean = 0;
