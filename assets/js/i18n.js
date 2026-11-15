@@ -1,0 +1,891 @@
+/* ══════════════════════════════════════════════════════════════
+   GHAZIPUR — words and facts
+   E  = English · ह = हिन्दी · EH = Hinglish
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ── interface strings ─────────────────────────────────────── */
+  window.I18N = {
+    en: {
+      "nav.river": "The River",
+      "nav.story": "Story",
+      "nav.places": "Places",
+      "nav.poppy": "Poppy",
+      "nav.living": "Living",
+      "nav.atlas": "Atlas",
+      "nav.explore": "Explore",
+
+      "hero.eyebrow": "Uttar Pradesh · India · 25.58°N 83.57°E",
+      "hero.sub": "The City of Martyrs · Lahuri Kashi",
+      "hero.lede": "Where the Ganga slows to listen. A district of river light, Mughal stone, mango shade and poppy fields — 80 km east of Varanasi, on the edge of Bihar.",
+      "hero.cta1": "Begin the walk",
+      "hero.cta2": "Turn on the river",
+      "hero.f1": "Area", "hero.f2": "People", "hero.f3": "Villages", "hero.f4": "On the river",
+      "hero.areaU": "km²", "hero.peopleV": "3.62", "hero.peopleU": "million", "hero.riverU": "m",
+      "hero.scroll": "Scroll, and the day will turn",
+      "hero.foot": "A district, remembered",
+
+      "river.kicker": "Chapter I · The River",
+      "river.title": "A river that refuses to hurry",
+      "river.lede": "Ghazipur grew as a narrow ribbon along the Ganga — five and a half kilometres of masonry ghats, ferries and river light. The water is the town's oldest address.",
+      "river.body1": "The old town ran from Khudaipura in the east to Pirnagar in the west, no more than a kilometre and a half deep. The business quarter sat on the riverfront; the houses turned their backs to it. Beyond the ghats lay orchards, groves and the wide, silty plain.",
+      "river.body2": "Eight rivers cross the district — the Ganga, Gomti, Gaangi, Beson, Magai, Bhainsai, Tons and Karmanasa. Between them the land grows rice, roses and mangoes, and the air in March smells of both river and blossom.",
+      "river.quote": "“At dawn the ghats belong to the river, not to us.”",
+      "river.quoteBy": "a saying on the steps",
+      "river.riversTitle": "The eight rivers",
+      "river.riversNote": "Names as recorded in the district gazetteers and the 2011 census volumes.",
+      "river.ghatsTitle": "Nine steps into the water",
+      "river.ghatsNote": "The ghats of the old riverfront, from Amghat by the opium works westward to Pushta Ghat.",
+      "river.listenKicker": "Field recording · synthesised",
+      "river.listenTitle": "Close your eyes and stand on the steps",
+      "river.listenBody": "Tanpura, bansuri, water and birds — composed live in your browser. Nothing is streamed, nothing is downloaded. Move the sliders and make your own morning.",
+      "river.listenCta": "Make the sound",
+
+      "story.kicker": "Chapter II · The Story",
+      "story.title": "Twenty-three centuries, one riverbank",
+      "story.lede": "Ashrams, an Ashokan pillar, a Tughlaq foundation, Mughal gardens, a colonial tomb and a freedom struggle: the district keeps its centuries in layers, like silt.",
+      "story.note": "Dates follow the District Gazetteer (1909), the 2011 Census and the district administration's own history pages. Legend and record are labelled as such.",
+
+      "places.kicker": "Chapter III · Stone & Garden",
+      "places.title": "What the Nawabs left standing",
+      "places.lede": "In the 1700s Ghazipur had its own Nawabs, and they built: a hall of forty pillars, tombs, tanks, imambaras and a fort at Qasimabad. Some of it still holds the sky.",
+      "places.note": "Open any place to read more. Artwork on this page is hand-drawn for this project, not a photograph.",
+
+      "poppy.kicker": "Chapter IV · The Alchemy",
+      "poppy.title": "The largest legal opium works on earth",
+      "poppy.lede": "Across the river from the old city, behind high walls and barbed wire, a red-brick factory has been turning poppies into medicine — and once into empire — since 1820.",
+      "poppy.body1": "Founded by the East India Company in 1820, the Government Opium and Alkaloid Works covers about 43 acres. It supplies opium and alkaloids to the world's pharmaceutical industry, employs some 900 people, and has been profitable every year since it opened. Since the Second World War it has also produced alkaloids, and it keeps a secure repository for opium seized across India.",
+      "poppy.body2": "Rudyard Kipling walked its yards in 1888 and wrote In an Opium Factory. Amitav Ghosh researched Sea of Poppies here. Inside the walls, a temple to Baba Shyam and a mazar are said to be older than the factory itself.",
+      "poppy.body3": "The factory is a working, high-security government site. It is not open to casual visitors.",
+      "poppy.f1": "founded by the East India Company",
+      "poppy.f2": "acres inside the walls",
+      "poppy.f3": "people at work",
+      "poppy.f4": "tonnes of opium exported to the US in a typical year",
+      "poppy.quote": "“It is without a doubt the largest legitimate opium factory in the world.”",
+      "poppy.quoteBy": "Amitav Ghosh, to the BBC",
+      "poppy.note": "A note, honestly: this is also a history of addiction and coercion. The factory's profit was built on a trade that damaged lives in China and India alike. A portrait of a place should hold both the brickwork and the consequence.",
+
+      "living.kicker": "Chapter IV · The Living",
+      "living.title": "What the town carries in its hands",
+      "living.lede": "Two-thirds of the district speaks Bhojpuri at home. The year turns on the river — Chhath, Kartik lamps, Sawan — and the lanes smell of roses, ghee and frying launglata.",
+      "living.tableTitle": "On the table",
+      "living.tableBody": "The district is known for gulab jal — a rose-scented spray sold across India — and for kala namak rice, mangoes from the Gangetic groves, and the spiral, syrup-heavy launglata sold warm from the kadhai.",
+      "living.phraseTitle": "Say it in Bhojpuri",
+      "living.phraseLede": "Six phrases to carry into the countryside. Tap one to hear your device try.",
+
+      "people.kicker": "Chapter V · The People",
+      "people.title": "The district's long roll-call",
+      "people.lede": "A soldier who held a post with his body, the actor called the father of Bhojpuri cinema, the poet who gave birha its modern voice, a novelist, a peasant leader, a cricket captain.",
+
+      "atlas.kicker": "Chapter VI · The Atlas",
+      "atlas.title": "Seven tehsils, one river",
+      "atlas.lede": "An illustrated, deliberately un-scaled atlas. Hover or tap a name to place it.",
+      "atlas.note": "Illustrative positions, not a survey. Tehsil headquarters only.",
+      "atlas.reachTitle": "Getting there",
+      "atlas.r1k": "By rail", "atlas.r1v": "Ghazipur City · Dildarnagar Junction",
+      "atlas.r2k": "By road", "atlas.r2v": "NH-19 & NH-29 · 80 km from Varanasi",
+      "atlas.r3k": "By air", "atlas.r3v": "Varanasi (Babatpur); Ghazipur airstrip is for emergencies",
+      "atlas.r4k": "Region", "atlas.r4v": "Varanasi Division · PIN 233001",
+
+      "explore.kicker": "The Explorer's Page",
+      "explore.title": "Everything that moves on this site",
+      "explore.lede": "A map of the making: every small invention here, with a switch to try it. No dead ends, no “coming soon”.",
+
+      "credits.title": "How this was made",
+      "credits.p1": "One HTML page, one stylesheet, five small scripts. No framework, no build step, no tracking. The scenery is drawn on a canvas, frame by frame; the music is synthesised with the Web Audio API; every illustration is SVG written by hand.",
+      "credits.p2": "Facts come from the Wikipedia article on Ghazipur, the District Gazetteer of 1909, the 2011 Census, and the district administration at ghazipur.nic.in. This is an independent tribute, not an official site.",
+
+      "footer.line": "Made as a love letter to a district on the Ganga.",
+      "footer.note": "An independent tribute · 2026",
+      "footer.top": "Back to the source",
+
+      "prompt.title": "This place has a soundtrack",
+      "prompt.body": "Tanpura, bansuri and water, made live in your browser.",
+
+      "dock.title": "The river, in sound",
+      "dock.sub": "tap to begin",
+      "dock.mix": "Mix",
+
+      "mixer.title": "Sound mixer",
+      "mixer.master": "Master",
+      "mixer.sfx": "Interface sounds",
+      "mixer.note": "Generated live with the Web Audio API. Works offline; no audio files.",
+
+      "hero.cta3": "Row the Naav",
+
+      "poppy.yardKicker": "The works, after hours",
+      "poppy.yardTitle": "The yard that never quite sleeps",
+      "poppy.yardLede": "Behind the wall: brick, barbed wire, floodlights, a watchtower and its slow white arm. A hand-drawn panorama of the works — with a trolley on the narrow-gauge line and a siren you can sound.",
+      "poppy.yardTrain": "Run the trolley",
+      "poppy.yardTrainStop": "Stop the trolley",
+      "poppy.yardSiren": "Sound the siren",
+      "poppy.yardNote": "An imagined view, drawn for this page. The real works is a guarded government site; the trolley and the siren show how the yard moves, not a visitor's route.",
+      "poppy.yardAlt": "Illustrated opium factory yard with brick walls, chimneys, a watchtower, barbed wire and a railway trolley",
+
+      "naav.kicker": "A small boat, a wide river",
+      "naav.title": "Naav",
+      "naav.dist": "Distance",
+      "naav.diyas": "Diyas",
+      "naav.time": "Time",
+      "naav.best": "Best",
+      "naav.tip": "Row with the button or the space bar. Steer with ← → or A D. Gather the floating diyas.",
+      "naav.row": "Row",
+      "naav.left": "Steer left",
+      "naav.right": "Steer right",
+      "naav.close": "Leave the boat",
+      "naav.ready": "The current is gentle. Press Row.",
+      "naav.overTitle": "The river keeps the score",
+      "naav.result": "You rowed {m} metres and lifted {d} diyas out of the water.",
+      "naav.again": "Row again",
+      "naav.newBest": "A new best.",
+      "naav.quit": "Back to the ghat",
+      "naav.bestLine": "Best: {d} diyas",
+      "naav.sec": "s",
+
+      "search.hint": "Try “ghat”, “opium”, “Birha”, “Chhath”…",
+      "sheet.foot": "Illustration drawn for this project. Details from the District Gazetteer and public records."
+    },
+
+    hi: {
+      "nav.river": "नदी",
+      "nav.story": "इतिहास",
+      "nav.places": "जगहें",
+      "nav.poppy": "अफ़ीम",
+      "nav.living": "जीवन",
+      "nav.atlas": "नक्शा",
+      "nav.explore": "खोजें",
+
+      "hero.eyebrow": "उत्तर प्रदेश · भारत · 25.58°उ 83.57°पू",
+      "hero.sub": "शहीदों का शहर · लाहुरी काशी",
+      "hero.lede": "जहाँ गंगा ठहरकर सुनती है। नदी की रोशनी, मुग़लिया पत्थर, आम की छाँव और खसखस के खेतों का ज़िला — वाराणसी से अस्सी किलोमीटर पूरब, बिहार की सरहद पर।",
+      "hero.cta1": "यात्रा शुरू करें",
+      "hero.cta2": "नदी को सुनें",
+      "hero.f1": "क्षेत्रफल", "hero.f2": "आबादी", "hero.f3": "गाँव", "hero.f4": "समुद्र तल से",
+      "hero.areaU": "वर्ग किमी", "hero.peopleV": "36.2", "hero.peopleU": "लाख", "hero.riverU": "मीटर",
+      "hero.scroll": "स्क्रॉल कीजिए, दिन बदलेगा",
+      "hero.foot": "एक ज़िला, यादों में",
+
+      "river.kicker": "अध्याय एक · नदी",
+      "river.title": "एक नदी, जिसे जल्दी नहीं है",
+      "river.lede": "गाज़ीपुर गंगा के किनारे एक पतली पट्टी की तरह बढ़ा — साढ़े पाँच किलोमीटर पक्के घाट, नावें और नदी की रोशनी। यह पानी शहर का सबसे पुराना पता है।",
+      "river.body1": "पुराना शहर पूरब में खुदैपुरा से पश्चिम में पीरनगर तक फैला था — चौड़ाई में डेढ़ किलोमीटर से ज़्यादा नहीं। कारोबार नदी किनारे था, घर उससे मुँह मोड़े खड़े थे। घाटों के पार बाग़, उपवन और चौड़ा, गाद भरा मैदान।",
+      "river.body2": "ज़िले में आठ नदियाँ बहती हैं — गंगा, गोमती, गाँगी, बेसन, मगई, भैंसई, टोंस और कर्मनाशा। इनके बीच धान, गुलाब और आम उगते हैं, और चैत की हवा में नदी और फूल दोनों की महक होती है।",
+      "river.quote": "“भोर में घाट नदी के होते हैं, हमारे नहीं।”",
+      "river.quoteBy": "सीढ़ियों पर कही एक बात",
+      "river.riversTitle": "आठ नदियाँ",
+      "river.riversNote": "नाम ज़िला गजेटियर और 2011 की जनगणना के अनुसार।",
+      "river.ghatsTitle": "पानी तक नौ सीढ़ियाँ",
+      "river.ghatsNote": "पुराने किनारे के घाट — अफ़ीम कारख़ाने के पास अमघाट से लेकर पुश्ता घाट तक।",
+      "river.listenKicker": "ध्वनि · यंत्र से बनी",
+      "river.listenTitle": "आँख बंद कीजिए और सीढ़ी पर खड़े हो जाइए",
+      "river.listenBody": "तानपुरा, बाँसुरी, पानी और चिड़ियाँ — सब आपके ब्राउज़र में, उसी वक़्त बनते हुए। कुछ डाउनलोड नहीं होता, कुछ स्ट्रीम नहीं होता। स्लाइडर घुमाइए और अपनी सुबह बनाइए।",
+      "river.listenCta": "आवाज़ बनाइए",
+
+      "story.kicker": "अध्याय दो · इतिहास",
+      "story.title": "तेईस सदियाँ, एक ही किनारा",
+      "story.lede": "आश्रम, अशोक का स्तंभ, तुग़लक़ की नींव, मुग़ल बाग़, अंग्रेज़ों का मक़बरा और आज़ादी की लड़ाई — यह ज़िला अपनी सदियाँ गाद की तरह तह-दर-तह रखता है।",
+      "story.note": "तिथियाँ ज़िला गजेटियर (1909), 2011 की जनगणना और ज़िला प्रशासन के इतिहास-पृष्ठों पर आधारित हैं। किंवदंती और अभिलेख अलग-अलग बताए गए हैं।",
+
+      "places.kicker": "अध्याय तीन · पत्थर और बाग़",
+      "places.title": "नवाबों ने जो खड़ा छोड़ा",
+      "places.lede": "अठारहवीं सदी में गाज़ीपुर के अपने नवाब थे, और उन्होंने बनवाया — चालीस खंभों का महल, मक़बरे, हौज़, इमामबाड़े और कासिमाबाद का क़िला। कुछ आज भी आसमान थामे है।",
+      "places.note": "किसी भी जगह को खोलकर पढ़िए। इस पन्ने के चित्र इस परियोजना के लिए हाथ से बनाए गए हैं, तस्वीरें नहीं।",
+
+      "poppy.kicker": "अध्याय चार · रसायन",
+      "poppy.title": "दुनिया का सबसे बड़ा वैध अफ़ीम कारख़ाना",
+      "poppy.lede": "पुराने शहर के सामने, ऊँची दीवारों और काँटों के पीछे, एक लाल-ईंट का कारख़ाना 1820 से खसखस को दवा बनाता आया है — और एक ज़माने में साम्राज्य भी।",
+      "poppy.body1": "ईस्ट इंडिया कंपनी ने 1820 में इसकी नींव रखी। सरकारी अफ़ीम और क्षारीय औषधि कारख़ाना क़रीब 43 एकड़ में फैला है। यह दुनिया की दवा कंपनियों को अफ़ीम और क्षार देता है, क़रीब 900 लोगों को रोज़ी देता है, और खुलने के बाद से हर साल मुनाफ़े में रहा है। दूसरे विश्वयुद्ध से यहाँ क्षार भी बनते हैं, और देश भर में ज़ब्त किया गया अफ़ीम यहीं सुरक्षित रखा जाता है।",
+      "poppy.body2": "1888 में रुडयार्ड किपलिंग इन आँगनों में घूमे और उन्होंने ‘इन ऐन ओपियम फ़ैक्टरी’ लिखा। अमिताव घोष ने यहीं शोध करके ‘सी ऑफ़ पॉपीज़’ लिखी। दीवारों के भीतर बाबा श्याम का मंदिर और एक मज़ार हैं, जो कारख़ाने से भी पुराने कहे जाते हैं।",
+      "poppy.body3": "यह चालू, अत्यधिक सुरक्षित सरकारी प्रतिष्ठान है। इसमें आम दर्शकों को जाने की अनुमति नहीं है।",
+      "poppy.f1": "ईस्ट इंडिया कंपनी द्वारा स्थापित",
+      "poppy.f2": "एकड़ में फैला परिसर",
+      "poppy.f3": "कर्मचारी",
+      "poppy.f4": "टन अफ़ीम हर साल औसतन अमेरिका भेजी जाती है",
+      "poppy.quote": "“इसमें कोई शक नहीं कि यह दुनिया का सबसे बड़ा वैध अफ़ीम कारख़ाना है।”",
+      "poppy.quoteBy": "अमिताव घोष, बीबीसी से",
+      "poppy.note": "एक सच भी: यह लत और ज़बरदस्ती की भी कहानी है। कारख़ाने का मुनाफ़ा उस व्यापार पर टिका था जिसने चीन और भारत, दोनों में ज़िंदगियाँ तोड़ीं। किसी जगह का चित्र ईंटें भी दिखाए और अंजाम भी।",
+
+      "living.kicker": "अध्याय चार · जीवन",
+      "living.title": "शहर अपने हाथों में क्या लिए चलता है",
+      "living.lede": "ज़िले के दो-तिहाई लोग घर में भोजपुरी बोलते हैं। साल नदी के साथ बदलता है — छठ, कार्तिक के दीये, सावन — और गलियों में गुलाब, घी और तली लौंगलता की महक है।",
+      "living.tableTitle": "थाली पर",
+      "living.tableBody": "ज़िला गुलाब जल के लिए जाना जाता है — भारत भर में बिकने वाला गुलाब की महक वाला छिड़काव — और काला नमक चावल, गंगा-किनारे के बाग़ों के आम, और कढ़ाई से गरम निकलती घुमावदार, रसीली लौंगलता के लिए।",
+      "living.phraseTitle": "भोजपुरी में कहिए",
+      "living.phraseLede": "गाँव-देहात के लिए छह वाक्य। किसी पर टैप कीजिए और अपने फ़ोन से सुनिए।",
+
+      "people.kicker": "अध्याय पाँच · लोग",
+      "people.title": "ज़िले की लंबी हाज़िरी",
+      "people.lede": "वह सिपाही जिसने अपने शरीर से मोर्चा थामा, भोजपुरी सिनेमा का जनक कहा जाने वाला अभिनेता, बिरहा को आधुनिक आवाज़ देने वाला कवि, एक उपन्यासकार, एक किसान नेता, एक क्रिकेट कप्तान।",
+
+      "atlas.kicker": "अध्याय छह · नक्शा",
+      "atlas.title": "सात तहसीलें, एक नदी",
+      "atlas.lede": "एक चित्रित, जानबूझकर बिना पैमाने वाला नक्शा। नाम पर माउस लाइए या टैप कीजिए।",
+      "atlas.note": "स्थितियाँ चित्रण के लिए हैं, सर्वेक्षण नहीं। केवल तहसील मुख्यालय।",
+      "atlas.reachTitle": "कैसे पहुँचें",
+      "atlas.r1k": "रेल से", "atlas.r1v": "गाज़ीपुर सिटी · डिल्डारनगर जंक्शन",
+      "atlas.r2k": "सड़क से", "atlas.r2v": "एनएच-19 और एनएच-29 · वाराणसी से 80 किमी",
+      "atlas.r3k": "हवाई मार्ग", "atlas.r3v": "वाराणसी (बबतपुर); गाज़ीपुर हवाई पट्टी आपातकाल के लिए",
+      "atlas.r4k": "मंडल", "atlas.r4v": "वाराणसी मंडल · पिन 233001",
+
+      "explore.kicker": "खोज का पन्ना",
+      "explore.title": "इस साइट पर जो-जो चलता है",
+      "explore.lede": "बनाने का नक्शा: यहाँ की हर छोटी खोज, और आज़माने के लिए एक बटन। कोई बंद रास्ता नहीं, कोई ‘जल्द आ रहा है’ नहीं।",
+
+      "credits.title": "यह कैसे बना",
+      "credits.p1": "एक एचटीएमएल पन्ना, एक स्टाइलशीट, पाँच छोटी स्क्रिप्ट। कोई फ़्रेमवर्क नहीं, कोई बिल्ड नहीं, कोई ट्रैकिंग नहीं। दृश्य कैनवास पर एक-एक फ़्रेम बनता है; संगीत वेब ऑडियो एपीआई से बनता है; हर चित्र हाथ से लिखा एसवीजी है।",
+      "credits.p2": "तथ्य गाज़ीपुर के विकिपीडिया पन्ने, 1909 के ज़िला गजेटियर, 2011 की जनगणना और ghazipur.nic.in से लिए गए हैं। यह एक स्वतंत्र श्रद्धांजलि है, सरकारी साइट नहीं।",
+
+      "footer.line": "गंगा किनारे बसे एक ज़िले के नाम, एक प्रेम-पत्र।",
+      "footer.note": "एक स्वतंत्र श्रद्धांजलि · 2026",
+      "footer.top": "शुरुआत पर लौटें",
+
+      "prompt.title": "इस जगह की अपनी आवाज़ है",
+      "prompt.body": "तानपुरा, बाँसुरी और पानी — आपके ब्राउज़र में बनते हुए।",
+
+      "dock.title": "नदी, आवाज़ में",
+      "dock.sub": "शुरू करने के लिए टैप कीजिए",
+      "dock.mix": "मिक्स",
+
+      "mixer.title": "ध्वनि मिक्सर",
+      "mixer.master": "मुख्य",
+      "mixer.sfx": "इंटरफ़ेस की आवाज़ें",
+      "mixer.note": "वेब ऑडियो एपीआई से सीधे बनता है। बिना इंटरनेट चलता है; कोई ऑडियो फ़ाइल नहीं।",
+
+      "hero.cta3": "नाव चलाइए",
+
+      "poppy.yardKicker": "कारख़ाना, रात के बाद",
+      "poppy.yardTitle": "वह अहाता जो कभी पूरा नहीं सोता",
+      "poppy.yardLede": "दीवार के पीछे: ईंट, काँटेदार तार, फ़्लडलाइट, एक पहरा-मीनार और उसका धीमा सफ़ेद हाथ। कारख़ाने का हाथ से बना विहंगम — पटरी पर एक ट्रॉली, और एक सायरन जिसे आप बजा सकते हैं।",
+      "poppy.yardTrain": "ट्रॉली चलाइए",
+      "poppy.yardTrainStop": "ट्रॉली रोकिए",
+      "poppy.yardSiren": "सायरन बजाइए",
+      "poppy.yardNote": "यह एक कल्पित दृश्य है, इस पन्ने के लिए बनाया गया। असली कारख़ाना सुरक्षित सरकारी परिसर है; ट्रॉली और सायरन यह दिखाते हैं कि अहाता कैसे चलता है, किसी सैलानी का रास्ता नहीं।",
+      "poppy.yardAlt": "ईंट की दीवार, चिमनियों, पहरा-मीनार, काँटेदार तार और रेल ट्रॉली वाला अफ़ीम कारख़ाने का चित्र",
+
+      "naav.kicker": "छोटी नाव, बड़ी नदी",
+      "naav.title": "नाव",
+      "naav.dist": "दूरी",
+      "naav.diyas": "दीये",
+      "naav.time": "समय",
+      "naav.best": "सर्वश्रेष्ठ",
+      "naav.tip": "बटन या स्पेस से डाँड़ चलाइए। ← → या A D से मोड़िए। बहते दीये उठाइए।",
+      "naav.row": "डाँड़",
+      "naav.left": "बाएँ मोड़िए",
+      "naav.right": "दाएँ मोड़िए",
+      "naav.close": "नाव से उतरिए",
+      "naav.ready": "धारा धीमी है। डाँड़ दबाइए।",
+      "naav.overTitle": "नदी हिसाब रखती है",
+      "naav.result": "आपने {m} मीटर नाव चलाई और पानी से {d} दीये उठाए।",
+      "naav.again": "फिर चलाइए",
+      "naav.newBest": "नया सर्वश्रेष्ठ।",
+      "naav.quit": "घाट पर लौटिए",
+      "naav.bestLine": "सर्वश्रेष्ठ: {d} दीये",
+      "naav.sec": "से",
+
+      "search.hint": "“घाट”, “अफ़ीम”, “बिरहा”, “छठ” आज़माइए…",
+      "sheet.foot": "चित्र इस परियोजना के लिए बनाया गया। विवरण ज़िला गजेटियर और सार्वजनिक अभिलेखों से।"
+    },
+
+    eh: {
+      "nav.river": "Nadi",
+      "nav.story": "Itihaas",
+      "nav.places": "Jagahein",
+      "nav.poppy": "Afeem",
+      "nav.living": "Zindagi",
+      "nav.atlas": "Naksha",
+      "nav.explore": "Explore",
+
+      "hero.eyebrow": "Uttar Pradesh · India · 25.58°N 83.57°E",
+      "hero.sub": "Shaheedon ka Sheher · Lahuri Kashi",
+      "hero.lede": "Jahan Ganga ruk kar sunti hai. Nadi ki roshni, Mughal patthar, aam ki chhaanv aur khaskhas ke kheton ka zila — Varanasi se 80 km purab, Bihar ki sarhad par.",
+      "hero.cta1": "Chaliye, shuru karein",
+      "hero.cta2": "Nadi ko suniye",
+      "hero.f1": "Area", "hero.f2": "Log", "hero.f3": "Gaon", "hero.f4": "Samundar se",
+      "hero.areaU": "sq km", "hero.peopleV": "3.62", "hero.peopleU": "million", "hero.riverU": "m",
+      "hero.scroll": "Scroll kijiye, din badlega",
+      "hero.foot": "Ek zila, yaadon mein",
+
+      "river.kicker": "Chapter I · Nadi",
+      "river.title": "Ek nadi jise jaldi nahi hai",
+      "river.lede": "Ghazipur Ganga ke kinare ek patli patti jaisa bada — saadhe paanch kilometre pakke ghat, naavein aur nadi ki roshni. Yeh paani sheher ka sabse purana address hai.",
+      "river.body1": "Purana sheher purab mein Khudaipura se paschim mein Pirnagar tak tha — chaudai mein dedh kilometre se zyada nahi. Karobar nadi kinare, aur ghar usse moonh mode khade the. Ghaton ke paar baagh, upvan aur chauda, gaad bhara maidan.",
+      "river.body2": "Zile mein aath nadiyan behti hain — Ganga, Gomti, Gaangi, Beson, Magai, Bhainsai, Tons aur Karmanasa. Inke beech dhaan, gulab aur aam ugte hain, aur Chait ki hawa mein nadi aur phool dono ki mehak hoti hai.",
+      "river.quote": "“Bhor mein ghat nadi ke hote hain, hamare nahi.”",
+      "river.quoteBy": "seedhiyon par kahi ek baat",
+      "river.riversTitle": "Aath nadiyan",
+      "river.riversNote": "Naam zila gazetteer aur 2011 ki janganna ke mutabik.",
+      "river.ghatsTitle": "Paani tak nau seedhiyan",
+      "river.ghatsNote": "Purane kinare ke ghat — afeem karkhane ke paas Amghat se Pushta Ghat tak.",
+      "river.listenKicker": "Awaaz · machine se bani",
+      "river.listenTitle": "Aankh band kijiye aur seedhi par khade ho jaiye",
+      "river.listenBody": "Tanpura, bansuri, paani aur chidiyan — sab aapke browser mein, usi waqt bante hue. Kuch download nahi hota, kuch stream nahi hota. Slider ghumaiye aur apni subah banaiye.",
+      "river.listenCta": "Awaaz banaiye",
+
+      "story.kicker": "Chapter II · Itihaas",
+      "story.title": "Teis sadiyan, ek hi kinara",
+      "story.lede": "Ashram, Ashok ka stambh, Tughlaq ki neev, Mughal baagh, angrezon ka maqbara aur azaadi ki ladai — yeh zila apni sadiyan gaad ki tarah tah-dar-tah rakhta hai.",
+      "story.note": "Tarihein Zila Gazetteer (1909), 2011 ki janganna aur zila pradesh ke itihaas-panne se hain. Kahani aur abhilekh alag-alag bataye gaye hain.",
+
+      "places.kicker": "Chapter III · Patthar aur Baagh",
+      "places.title": "Nawabon ne jo khada chhoda",
+      "places.lede": "1700s mein Ghazipur ke apne Nawab the, aur unhone banwaya — chalees khambhon ka mahal, maqbare, hauz, imambade aur Kasimabad ka qila. Kuch aaj bhi aasman thaame hai.",
+      "places.note": "Kisi bhi jagah ko kholkar padhiye. Is page ke chitra is project ke liye haath se banaye gaye hain, tasveerein nahi.",
+
+      "poppy.kicker": "Chapter IV · Rasayan",
+      "poppy.title": "Duniya ka sabse bada legal afeem karkhana",
+      "poppy.lede": "Purane sheher ke saamne, oonchi deewaron aur kaanton ke peeche, ek laal-eent ka karkhana 1820 se khaskhas ko dawa banata aaya hai — aur ek zamane mein saltanat bhi.",
+      "poppy.body1": "East India Company ne 1820 mein iski neev rakhi. Government Opium and Alkaloid Works qareeb 43 acre mein phaila hai. Yeh duniya ki dawa companies ko afeem aur alkaloid deta hai, qareeb 900 logon ko rozgar deta hai, aur khulne ke baad se har saal munafe mein raha hai. Doosre World War se yahan alkaloid bhi bante hain, aur desh bhar mein zabt kiya gaya afeem yahin surakshit rakha jata hai.",
+      "poppy.body2": "1888 mein Rudyard Kipling in aanganon mein ghume aur unhone ‘In an Opium Factory’ likha. Amitav Ghosh ne yahin research karke ‘Sea of Poppies’ likhi. Deewaron ke andar Baba Shyam ka mandir aur ek mazar hai, jo karkhane se bhi purane kahe jate hain.",
+      "poppy.body3": "Yeh chalu, bahut surakshit sarkari pratishthan hai. Aam logon ko yahan aane ki ijazat nahi.",
+      "poppy.f1": "East India Company ne shuru kiya",
+      "poppy.f2": "acre mein phaila campus",
+      "poppy.f3": "log kaam karte hain",
+      "poppy.f4": "ton afeem har saal America jata hai",
+      "poppy.quote": "“Isme koi shak nahi ki yeh duniya ka sabse bada legal afeem karkhana hai.”",
+      "poppy.quoteBy": "Amitav Ghosh, BBC se",
+      "poppy.note": "Ek sach bhi: yeh nasha aur zyadti ki bhi kahani hai. Karkhane ka munafa us tijarat par tika tha jisne China aur India, dono mein zindagiyan todi. Kisi jagah ki tasveer eentein bhi dikhaye aur anjaam bhi.",
+
+      "living.kicker": "Chapter IV · Zindagi",
+      "living.title": "Sheher apne haathon mein kya liye chalta hai",
+      "living.lede": "Zile ke do-tihai log ghar mein Bhojpuri bolte hain. Saal nadi ke saath badalta hai — Chhath, Kartik ke diye, Sawan — aur galiyon mein gulab, ghee aur teli launglata ki mehak hai.",
+      "living.tableTitle": "Thali par",
+      "living.tableBody": "Zila gulab jal ke liye jaana jata hai — poore India mein bikne wala gulab ki mehak wala spray — aur kala namak chawal, Ganga-kinare ke baaghon ke aam, aur kadhai se garam nikalti ghumaavdar, raseeli launglata ke liye.",
+      "living.phraseTitle": "Bhojpuri mein kahiye",
+      "living.phraseLede": "Gaon-dehat ke liye chhah vaakya. Kisi par tap kijiye aur apne phone se suniye.",
+
+      "people.kicker": "Chapter V · Log",
+      "people.title": "Zile ki lambi haziri",
+      "people.lede": "Woh sipahi jisne apne sharir se morcha thaama, Bhojpuri cinema ka janak kaha jane wala actor, birha ko aadhunik awaaz dene wala kavi, ek upanyaskar, ek kisan neta, ek cricket captain.",
+
+      "atlas.kicker": "Chapter VI · Naksha",
+      "atlas.title": "Saat tehsilein, ek nadi",
+      "atlas.lede": "Ek chitrit, jaanbujhkar bina paimane wala naksha. Naam par mouse laiye ya tap kijiye.",
+      "atlas.note": "Sthitiyan chitran ke liye hain, survey nahi. Sirf tehsil headquarters.",
+      "atlas.reachTitle": "Kaise pahunchein",
+      "atlas.r1k": "Rail se", "atlas.r1v": "Ghazipur City · Dildarnagar Junction",
+      "atlas.r2k": "Sadak se", "atlas.r2v": "NH-19 aur NH-29 · Varanasi se 80 km",
+      "atlas.r3k": "Hawai marg", "atlas.r3v": "Varanasi (Babatpur); Ghazipur airstrip emergency ke liye",
+      "atlas.r4k": "Mandal", "atlas.r4v": "Varanasi Division · PIN 233001",
+
+      "explore.kicker": "Explorer ka Page",
+      "explore.title": "Is site par jo-jo chalta hai",
+      "explore.lede": "Banane ka naksha: yahan ki har chhoti khoj, aur try karne ke liye ek button. Koi band raasta nahi, koi ‘coming soon’ nahi.",
+
+      "credits.title": "Yeh kaise bana",
+      "credits.p1": "Ek HTML page, ek stylesheet, paanch chhoti scripts. Koi framework nahi, koi build nahi, koi tracking nahi. Drishya canvas par ek-ek frame banta hai; sangeet Web Audio API se banta hai; har illustration haath se likha SVG hai.",
+      "credits.p2": "Facts Ghazipur ke Wikipedia page, 1909 ke District Gazetteer, 2011 Census aur ghazipur.nic.in se hain. Yeh ek independent tribute hai, official site nahi.",
+
+      "footer.line": "Ganga kinare base ek zile ke naam, ek love letter.",
+      "footer.note": "Ek independent tribute · 2026",
+      "footer.top": "Shuruaat par lautain",
+
+      "prompt.title": "Is jagah ki apni awaaz hai",
+      "prompt.body": "Tanpura, bansuri aur paani — aapke browser mein bante hue.",
+
+      "dock.title": "Nadi, awaaz mein",
+      "dock.sub": "shuru karne ke liye tap kijiye",
+      "dock.mix": "Mix",
+
+      "mixer.title": "Sound mixer",
+      "mixer.master": "Master",
+      "mixer.sfx": "Interface sounds",
+      "mixer.note": "Web Audio API se seedha banta hai. Bina internet chalta hai; koi audio file nahi.",
+
+      "hero.cta3": "Naav chalaiye",
+
+      "poppy.yardKicker": "Karkhana, raat ke baad",
+      "poppy.yardTitle": "Woh ahata jo kabhi pura nahi sota",
+      "poppy.yardLede": "Deewar ke peeche: eent, kaantedar taar, floodlight, ek pehra-minar aur uska dheema safed haath. Karkhane ka haath se bana panorama — patri par ek trolley, aur ek siren jo aap baja sakte hain.",
+      "poppy.yardTrain": "Trolley chalaiye",
+      "poppy.yardTrainStop": "Trolley rokiye",
+      "poppy.yardSiren": "Siren bajaiye",
+      "poppy.yardNote": "Yeh ek kalpit drishya hai, is page ke liye banaya gaya. Asli karkhana ek guarded government site hai; trolley aur siren dikhate hain ki ahata kaise chalta hai, kisi visitor ka raasta nahi.",
+      "poppy.yardAlt": "Eent ki deewar, chimni, pehra-minar, kaantedar taar aur rail trolley wala afeem karkhane ka chitra",
+
+      "naav.kicker": "Chhoti naav, badi nadi",
+      "naav.title": "Naav",
+      "naav.dist": "Doori",
+      "naav.diyas": "Diye",
+      "naav.time": "Samay",
+      "naav.best": "Best",
+      "naav.tip": "Button ya space se daand chalaiye. ← → ya A D se modiye. Behte diye uthaiye.",
+      "naav.row": "Daand",
+      "naav.left": "Baayein modiye",
+      "naav.right": "Daayein modiye",
+      "naav.close": "Naav se utriye",
+      "naav.ready": "Dhaara dheemi hai. Daand dabaiye.",
+      "naav.overTitle": "Nadi hisaab rakhti hai",
+      "naav.result": "Aapne {m} metre naav chalayi aur paani se {d} diye uthaye.",
+      "naav.again": "Phir chalaiye",
+      "naav.newBest": "Naya best.",
+      "naav.quit": "Ghat par lautiy",
+      "naav.bestLine": "Best: {d} diye",
+      "naav.sec": "s",
+
+      "search.hint": "“ghat”, “afeem”, “birha”, “Chhath” try kijiye…",
+      "sheet.foot": "Illustration is project ke liye banaya gaya. Details District Gazetteer aur public records se."
+    }
+  };
+
+  /* ── content model ─────────────────────────────────────────── */
+  window.DATA = {
+    rivers: [
+      { n: "Ganga", hi: "गंगा", t: { en: "the spine of the district: ghats, ferries, Chhath", hi: "ज़िले की रीढ़: घाट, नावें, छठ", eh: "zile ki reedh: ghat, naavein, Chhath" } },
+      { n: "Gomti", hi: "गोमती", t: { en: "joins the Ganga near Kaithi, in this district", hi: "इसी ज़िले में कैथी के पास गंगा में मिलती है", eh: "isi zile mein Kaithi ke paas Ganga mein milti hai" } },
+      { n: "Gaangi", hi: "गाँगी", t: { en: "a smaller channel of the eastern plain", hi: "पूरबी मैदान की छोटी धारा", eh: "purbi maidan ki chhoti dhaara" } },
+      { n: "Beson", hi: "बेसन", t: { en: "the stream by the city's founding battlefield", hi: "जिसके किनारे शहर की नींव की लड़ाई लड़ी गई", eh: "jiske kinare sheher ki neev ki ladai ladi gayi" } },
+      { n: "Magai", hi: "मगई", t: { en: "a minor river of the district", hi: "ज़िले की छोटी नदी", eh: "zile ki chhoti nadi" } },
+      { n: "Bhainsai", hi: "भैंसई", t: { en: "a minor river of the district", hi: "ज़िले की छोटी नदी", eh: "zile ki chhoti nadi" } },
+      { n: "Tons", hi: "टोंस", t: { en: "the Tamsa of the older texts", hi: "पुराने ग्रंथों की तमसा", eh: "purane granthon ki Tamsa" } },
+      { n: "Karmanasa", hi: "कर्मनाशा", t: { en: "old lore calls it the destroyer of merit", hi: "पुरानी कथा इसे पुण्य-नाशिनी कहती है", eh: "purani katha isse punya-naashini kehti hai" } }
+    ],
+
+    ghats: [
+      { n: "Amghat", t: { en: "west · by the opium works", hi: "पश्चिम · अफ़ीम कारख़ाने के पास", eh: "paschim · afeem karkhane ke paas" } },
+      { n: "Collector Ghat", t: { en: "the collector's steps", hi: "कलेक्टर की सीढ़ियाँ", eh: "collector ki seedhiyan" } },
+      { n: "Pakka Ghat", t: { en: "the pucca landing", hi: "पक्का उतराई घाट", eh: "pakka utrai ghat" } },
+      { n: "Mahaul Ghat", t: { en: "old riverfront", hi: "पुराना किनारा", eh: "purana kinara" } },
+      { n: "Gola Ghat", t: { en: "old riverfront", hi: "पुराना किनारा", eh: "purana kinara" } },
+      { n: "ChitNath Ghat", t: { en: "the oldest ghat", hi: "सबसे पुराना घाट", eh: "sabse purana ghat" } },
+      { n: "Natkha Ghat", t: { en: "old riverfront", hi: "पुराना किनारा", eh: "purana kinara" } },
+      { n: "Khirki Ghat", t: { en: "old riverfront", hi: "पुराना किनारा", eh: "purana kinara" } },
+      { n: "Pushta Ghat", t: { en: "ferry to Tari Ghat", hi: "ताड़ी घाट की नाव", eh: "Tari Ghat ki naav" } }
+    ],
+
+    timeline: [
+      {
+        y: "c. 350–400 BCE",
+        t: { en: "Forest ashrams", hi: "जंगल के आश्रम", eh: "Jangal ke ashram" },
+        d: {
+          en: "Local tradition places the ashrams of Jamadagni, Gautama Maharishi and Chyavana in these forests. Buddha gave his first sermon at Sarnath, not far downstream.",
+          hi: "स्थानीय परंपरा जमदग्नि, गौतम महर्षि और च्यवन के आश्रम इन्हीं जंगलों में मानती है। बुद्ध ने पहला उपदेश सारनाथ में दिया, जो यहाँ से दूर नहीं है।",
+          eh: "Local parampara Jamadagni, Gautam Maharishi aur Chyavan ke ashram inhi jungle mein maanti hai. Buddha ne pehla updesh Sarnath mein diya, jo yahan se door nahi."
+        }
+      },
+      {
+        y: "3rd c. BCE",
+        t: { en: "The Lathiya pillar", hi: "लटिया का स्तंभ", eh: "Lathiya ka stambh" },
+        d: {
+          en: "A thirty-foot Ashokan pillar stands at Latiya, about 30 km from the city near Zamania — a Mauryan monolith protected today by the Archaeological Survey of India.",
+          hi: "ज़मानिया के पास, शहर से क़रीब तीस किलोमीटर दूर लटिया में तीस फ़ुट ऊँचा अशोक-स्तंभ खड़ा है — मौर्यकाल का अखंड पत्थर, आज भारतीय पुरातत्व सर्वेक्षण के संरक्षण में।",
+          eh: "Zamania ke paas, sheher se qareeb 30 km door Latiya mein 30 foot ooncha Ashok-stambh khada hai — Maurya kaal ka akhand patthar, aaj ASI ke sanrakshan mein."
+        }
+      },
+      {
+        y: "630–644 CE",
+        t: { en: "A pilgrim writes it down", hi: "एक यात्री लिखता है", eh: "Ek yatri likhta hai" },
+        d: {
+          en: "The Chinese pilgrim Xuanzang passes through and records the region as Chen-Chu, the “kingdom of the lord of battles”.",
+          hi: "चीनी यात्री ह्वेनसांग यहाँ से गुज़रता है और इस क्षेत्र को चेन-चू कहकर लिखता है — ‘युद्धों के स्वामी का राज्य’।",
+          eh: "Chinese yatri Xuanzang yahan se guzarta hai aur is ilaqe ko Chen-Chu likhta hai — ‘yudhon ke swami ka rajya’."
+        }
+      },
+      {
+        y: "1330",
+        t: { en: "A city is founded", hi: "एक शहर बसता है", eh: "Ek sheher banta hai" },
+        d: {
+          en: "Sayyid Masud and his forty ghazis take Raja Mandhata's fort at Kathot. A new city rises on the battlefield and is named Ghazipur, after Ghazi Malik.",
+          hi: "सैयद मसूद और उनके चालीस ग़ाज़ी कठोत में राजा मांधाता का क़िला लेते हैं। युद्धभूमि पर नया शहर बसता है, और ग़ाज़ी मलिक के नाम पर ग़ाज़ीपुर कहलाता है।",
+          eh: "Sayyid Masud aur unke chalees ghazi Kathot mein Raja Mandhata ka qila lete hain. Yuddhabhoomi par naya sheher banta hai, aur Ghazi Malik ke naam par Ghazipur kehlata hai."
+        }
+      },
+      {
+        y: "1494",
+        t: { en: "First in the record", hi: "पहली बार अभिलेख में", eh: "Pehli baar record mein" },
+        d: {
+          en: "Sikandar Lodi appoints Nasir Khan Lohani governor. Under him the town flourishes: a new fort, new muhallas, new settlers.",
+          hi: "सिकंदर लोदी नासिर ख़ान लोहानी को हाकिम बनाते हैं। उनके समय शहर फलता-फूलता है: नया क़िला, नई मोहल्ले, नए बसने वाले।",
+          eh: "Sikandar Lodi Nasir Khan Lohani ko hakim banate hain. Unke waqt sheher phalta-phoolta hai: naya qila, nayi mohalle, naye basne wale."
+        }
+      },
+      {
+        y: "1567",
+        t: { en: "Akbar's sarkar", hi: "अकबर की सरकार", eh: "Akbar ki sarkar" },
+        d: {
+          en: "After Khan Zaman's revolt, Munim Khan takes charge. The Ain-i-Akbari lists Ghazipur as a sarkar of the Allahabad subah.",
+          hi: "ख़ान ज़मान के विद्रोह के बाद मुनीम ख़ान को कमान मिलती है। आइन-ए-अकबरी में ग़ाज़ीपुर इलाहाबाद सूबे की एक सरकार के रूप में दर्ज है।",
+          eh: "Khan Zaman ke vidroh ke baad Munim Khan ko command milti hai. Ain-i-Akbari mein Ghazipur Allahabad subah ki ek sarkar ke roop mein darj hai."
+        }
+      },
+      {
+        y: "1727–1761",
+        t: { en: "The Nawabs build", hi: "नवाब बनवाते हैं", eh: "Nawab banwate hain" },
+        d: {
+          en: "The sarkar is leased to the Nawabs of Awadh. Sheikh Abdullah and his son Fazl Ali Khan raise Chihal Satun, mosques, an imambara, tanks and gardens.",
+          hi: "सरकार अवध के नवाबों को पट्टे पर मिलती है। शेख़ अब्दुल्ला और उनके बेटे फ़ज़्ल अली ख़ान चिहल सतून, मस्जिदें, इमामबाड़ा, हौज़ और बाग़ बनवाते हैं।",
+          eh: "Sarkar Awadh ke Nawabon ko patte par milti hai. Sheikh Abdullah aur unke bete Fazl Ali Khan Chihal Satun, masjidein, imambada, hauz aur baagh banwate hain."
+        }
+      },
+      {
+        y: "1805",
+        t: { en: "Cornwallis dies here", hi: "कॉर्नवॉलिस यहीं चल बसे", eh: "Cornwallis yahin chal base" },
+        d: {
+          en: "The Governor-General — twice master of British India — dies at Ghazipur. His domed tomb on twelve Doric columns still overlooks the river.",
+          hi: "गवर्नर-जनरल — दो बार ब्रिटिश भारत के शासक — ग़ाज़ीपुर में चल बसते हैं। बारह डोरिक खंभों पर टिका उनका गुंबद आज भी नदी को देखता है।",
+          eh: "Governor-General — do baar British India ke ruler — Ghazipur mein chal base. Barah Doric khambhon par tika unka gumbad aaj bhi nadi ko dekhta hai."
+        }
+      },
+      {
+        y: "1818–1820",
+        t: { en: "District and factory", hi: "ज़िला और कारख़ाना", eh: "Zila aur karkhana" },
+        d: {
+          en: "The British constitute Ghazipur district. Two years later the East India Company opens its opium factory, which has run ever since.",
+          hi: "अंग्रेज़ ग़ाज़ीपुर ज़िला बनाते हैं। दो साल बाद ईस्ट इंडिया कंपनी अपना अफ़ीम कारख़ाना खोलती है, जो आज तक चल रहा है।",
+          eh: "Angrez Ghazipur zila banate hain. Do saal baad East India Company apna afeem karkhana kholti hai, jo aaj tak chal raha hai."
+        }
+      },
+      {
+        y: "1858",
+        t: { en: "The year of martyrs", hi: "शहीदों का साल", eh: "Shaheedon ka saal" },
+        d: {
+          en: "On 6 June, Sikarwar Bhumihars under Meghar Singh of Gahmar and Kamsar Pathans under Khuda Bakhsh Khan of Dewaitha rise against the Company. The district remembers.",
+          hi: "छह जून को गहमर के मेघर सिंह के नेतृत्व में सिकरवार भूमिहार और देवैथा के ख़ुदा बख़्श ख़ान के नेतृत्व में कमसार पठान कंपनी के विरुद्ध उठ खड़े होते हैं। ज़िला याद रखता है।",
+          eh: "6 June ko Gahmar ke Meghar Singh ke netritva mein Sikarwar Bhumihar aur Dewaitha ke Khuda Bakhsh Khan ke netritva mein Kamsar Pathan Company ke viruddh uth khade hote hain. Zila yaad rakhta hai."
+        }
+      },
+      {
+        y: "1862",
+        t: { en: "Science, first", hi: "विज्ञान, सबसे पहले", eh: "Vigyan, sabse pehle" },
+        d: {
+          en: "Sir Syed Ahmed Khan founds the Scientific Society of Ghazipur — the first of its kind in India — before it moves to Aligarh.",
+          hi: "सर सैयद अहमद ख़ान ग़ाज़ीपुर की साइंटिफ़िक सोसाइटी बनाते हैं — भारत में अपनी तरह की पहली — जो बाद में अलीगढ़ चली जाती है।",
+          eh: "Sir Syed Ahmed Khan Ghazipur ki Scientific Society banate hain — India mein apni tarah ki pehli — jo baad mein Aligarh chali jaati hai."
+        }
+      }
+    ],
+
+    places: [
+      {
+        id: "chihal-satun", art: "arch", era: "1750s",
+        k: { en: "Monument · Mughal", hi: "स्मारक · मुग़लकालीन", eh: "Monument · Mughal" },
+        n: { en: "Chihal Satun", hi: "चिहल सतून", eh: "Chihal Satun" },
+        d: {
+          en: "The “hall of forty pillars”, built by Nawab Sheikh Abdullah in the mid-1700s. Its gateway still stands with real authority; the palace behind it has gone to grass and sky. It remains the city's most eloquent ruin.",
+          hi: "‘चालीस खंभों का महल’, जिसे नवाब शेख़ अब्दुल्ला ने अठारहवीं सदी के मध्य में बनवाया। उसका प्रवेश-द्वार आज भी रोब से खड़ा है; पीछे का महल घास और आसमान को सौंप दिया गया है। यह शहर का सबसे मुखर खंडहर है।",
+          eh: "‘Chalees khambhon ka mahal’, jise Nawab Sheikh Abdullah ne 1700s ke beech mein banwaya. Uska gateway aaj bhi rob se khada hai; peeche ka mahal ghaas aur aasman ko saunp diya gaya hai. Yeh sheher ka sabse mukhar khandahar hai."
+        }
+      },
+      {
+        id: "nawab-garden", art: "garden", era: "1740s",
+        k: { en: "Garden & tomb", hi: "बाग़ और मक़बरा", eh: "Baagh aur maqbara" },
+        n: { en: "Nawab-ki-Chahar-diwari", hi: "नवाब की चहारदीवारी", eh: "Nawab ki Chahardiwari" },
+        d: {
+          en: "The Nawab's walled garden, with its great tank and tomb, laid out by Sheikh Abdullah and his son. The road that begins here runs ten kilometres to the matha of Pavhari Baba.",
+          hi: "नवाब का चहारदीवारी में घिरा बाग़, बड़ा हौज़ और मक़बरा — शेख़ अब्दुल्ला और उनके बेटे की देन। यहीं से शुरू होकर सड़क दस किलोमीटर दूर पव्हारी बाबा के मठ तक जाती है।",
+          eh: "Nawab ka chahardiwari mein ghira baagh, bada hauz aur maqbara — Sheikh Abdullah aur unke bete ki den. Yahin se shuru hokar sadak 10 km door Pavhari Baba ke math tak jaati hai."
+        }
+      },
+      {
+        id: "cornwallis", art: "dome", era: "1805",
+        k: { en: "Colonial tomb · ASI", hi: "औपनिवेशिक मक़बरा · एएसआई", eh: "Colonial maqbara · ASI" },
+        n: { en: "Tomb of Lord Cornwallis", hi: "लॉर्ड कॉर्नवॉलिस का मक़बरा", eh: "Lord Cornwallis ka Maqbara" },
+        d: {
+          en: "Charles Cornwallis died at Ghazipur in 1805. His tomb — a heavy dome on twelve Doric columns, with a cenotaph carved by John Flaxman — stands above the Ganga and is conserved by the Archaeological Survey of India.",
+          hi: "चार्ल्स कॉर्नवॉलिस 1805 में ग़ाज़ीपुर में चल बसे। उनका मक़बरा — बारह डोरिक खंभों पर भारी गुंबद, और जॉन फ़्लैक्समैन का तराशा हुआ स्मारक-पट्ट — गंगा के ऊपर खड़ा है, भारतीय पुरातत्व सर्वेक्षण के संरक्षण में।",
+          eh: "Charles Cornwallis 1805 mein Ghazipur mein chal base. Unka maqbara — barah Doric khambhon par bhaari gumbad, aur John Flaxman ka tarasha cenotaph — Ganga ke oopar khada hai, ASI ke sanrakshan mein."
+        }
+      },
+      {
+        id: "chitnath", art: "ghat", era: "oldest ghat",
+        k: { en: "Ghat", hi: "घाट", eh: "Ghat" },
+        n: { en: "ChitNath Ghat", hi: "चितनाथ घाट", eh: "ChitNath Ghat" },
+        d: {
+          en: "The oldest of the riverfront ghats, and the quietest at first light. Steps, a shikhara above them, and the whole river going about its business.",
+          hi: "किनारे के घाटों में सबसे पुराना, और भोर में सबसे शांत। सीढ़ियाँ, उनके ऊपर एक शिखर, और सामने पूरी नदी अपने काम में लगी हुई।",
+          eh: "Kinare ke ghaton mein sabse purana, aur bhor mein sabse shaant. Seedhiyan, unke oopar ek shikhar, aur saamne poori nadi apne kaam mein lagi hui."
+        }
+      },
+      {
+        id: "pavhari", art: "cave", era: "19th c.",
+        k: { en: "Ashram · caves", hi: "आश्रम · गुफाएँ", eh: "Ashram · gufaein" },
+        n: { en: "Pavhari Baba Ashram", hi: "पव्हारी बाबा आश्रम", eh: "Pavhari Baba Ashram" },
+        d: {
+          en: "Near ChitNath Ghat, the ashram of the saint who meditated in caves and, the stories say, lived on air — hence Pavhari, “the air-eater”. Swami Vivekananda counted him second only to Ramakrishna.",
+          hi: "चितनाथ घाट के पास उस संत का आश्रम, जो गुफाओं में ध्यान करते थे और कहा जाता है हवा पर जीते थे — इसीलिए ‘पव्हारी’, हवा खाने वाले। स्वामी विवेकानंद उन्हें रामकृष्ण के बाद दूसरा स्थान देते थे।",
+          eh: "ChitNath Ghat ke paas us sant ka ashram, jo gufaon mein dhyan karte the aur kaha jata hai hawa par jeete the — isiliye ‘Pavhari’, hawa khane wale. Swami Vivekananda unhe Ramakrishna ke baad doosra sthan dete the."
+        }
+      },
+      {
+        id: "lathiya", art: "pillar", era: "3rd c. BCE",
+        k: { en: "Mauryan · national monument", hi: "मौर्यकालीन · राष्ट्रीय स्मारक", eh: "Maurya kaal · national monument" },
+        n: { en: "Lathiya Ashoka Pillar", hi: "लटिया अशोक स्तंभ", eh: "Lathiya Ashoka Stambh" },
+        d: {
+          en: "A thirty-foot stone lat at Latiya village, about 30 km from the city near Zamania. The gazetteer says the village takes its name from the monolith; the ASI protects it as a monument of national importance.",
+          hi: "ज़मानिया के पास, शहर से क़रीब तीस किलोमीटर दूर लटिया गाँव में तीस फ़ुट का पत्थर का लाट। गजेटियर कहता है गाँव का नाम इसी अखंड पत्थर से पड़ा; एएसआई इसे राष्ट्रीय महत्व का स्मारक मानता है।",
+          eh: "Zamania ke paas, sheher se qareeb 30 km door Latiya gaon mein 30 foot ka patthar ka lat. Gazetteer kehta hai gaon ka naam isi akhand patthar se pada; ASI isse national importance ka monument maanta hai."
+        }
+      },
+      {
+        id: "qasimabad", art: "fort", era: "1730s",
+        k: { en: "Fort · Nawabi", hi: "क़िला · नवाबी", eh: "Qila · Nawabi" },
+        n: { en: "Qasimabad Fort", hi: "कासिमाबाद क़िला", eh: "Qasimabad Qila" },
+        d: {
+          en: "Sheikh Abdullah built this fort and the town beside it, naming both for his father, Muhammad Qasim. It anchored the family's estate in the north of the district.",
+          hi: "शेख़ अब्दुल्ला ने यह क़िला और साथ का क़स्बा बसाया, दोनों का नाम अपने पिता मुहम्मद क़ासिम पर रखा। यह ज़िले के उत्तर में उनके परिवार की जागीर का आधार बना।",
+          eh: "Sheikh Abdullah ne yeh qila aur saath ka qasba basaya, dono ka naam apne pita Muhammad Qasim par rakha. Yeh zile ke uttar mein unke parivar ki jagir ka aadhaar bana."
+        }
+      },
+      {
+        id: "pahar-khan", art: "tank", era: "1580",
+        k: { en: "Tomb & tank", hi: "मक़बरा और हौज़", eh: "Maqbara aur hauz" },
+        n: { en: "Tomb of Pahar Khan", hi: "पहाड़ ख़ान का मक़बरा", eh: "Pahar Khan ka Maqbara" },
+        d: {
+          en: "Pahar Khan was faujdar of the city in 1580. His tank and plain, ancient tomb sit near the road in from Varanasi — easy to pass, worth stopping for.",
+          hi: "पहाड़ ख़ान 1580 में शहर के फ़ौजदार थे। उनका हौज़ और सादा, पुराना मक़बरा वाराणसी से आने वाली सड़क के पास है — नज़र से ओझल, पर रुकने लायक़।",
+          eh: "Pahar Khan 1580 mein sheher ke faujdar the. Unka hauz aur saada, purana maqbara Varanasi se aane wali sadak ke paas hai — nazar se ojhal, par rukne layak."
+        }
+      }
+    ],
+
+    festivals: [
+      {
+        n: { en: "Chhath", hi: "छठ", eh: "Chhath" },
+        w: { en: "Kartik · Oct–Nov", hi: "कार्तिक · अक्तूबर–नवंबर", eh: "Kartik · Oct–Nov" },
+        d: {
+          en: "The ghats fill before dawn and after sunset. Offerings are raised to the setting and the rising sun, and the river holds a thousand small flames.",
+          hi: "घाट भोर से पहले और सूरज डूबने के बाद भर जाते हैं। डूबते और उगते सूरज को अर्घ्य दिया जाता है, और नदी हज़ार छोटी लौएँ थाम लेती है।",
+          eh: "Ghat bhor se pehle aur suraj doobne ke baad bhar jaate hain. Doobte aur ugte suraj ko arghya diya jata hai, aur nadi hazaar chhoti lauein thaam leti hai."
+        }
+      },
+      {
+        n: { en: "Kartik lamps", hi: "कार्तिक के दीये", eh: "Kartik ke diye" },
+        w: { en: "Kartik Purnima · Nov", hi: "कार्तिक पूर्णिमा · नवंबर", eh: "Kartik Purnima · Nov" },
+        d: {
+          en: "Lamps on the water at the end of Kartik — for one evening the old riverfront becomes a second sky.",
+          hi: "कार्तिक के अंत में पानी पर दीये — एक शाम के लिए पुराना किनारा दूसरा आसमान बन जाता है।",
+          eh: "Kartik ke ant mein paani par diye — ek shaam ke liye purana kinara doosra aasman ban jata hai."
+        }
+      },
+      {
+        n: { en: "Sawan", hi: "सावन", eh: "Sawan" },
+        w: { en: "Jul–Aug", hi: "जुलाई–अगस्त", eh: "Jul–Aug" },
+        d: {
+          en: "The monsoon month of Shiva: kanwars on the roads, water offered at lingams, the whole plain green to the horizon.",
+          hi: "शिव का बरसाती महीना: सड़कों पर काँवर, शिवलिंग पर जल, और क्षितिज तक हरा मैदान।",
+          eh: "Shiv ka barsaati mahina: sadkon par kanwar, shivling par jal, aur kshitij tak hara maidan."
+        }
+      },
+      {
+        n: { en: "Birha & Bhojpuri song", hi: "बिरहा और भोजपुरी गीत", eh: "Birha aur Bhojpuri geet" },
+        w: { en: "all year", hi: "साल भर", eh: "saal bhar" },
+        d: {
+          en: "The district gave birha its modern voice in the poet Bihari Lal Yadav, and Bhojpuri cinema its first father in the actor Nazir Hussain.",
+          hi: "ज़िले ने बिरहा को कवि बिहारी लाल यादव के रूप में आधुनिक आवाज़ दी, और भोजपुरी सिनेमा को अभिनेता नज़ीर हुसैन के रूप में पहला जनक।",
+          eh: "Zile ne birha ko kavi Bihari Lal Yadav ke roop mein aadhunik awaaz di, aur Bhojpuri cinema ko actor Nazir Hussain ke roop mein pehla janak."
+        }
+      },
+      {
+        n: { en: "Gulab jal", hi: "गुलाब जल", eh: "Gulab jal" },
+        w: { en: "all year", hi: "साल भर", eh: "saal bhar" },
+        d: {
+          en: "Ghazipur's rose-scented spray is famous across India — a small, fragrant export from a district better known for heavier things.",
+          hi: "ग़ाज़ीपुर का गुलाब-सुगंधित छिड़काव पूरे भारत में मशहूर है — भारी-भरकम चीज़ों के लिए जाने जाने वाले ज़िले से एक छोटा, महकता निर्यात।",
+          eh: "Ghazipur ka gulab-sugandhit spray poore India mein mashhoor hai — bhaari-bhar kam cheezon ke liye jaane jaane wale zile se ek chhota, mehakta export."
+        }
+      }
+    ],
+
+    phrases: [
+      { deva: "प्रणाम", latin: "pranām", m: { en: "a respectful hello", hi: "अदब से नमस्कार", eh: "adab se namaskar" } },
+      { deva: "कइसे बाड़ीं?", latin: "kaise bāḍīṅ?", m: { en: "how are you?", hi: "आप कैसे हैं?", eh: "aap kaise hain?" } },
+      { deva: "भोर हो गइल", latin: "bhor ho gail", m: { en: "the morning has come", hi: "सुबह हो गई", eh: "subah ho gayi" } },
+      { deva: "बहुते बढ़िया", latin: "bahute baṛhiyā", m: { en: "very good", hi: "बहुत बढ़िया", eh: "bahut badhiya" } },
+      { deva: "फेर मिलब", latin: "pher milab", m: { en: "we'll meet again", hi: "फिर मिलेंगे", eh: "phir milenge" } },
+      { deva: "गंगा जी", latin: "Gaṅgā jī", m: { en: "the Ganga, said with affection", hi: "गंगा, प्यार से", eh: "Ganga, pyaar se" } }
+    ],
+
+    people: [
+      {
+        mono: "AH", n: { en: "Abdul Hamid", hi: "अब्दुल हमीद", eh: "Abdul Hamid" },
+        r: { en: "Param Vir Chakra · 1965", hi: "परमवीर चक्र · 1965", eh: "Param Vir Chakra · 1965" },
+        note: { en: "Born at Dhamupur; held the line at Asal Uttar.", hi: "धमूपुर में जन्म; असल उत्तर में मोर्चा थामा।", eh: "Dhamupur mein janm; Asal Uttar mein morcha thaama." }
+      },
+      {
+        mono: "NH", n: { en: "Nazir Hussain", hi: "नज़ीर हुसैन", eh: "Nazir Hussain" },
+        r: { en: "Actor · father of Bhojpuri cinema", hi: "अभिनेता · भोजपुरी सिनेमा के जनक", eh: "Actor · Bhojpuri cinema ke janak" },
+        note: { en: "1926–2002", hi: "1926–2002", eh: "1926–2002" }
+      },
+      {
+        mono: "BY", n: { en: "Bihari Lal Yadav", hi: "बिहारी लाल यादव", eh: "Bihari Lal Yadav" },
+        r: { en: "Poet · modern birha", hi: "कवि · आधुनिक बिरहा", eh: "Kavi · aadhunik birha" },
+        note: { en: "Gave the folk genre its modern form.", hi: "लोक-विधा को आधुनिक रूप दिया।", eh: "Lok-vidha ko aadhunik roop diya." }
+      },
+      {
+        mono: "RR", n: { en: "Rahi Masoom Raza", hi: "राही मासूम रज़ा", eh: "Rahi Masoom Raza" },
+        r: { en: "Novelist & screenwriter", hi: "उपन्यासकार और पटकथा लेखक", eh: "Novelist aur screenwriter" },
+        note: { en: "Aag Ka Darya; the television Mahabharat.", hi: "आग का दरिया; टीवी महाभारत।", eh: "Aag Ka Darya; TV Mahabharat." }
+      },
+      {
+        mono: "SS", n: { en: "Sahajanand Saraswati", hi: "सहजानंद सरस्वती", eh: "Sahajanand Saraswati" },
+        r: { en: "Freedom fighter & peasant leader", hi: "स्वतंत्रता सेनानी और किसान नेता", eh: "Freedom fighter aur kisan neta" },
+        note: { en: "Organised the Kisan Sabha.", hi: "किसान सभा का संगठन किया।", eh: "Kisan Sabha organise ki." }
+      },
+      {
+        mono: "VR", n: { en: "Vinod Rai", hi: "विनोद राय", eh: "Vinod Rai" },
+        r: { en: "Comptroller & Auditor General", hi: "नियंत्रक एवं महालेखा परीक्षक", eh: "CAG of India" },
+        note: { en: "2008–2013 · Padma Bhushan", hi: "2008–2013 · पद्म भूषण", eh: "2008–2013 · Padma Bhushan" }
+      },
+      {
+        mono: "MS", n: { en: "Manoj Sinha", hi: "मनोज सिन्हा", eh: "Manoj Sinha" },
+        r: { en: "Lieutenant Governor", hi: "उपराज्यपाल", eh: "Lieutenant Governor" },
+        note: { en: "Jammu & Kashmir; former MP, Ghazipur.", hi: "जम्मू-कश्मीर; ग़ाज़ीपुर से पूर्व सांसद।", eh: "Jammu & Kashmir; Ghazipur se former MP." }
+      },
+      {
+        mono: "SY", n: { en: "Suryakumar Yadav", hi: "सूर्यकुमार यादव", eh: "Suryakumar Yadav" },
+        r: { en: "Cricketer", hi: "क्रिकेटर", eh: "Cricketer" },
+        note: { en: "India's T20 captain; family from the district.", hi: "भारत के टी20 कप्तान; परिवार ज़िले से।", eh: "India ke T20 captain; parivar zile se." }
+      }
+    ],
+
+    spots: [
+      {
+        x: 468, y: 402,
+        n: { en: "Ghazipur", hi: "ग़ाज़ीपुर", eh: "Ghazipur" },
+        kind: { en: "District headquarters", hi: "ज़िला मुख्यालय", eh: "Zila headquarters" },
+        d: { en: "The old city and district headquarters: the ghats, Chihal Satun, the riverfront — and the opium works across the water.", hi: "पुराना शहर और ज़िला मुख्यालय: घाट, चिहल सतून, किनारा — और पार अफ़ीम कारख़ाना।", eh: "Purana sheher aur zila headquarters: ghat, Chihal Satun, kinara — aur paar afeem karkhana." }
+      },
+      {
+        x: 712, y: 414,
+        n: { en: "Zamania", hi: "ज़मानिया", eh: "Zamania" },
+        kind: { en: "Eastern tehsil", hi: "पूर्वी तहसील", eh: "Purbi tehsil" },
+        d: { en: "Founded in Akbar's time by Ali Quli Khan Zaman; the Lathiya pillar stands nearby.", hi: "अकबर के समय अली क़ुली ख़ान ज़मान ने बसाया; पास ही लटिया का स्तंभ है।", eh: "Akbar ke waqt Ali Quli Khan Zaman ne basaya; paas hi Lathiya ka stambh hai." }
+      },
+      {
+        x: 250, y: 330,
+        n: { en: "Mohammadabad", hi: "मुहम्मदाबाद", eh: "Mohammadabad" },
+        kind: { en: "Western tehsil", hi: "पश्चिमी तहसील", eh: "Paschim tehsil" },
+        d: { en: "A tehsil town in the west of the district, in the mango country.", hi: "ज़िले के पश्चिम में एक तहसील क़स्बा, आम के इलाक़े में।", eh: "Zile ke paschim mein ek tehsil qasba, aam ke ilaqe mein." }
+      },
+      {
+        x: 300, y: 210,
+        n: { en: "Saidpur", hi: "सैदपुर", eh: "Saidpur" },
+        kind: { en: "North-western tehsil", hi: "उत्तर-पश्चिमी तहसील", eh: "Uttar-paschim tehsil" },
+        d: { en: "Finds at Saidpur–Aurihar trace the district's oldest settlements.", hi: "सैदपुर–औरिहर के पुरातात्विक अवशेष ज़िले की सबसे पुरानी बस्तियों के साक्षी हैं।", eh: "Saidpur–Aurihar ke puratatvik avshesh zile ki sabse purani bastiyon ke saakshi hain." }
+      },
+      {
+        x: 432, y: 208,
+        n: { en: "Kasimabad", hi: "कासिमाबाद", eh: "Kasimabad" },
+        kind: { en: "Northern tehsil", hi: "उत्तरी तहसील", eh: "Uttari tehsil" },
+        d: { en: "Named for Muhammad Qasim; Sheikh Abdullah built its fort in the 1730s.", hi: "मुहम्मद क़ासिम के नाम पर; शेख़ अब्दुल्ला ने 1730 के दशक में यहाँ क़िला बनवाया।", eh: "Muhammad Qasim ke naam par; Sheikh Abdullah ne 1730s mein yahan qila banwaya." }
+      },
+      {
+        x: 612, y: 258,
+        n: { en: "Jakhania", hi: "जखनियाँ", eh: "Jakhania" },
+        kind: { en: "Northern tehsil", hi: "उत्तरी तहसील", eh: "Uttari tehsil" },
+        d: { en: "A tehsil of the northern plain, between the groves and the fields.", hi: "उत्तरी मैदान की तहसील, बाग़ों और खेतों के बीच।", eh: "Uttari maidan ki tehsil, baaghon aur kheton ke beech." }
+      },
+      {
+        x: 596, y: 452,
+        n: { en: "Seorai", hi: "सेवराई", eh: "Seorai" },
+        kind: { en: "South-eastern tehsil", hi: "दक्षिण-पूर्वी तहसील", eh: "Dakshin-purbi tehsil" },
+        d: { en: "Seat of a Mughal-era jagir; a quiet tehsil toward the Bihar side.", hi: "मुग़लकालीन जागीर का केंद्र; बिहार की ओर एक शांत तहसील।", eh: "Mughal-kaal ki jagir ka kendra; Bihar ki or ek shaant tehsil." }
+      }
+    ],
+
+    explore: [
+      {
+        icon: "i-sound", act: "toggle",
+        t: { en: "The soundtrack", hi: "ध्वनि-पट्टी", eh: "Soundtrack" },
+        d: { en: "Tanpura, bansuri, water and birds, composed in real time by your browser. Nothing downloaded.", hi: "तानपुरा, बाँसुरी, पानी और चिड़ियाँ, आपके ब्राउज़र में उसी वक़्त बनते हुए। कुछ डाउनलोड नहीं।", eh: "Tanpura, bansuri, paani aur chidiyan, aapke browser mein usi waqt bante hue. Kuch download nahi." },
+        b: { en: "Play / pause", hi: "चलाएँ / रोकें", eh: "Play / pause" }
+      },
+      {
+        icon: "i-sliders", act: "mixer",
+        t: { en: "The mixer", hi: "मिक्सर", eh: "Mixer" },
+        d: { en: "Four channels and a master fader. Build your own morning on the ghats.", hi: "चार चैनल और एक मुख्य फ़ेडर। घाट पर अपनी सुबह बनाइए।", eh: "Chaar channel aur ek master fader. Ghat par apni subah banaiye." },
+        b: { en: "Open mixer", hi: "मिक्सर खोलें", eh: "Mixer kholain" }
+      },
+      {
+        icon: "i-sun", act: "sky",
+        t: { en: "Turn the sky", hi: "आसमान घुमाइए", eh: "Aasman ghumaiye" },
+        d: { en: "Step the hour from dawn to midnight and watch the whole palette follow.", hi: "भोर से आधी रात तक घंटा बढ़ाइए और पूरा रंग-संसार बदलते देखिए।", eh: "Bhor se aadhi raat tak ghanta badhaiye aur poora colour badalte dekhiye." },
+        b: { en: "Change the hour", hi: "समय बदलें", eh: "Time badlein" }
+      },
+      {
+        icon: "i-lamp", act: "diya",
+        t: { en: "Release a diya", hi: "दीया बहाइए", eh: "Diya bahaiye" },
+        d: { en: "Set a clay lamp on the water. It drifts, flickers and goes out on its own.", hi: "पानी पर मिट्टी का दीया रखिए। वह बहता है, टिमटिमाता है, और ख़ुद बुझ जाता है।", eh: "Paani par mitti ka diya rakhye. Woh behta hai, timtimata hai, aur khud bujh jata hai." },
+        b: { en: "Set one adrift", hi: "एक बहाइए", eh: "Ek bahaiye" }
+      },
+      {
+        icon: "i-bell", act: "bell",
+        t: { en: "Ring the temple bell", hi: "मंदिर की घंटी", eh: "Mandir ki ghanti" },
+        d: { en: "A bell synthesised from inharmonic partials, the way a real one behaves.", hi: "असमान अनुनादों से बनी घंटी, जैसे असली घंटी बजती है।", eh: "Inharmonic partials se bani ghanti, jaise asli ghanti bajti hai." },
+        b: { en: "Ring it", hi: "बजाइए", eh: "Bajaiye" }
+      },
+      {
+        icon: "i-search", act: "search",
+        t: { en: "Command search", hi: "खोज", eh: "Command search" },
+        d: { en: "Find any place, person, chapter or feature. Press Ctrl or ⌘ + K anywhere.", hi: "कोई भी जगह, व्यक्ति, अध्याय या सुविधा खोजिए। कहीं भी Ctrl या ⌘ + K दबाइए।", eh: "Koi bhi jagah, insaan, chapter ya feature dhoondhiye. Kahin bhi Ctrl ya ⌘ + K dabaiye." },
+        b: { en: "Open search", hi: "खोजें", eh: "Search kholain" }
+      },
+      {
+        icon: "i-pin", act: "atlas",
+        t: { en: "The atlas", hi: "नक्शा", eh: "Atlas" },
+        d: { en: "Seven tehsils on an illustrated river. Hover a name to place it.", hi: "चित्रित नदी पर सात तहसीलें। नाम पर माउस लाइए।", eh: "Chitrit nadi par saat tehsilein. Naam par mouse laiye." },
+        b: { en: "Go to the map", hi: "नक्शे पर जाएँ", eh: "Naksha dekhein" }
+      },
+      {
+        icon: "i-spark", act: "lang",
+        t: { en: "Three tongues", hi: "तीन ज़ुबानें", eh: "Teen zubanein" },
+        d: { en: "English, Hindi and Hinglish — every paragraph, not just the menu.", hi: "अंग्रेज़ी, हिन्दी और हिंग्लिश — हर पैराग्राफ़, सिर्फ़ मेन्यू नहीं।", eh: "English, Hindi aur Hinglish — har paragraph, sirf menu nahi." },
+        b: { en: "Switch language", hi: "भाषा बदलें", eh: "Language badlein" }
+      },
+      {
+        icon: "i-music", act: "phrases",
+        t: { en: "Bhojpuri phrasebook", hi: "भोजपुरी वाक्य-संग्रह", eh: "Bhojpuri phrasebook" },
+        d: { en: "Six phrases, with a device voice that will do its best.", hi: "छह वाक्य, और एक यंत्र-आवाज़ जो अपनी पूरी कोशिश करेगी।", eh: "Chhah vaakya, aur ek device voice jo apni poori koshish karegi." },
+        b: { en: "Hear a phrase", hi: "सुनिए", eh: "Suniye" }
+      },
+      {
+        icon: "i-moon", act: "theme",
+        t: { en: "Day and night", hi: "दिन और रात", eh: "Din aur raat" },
+        d: { en: "The page follows the sky on its own — or you can hold it in one mode.", hi: "पन्ना ख़ुद आसमान के साथ बदलता है — या आप उसे एक ही रंग में रोक सकते हैं।", eh: "Page khud aasman ke saath badalta hai — ya aap usse ek hi mode mein rok sakte hain." },
+        b: { en: "Switch theme", hi: "रंग बदलें", eh: "Theme badlein" }
+      },
+      {
+        icon: "i-pin", act: "places",
+        t: { en: "Hand-drawn places", hi: "हाथ से बनी जगहें", eh: "Haath se bani jagahein" },
+        d: { en: "Eight monuments drawn as SVG for this project; open any card for the story.", hi: "इस परियोजना के लिए एसवीजी में बने आठ स्मारक; कहानी के लिए कोई कार्ड खोलिए।", eh: "Is project ke liye SVG mein bane aath monument; kahani ke liye koi card kholiye." },
+        b: { en: "Open a place", hi: "एक जगह खोलें", eh: "Jagah kholain" }
+      },
+      {
+        icon: "i-sound", act: "sfx",
+        t: { en: "Interface sounds", hi: "इंटरफ़ेस की आवाज़ें", eh: "Interface sounds" },
+        d: { en: "Small chimes on buttons, a water-drop when you touch the river. Turn them off here.", hi: "बटनों पर हल्की टनटन, नदी छूने पर पानी की बूँद। यहीं बंद कीजिए।", eh: "Buttons par halki chime, nadi chhoone par paani ki boond. Yahin band kijiye." },
+        b: { en: "Toggle sounds", hi: "आवाज़ बदलें", eh: "Sounds toggle karein" }
+      },
+      {
+        icon: "i-boat", act: "naav",
+        t: { en: "Naav — the boat game", hi: "नाव — खेल", eh: "Naav — the game" },
+        d: { en: "Row a small boat on the Ganga: steer, gather floating diyas, listen to the oars. Keyboard and touch.", hi: "गंगा पर छोटी नाव चलाइए: मोड़िए, बहते दीये उठाइए, डाँड़ की आवाज़ सुनिए। कीबोर्ड और टच।", eh: "Ganga par chhoti naav chalaiye: modiye, behte diye uthaiye, daand ki awaaz suniye. Keyboard aur touch." },
+        b: { en: "Push off", hi: "नाव खोलिए", eh: "Naav kholiye" }
+      },
+      {
+        icon: "i-lamp", act: "aarti",
+        t: { en: "The night aarti", hi: "रात की आरती", eh: "Raat ki aarti" },
+        d: { en: "Bring the dark down, ring the bell and set the ghat alight — lamps, aarti, diyas on the water.", hi: "अंधेरा उतारिए, घंटी बजाइए और घाट को रोशन कीजिए — दीये, आरती, पानी पर दीये।", eh: "Andhera utariye, ghanti bajaiye aur ghat ko roshan kijiye — diye, aarti, paani par diye." },
+        b: { en: "Light the ghat", hi: "घाट जगाइए", eh: "Ghat jagaiye" }
+      },
+      {
+        icon: "i-sound", act: "yard-siren",
+        t: { en: "The factory siren", hi: "कारख़ाने का सायरन", eh: "Karkhane ka siren" },
+        d: { en: "The electromechanical hooter of the opium works, synthesised from a rotor, a horn and a warning.", hi: "अफ़ीम कारख़ाने का यांत्रिक हूटर — रोटर, हॉर्न और चेतावनी से बना।", eh: "Afeem karkhane ka mechanical hooter — rotor, horn aur warning se bana." },
+        b: { en: "Sound it", hi: "बजाइए", eh: "Bajaiye" }
+      },
+      {
+        icon: "i-arrow", act: "yard-train",
+        t: { en: "The works railway", hi: "कारख़ाने की रेल", eh: "Karkhane ki rail" },
+        d: { en: "Run the little trolley along the narrow-gauge line and hear its wheels on the yard rails.", hi: "छोटी ट्रॉली को नैरो-गेज पटरी पर चलाइए और अहाते की पटरी पर उसके पहिये सुनिए।", eh: "Chhoti trolley ko narrow-gauge patri par chalaiye aur ahaate ki patri par uske pahiye suniye." },
+        b: { en: "Run the trolley", hi: "ट्रॉली चलाइए", eh: "Trolley chalaiye" }
+      },
+      {
+        icon: "i-spark", act: "ghat-life",
+        t: { en: "Life on the steps", hi: "सीढ़ियों पर जीवन", eh: "Seedhiyon par zindagi" },
+        d: { en: "Children with a ball, a fisherman in a coracle, and after dark the aarti crowd. Watch the home screen.", hi: "गेंद लिए बच्चे, डोंगे में मछुआरा, और अंधेरे के बाद आरती की भीड़। मुख्य पन्ना देखिए।", eh: "Ball liye bachche, donge mein machhuara, aur andhere ke baad aarti ki bheed. Home screen dekhiye." },
+        b: { en: "Go to the ghat", hi: "घाट चलिए", eh: "Ghat chaliye" }
+      }
+    ]
+  };
+})();
