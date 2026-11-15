@@ -2207,6 +2207,8 @@
   document.addEventListener('click', function (e) {
     var el = e.target.closest('a,button,input,label,select,textarea,[data-no-ripple]');
     if (el) return;
+    /* the water only answers on the home screen, and in the eye view */
+    if (!document.body.classList.contains('view-mode') && window.scrollY > window.innerHeight * 0.6) return;
     if (bellAt(e.clientX, e.clientY)) return;
     if (spotAt(e.clientX, e.clientY)) { if (window.Ambient && window.Ambient.coin) window.Ambient.coin(); return; }
     var y = e.clientY;
