@@ -2446,3 +2446,23 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
 
 .view-seasons button{ display:inline-flex; align-items:center; gap:.35rem; } .view-seasons .ic{ width:.95em; height:.95em; }
 @media (max-width:620px){ .view-seasons button{ padding:.42rem .5rem; } .view-seasons .ic{ display:none; } }
+
+/* ══ the kitchen corner (a second easter egg) ═════════════════ */
+.living-col{ display:flex; flex-direction:column; gap:clamp(1rem,2.6vw,1.8rem); align-self:start; min-width:0; }
+.kn-status{ margin:.8rem 0 0; font-family:var(--serif); font-size:1.05rem; color:var(--ink); min-height:1.4em; }
+.kitchen-nook .an-tab.is-on{ background:#b8561f; border-color:#b8561f; color:#fff; }
+.kn-i1{ fill:currentColor; transform-box:fill-box; transform-origin:center; animation:knRoll 3s ease-in-out infinite; } .kn-i1.b{ animation-delay:-1.5s; }
+@keyframes knRoll{ 0%,100%{ transform:translateY(0) scale(1); } 50%{ transform:translateY(-2px) scale(1.08); } }
+.kn-i2{ stroke-dasharray:14; animation:knSteam 2.4s ease-in-out infinite; } @keyframes knSteam{ 0%{ stroke-dashoffset:14; opacity:0; } 40%{ opacity:1; } 100%{ stroke-dashoffset:-14; opacity:0; } }
+.kn-i3{ transform-box:fill-box; transform-origin:center; animation:knSpin 4s linear infinite; } @keyframes knSpin{ to{ transform:rotate(360deg); } }
+.k-steam circle{ animation:anSteam 2.8s ease-out infinite; opacity:0; transform-box:fill-box; transform-origin:center; } .k-steam .s2{ animation-delay:-.9s; } .k-steam .s3{ animation-delay:-1.8s; }
+.k-ember{ animation:kEmber 1.6s ease-in-out infinite alternate; } @keyframes kEmber{ from{ opacity:.65; } to{ opacity:1; } }
+#kSmoke circle{ animation:kSmoke 4s ease-out infinite; opacity:0; transform-box:fill-box; transform-origin:center; } #kSmoke circle:nth-child(2){ animation-delay:-1.3s; } #kSmoke circle:nth-child(3){ animation-delay:-2.6s; }
+@keyframes kSmoke{ 0%{ transform:translate(0,0) scale(.5); opacity:0; } 25%{ opacity:.45; } 100%{ transform:translate(10px,-46px) scale(2); opacity:0; } }
+.k-spark{ animation:kSpark .9s ease-out forwards; } @keyframes kSpark{ from{ transform:translate(0,0); opacity:1; } to{ transform:translate(12px,-34px); opacity:0; } }
+.k-bub{ animation:kBub .7s ease-out forwards; transform-box:fill-box; } @keyframes kBub{ from{ transform:scale(.4); opacity:.9; } to{ transform:scale(1.6) translateY(-4px); opacity:0; } }
+.k-oil{ animation:kOil 2s ease-in-out infinite alternate; } @keyframes kOil{ from{ opacity:.85; } to{ opacity:1; } }
+.k-syr{ animation:anWave 3s linear infinite; }
+.an-svg.is-celebrate{ animation:kCel .5s ease-in-out 3; } @keyframes kCel{ 0%,100%{ filter:none; } 50%{ filter:brightness(1.12) saturate(1.2); } }
+@media (max-width:900px){ .living-col{ align-self:stretch; } }
+@media (prefers-reduced-motion:reduce){ .kn-i1,.kn-i2,.kn-i3,.k-ember,#kSmoke circle,.k-steam circle,.k-oil,.k-syr,.an-svg.is-celebrate{ animation:none !important; } }

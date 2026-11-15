@@ -14,6 +14,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
 - **Temple bells and a hidden diya** — three brass bells hang under the chhatri on the ghat: click them on desktop, shake your phone on mobile. A tiny lamp in the hero corner floats diyas onto the river.
+- **The kitchen corner** (a second easter egg) — roast litti on embers and serve them, mash a chokha from six ingredients, or fry launglata and dip it in syrup.
 - **The artists' corner** (an easter egg) — peek inside to draw your own mirrored chowk, drop petals into a copper rose-water still, or weave a bamboo soop.
 - **The Chhathi Maiya song** — tap the Chhath card to play it, with a floating player (seek, ±10 s, repeat, volume); the soundtrack ducks while it plays.
 - **The living year** — the five festivals as little animated scenes you can poke (raise the arghya, add a diya, call the lightning), plus "Match Ghazipur", a memory game with ten things of the district (twins or name-it modes, three levels, timer, streaks, peek and hint, a collection panel).
