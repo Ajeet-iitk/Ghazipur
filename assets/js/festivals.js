@@ -126,10 +126,115 @@ var SCENES = {
       var name = pick(f.n);
       return '<article class="fest-card rev" data-fest="' + id + '" tabindex="0" role="button" aria-label="' + esc(name) + '">' +
         '<div class="fest-art"><svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + SCENES[id]('fs' + i) + '</svg>' +
-        '<span class="fest-num">0' + (i + 1) + '</span></div>' +
+        '<span class="fest-num">0' + (i + 1) + '</span>' +
+        (id === 'chhath' ? '<span class="fest-play" aria-hidden="true"><svg class="ic ic-p"><use href="#i-play"/></svg><svg class="ic ic-z"><use href="#i-pause"/></svg><span>' + esc(L('fest.song.play')) + '</span><i class="fp-eq"><b></b><b></b><b></b></i></span>' : '') + '</div>' +
         '<div class="fest-body"><h3>' + esc(name) + '</h3><span class="fest-when">' + esc(pick(f.w)) + '</span>' +
         '<span class="fest-text">' + esc(pick(f.d)) + '</span></div></article>';
     }).join('');
+  }
+
+
+  /* ── the Chhathi Maiya song: tap the Chhath card, and a small player appears ── */
+  var SONG = { src: 'assets/audio/chhathi-maiya.mp3', audio: null, bar: null, seeking: false, duck: null };
+  function fmt(t) { if (!isFinite(t)) return '0:00'; t = Math.max(0, Math.floor(t)); return Math.floor(t / 60) + ':' + ('0' + (t % 60)).slice(-2); }
+
+  function songSync() {
+    var a = SONG.audio, playing = !!a && !a.paused && !a.ended;
+    document.documentElement.classList.toggle('is-song', playing);
+    Array.prototype.forEach.call(document.querySelectorAll('.fest-card[data-fest="chhath"] .fest-art'), function (x) { x.classList.toggle('is-song', playing); });
+    Array.prototype.forEach.call(document.querySelectorAll('.fest-card[data-fest="chhath"] .fest-play'), function (x) {
+      x.querySelector('span').textContent = L(playing ? 'fest.song.pause' : 'fest.song.play');
+      x.classList.toggle('is-on', playing);
+    });
+    if (SONG.bar) {
+      var pb = SONG.bar.querySelector('.sb-play');
+      pb.classList.toggle('is-playing', playing);
+      pb.setAttribute('aria-label', L(playing ? 'fest.song.pause' : 'fest.song.play'));
+    }
+  }
+  function duck(on) {
+    var A = window.Ambient; if (!A || !A.setMaster || !A.getMaster) return;
+    if (on && SONG.duck === null) { SONG.duck = A.getMaster() / 0.95; A.setMaster(SONG.duck * 0.22); }
+    else if (!on && SONG.duck !== null) { A.setMaster(SONG.duck); SONG.duck = null; }
+  }
+
+  function songBar() {
+    if (SONG.bar) return SONG.bar;
+    var d = document.createElement('div');
+    d.className = 'song-bar'; d.hidden = true; d.setAttribute('role', 'group');
+    d.innerHTML =
+      '<div class="sb-art" aria-hidden="true"><span class="sb-eq"><i></i><i></i><i></i><i></i></span></div>' +
+      '<div class="sb-main"><div class="sb-top"><b class="sb-title"></b><span class="sb-time"><em class="sb-cur">0:00</em> / <em class="sb-dur">0:00</em></span></div>' +
+      '<input class="sb-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">' +
+      '<div class="sb-row"><button type="button" class="sb-btn sb-play" aria-label="Play"><svg class="ic ic-p"><use href="#i-play"/></svg><svg class="ic ic-z"><use href="#i-pause"/></svg></button>' +
+      '<button type="button" class="sb-btn sb-back" aria-label="Back 10 seconds"><span>−10</span></button><button type="button" class="sb-btn sb-fwd" aria-label="Forward 10 seconds"><span>+10</span></button>' +
+      '<button type="button" class="sb-btn sb-loop" aria-pressed="false" aria-label="Loop"><svg class="ic"><use href="#i-spark"/></svg></button>' +
+      '<label class="sb-vol"><svg class="ic"><use href="#i-sound"/></svg><input class="sb-volr" type="range" min="0" max="100" value="80" aria-label="Volume"></label>' +
+      '<button type="button" class="sb-btn sb-close" aria-label="Close"><svg class="ic"><use href="#i-close"/></svg></button></div></div>';
+    document.body.appendChild(d);
+    SONG.bar = d;
+    var seek = d.querySelector('.sb-seek');
+    d.querySelector('.sb-play').addEventListener('click', toggleSong);
+    d.querySelector('.sb-back').addEventListener('click', function () { if (SONG.audio) SONG.audio.currentTime = Math.max(0, SONG.audio.currentTime - 10); });
+    d.querySelector('.sb-fwd').addEventListener('click', function () { if (SONG.audio) SONG.audio.currentTime = Math.min(SONG.audio.duration || 1e9, SONG.audio.currentTime + 10); });
+    d.querySelector('.sb-loop').addEventListener('click', function (e) {
+      var on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+      e.currentTarget.setAttribute('aria-pressed', on ? 'true' : 'false'); e.currentTarget.classList.toggle('is-on', on);
+      if (SONG.audio) SONG.audio.loop = on; store.set('gzp.song.loop', on ? '1' : '0');
+    });
+    d.querySelector('.sb-volr').addEventListener('input', function (e) { if (SONG.audio) SONG.audio.volume = e.target.value / 100; store.set('gzp.song.vol', e.target.value); });
+    d.querySelector('.sb-close').addEventListener('click', function () { stopSong(); });
+    seek.addEventListener('input', function () { SONG.seeking = true; if (SONG.audio && SONG.audio.duration) d.querySelector('.sb-cur').textContent = fmt(seek.value / 1000 * SONG.audio.duration); });
+    seek.addEventListener('change', function () { if (SONG.audio && SONG.audio.duration) SONG.audio.currentTime = seek.value / 1000 * SONG.audio.duration; SONG.seeking = false; });
+    var v = parseInt(store.get('gzp.song.vol') || '80', 10); d.querySelector('.sb-volr').value = isNaN(v) ? 80 : v;
+    if (store.get('gzp.song.loop') === '1') { var lb = d.querySelector('.sb-loop'); lb.setAttribute('aria-pressed', 'true'); lb.classList.add('is-on'); }
+    songLabels();
+    return d;
+  }
+  function songLabels() {
+    if (!SONG.bar) return;
+    SONG.bar.setAttribute('aria-label', L('fest.song.title'));
+    SONG.bar.querySelector('.sb-title').textContent = L('fest.song.title');
+    SONG.bar.querySelector('.sb-seek').setAttribute('aria-label', L('fest.song.seek'));
+    SONG.bar.querySelector('.sb-volr').setAttribute('aria-label', L('fest.song.vol'));
+    SONG.bar.querySelector('.sb-loop').setAttribute('aria-label', L('fest.song.loop'));
+    SONG.bar.querySelector('.sb-close').setAttribute('aria-label', L('fest.song.close'));
+  }
+  function songAudio() {
+    if (SONG.audio) return SONG.audio;
+    var a = new Audio(SONG.src);
+    a.preload = 'none';
+    a.volume = (parseInt(store.get('gzp.song.vol') || '80', 10) || 80) / 100;
+    a.loop = store.get('gzp.song.loop') === '1';
+    a.addEventListener('timeupdate', function () {
+      var d = SONG.bar; if (!d || SONG.seeking || !a.duration || !isFinite(a.duration)) return;
+      d.querySelector('.sb-dur').textContent = fmt(a.duration);
+      d.querySelector('.sb-seek').value = Math.round(a.currentTime / a.duration * 1000);
+      d.querySelector('.sb-cur').textContent = fmt(a.currentTime);
+    });
+    var setDur = function () { if (SONG.bar && isFinite(a.duration)) SONG.bar.querySelector('.sb-dur').textContent = fmt(a.duration); };
+    a.addEventListener('loadedmetadata', setDur); a.addEventListener('durationchange', setDur);
+    a.addEventListener('play', function () { songSync(); duck(true); });
+    a.addEventListener('pause', function () { songSync(); duck(false); });
+    a.addEventListener('ended', function () { songSync(); duck(false); });
+    a.addEventListener('error', function () { if (SONG.bar) SONG.bar.querySelector('.sb-title').textContent = L('fest.song.error'); });
+    SONG.audio = a;
+    return a;
+  }
+  function toggleSong() {
+    var a = songAudio(), bar = songBar();
+    bar.hidden = false;
+    songLabels();
+    if (a.paused || a.ended) { var p = a.play(); if (p && p.catch) p.catch(function () {}); }
+    else a.pause();
+    songSync();
+  }
+  function stopSong() {
+    var a = SONG.audio;
+    if (a) { a.pause(); a.currentTime = 0; }
+    duck(false);
+    if (SONG.bar) SONG.bar.hidden = true;
+    songSync();
   }
 
   /* poke a card: each scene answers in its own way */
@@ -153,7 +258,7 @@ var SCENES = {
     } else if (id === 'sawan') { snd('thud'); setTimeout(function () { snd('thunder'); }, 380); }
     else if (id === 'birha') { snd('chime'); setTimeout(function () { snd('chime'); }, 220); }
     else if (id === 'gulab') { snd('coin'); }
-    else { snd('bell'); }
+    else { toggleSong(); }
   }
 
   /* ── the game: Match Ghazipur ─────────────────────────────── */
@@ -416,6 +521,7 @@ var SCENES = {
   window.Festivals = {
     build: function () {
       renderCards();
+      songLabels(); songSync();
       bindCards();
       bindGame();
       if (!G.tiles.length) newDeal();
