@@ -741,6 +741,7 @@
     ctx.save();
     ctx.translate(x, y - jump * s);
     ctx.scale(dir * s, s);
+    if (o.kite) ctx.rotate(0.1);
     ctx.lineCap = 'round';
 
     /* legs: planted + swinging or kicking */
@@ -769,7 +770,9 @@
     /* arms */
     ctx.strokeStyle = skin; ctx.lineWidth = 2.4;
     ctx.beginPath();
-    if (cheer || scared) {
+    if (o.kite) {
+      ctx.moveTo(-2.4, -16); ctx.lineTo(-8, -25); ctx.moveTo(3, -16); ctx.lineTo(-4, -28);
+    } else if (cheer || scared) {
       ctx.moveTo(-2.4, -16); ctx.lineTo(-7, -24 - Math.sin(time * 12 + ph) * 1.5);
       ctx.moveTo(3, -16); ctx.lineTo(8, -24 + Math.sin(time * 12 + ph) * 1.5);
     } else if (kick > 0) {
@@ -1106,6 +1109,58 @@
       ctx.fillStyle = 'rgba(255,255,255,0.5)';
       for (var bb = 0; bb < 3; bb++) { ctx.beginPath(); ctx.arc(x + Math.sin(time * 3 + bb) * 4 * s, y - ((time * 12 + bb * 5) % 14) * s * 0.5, 1.4 * s, 0, 6.283); ctx.fill(); }
     }
+  }
+
+
+  /* ── a boy flying a kite from the ghat (summer and clear days) ── */
+  var kiteVis = 0, lastKiteT = 0;
+  function drawKiteBoy(p, dayA) {
+    var dt = lastKiteT ? Math.min(0.1, Math.max(0, time - lastKiteT)) : 0; lastKiteT = time;
+    var target = (mon < 0.12 ? 1 : 0) * dayA;
+    kiteVis += (target - kiteVis) * Math.min(1, dt * 0.7);
+    if (kiteVis < 0.02) return;
+    var dark = figureInk(p), sc = clamp(Math.min(W, H) / 900, 0.55, 1.5) * 1.5, a = kiteVis;
+    var xn = 0.706, bx = W * xn, by = ghatEdgeY(xn) + H * 0.062;
+    var gust = Math.sin(time * 0.7) * 0.5 + Math.sin(time * 1.9) * 0.25;
+    var dive = Math.max(0, Math.sin(time * 0.23 + 1)) > 0.97 ? Math.sin(time * 40) * 0.5 : 0;
+    var kx = bx - W * (0.17 + gust * 0.015), ky = by - H * (0.52 + gust * 0.03) + dive * 10;
+    var handX = bx - 7 * sc, handY = by - 31 * sc;
+    var ang = Math.atan2(ky - handY, kx - handX);
+    var tilt = -0.5 + Math.sin(time * 1.3) * 0.18 + gust * 0.12;
+
+    ctx.save();
+    ctx.globalAlpha = a;
+    /* the string, with a little sag that moves in the wind */
+    var mx = (handX + kx) / 2, my = (handY + ky) / 2 + H * 0.05 + Math.sin(time * 1.1) * 3;
+    ctx.strokeStyle = 'rgba(244,236,216,0.8)'; ctx.lineWidth = 0.9;
+    ctx.beginPath(); ctx.moveTo(handX, handY); ctx.quadraticCurveTo(mx - 10, my, kx, ky + 12 * sc); ctx.stroke();
+
+    /* the kite: a diamond with a cross-frame and a long fluttering tail */
+    ctx.save();
+    ctx.translate(kx, ky); ctx.rotate(tilt);
+    var ks = sc * 1.25;
+    ctx.fillStyle = rgba(mix([200, 70, 60], p.hill, 0.1)); ctx.strokeStyle = 'rgba(255,244,222,.85)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, -17 * ks); ctx.lineTo(11 * ks, 0); ctx.lineTo(0, 19 * ks); ctx.lineTo(-11 * ks, 0); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = rgba(mix([240, 190, 70], p.hill, 0.1));
+    ctx.beginPath(); ctx.moveTo(0, -17 * ks); ctx.lineTo(11 * ks, 0); ctx.lineTo(0, 0); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, 19 * ks); ctx.lineTo(-11 * ks, 0); ctx.lineTo(0, 0); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, -17 * ks); ctx.lineTo(0, 19 * ks); ctx.moveTo(-11 * ks, 0); ctx.lineTo(11 * ks, 0); ctx.stroke();
+    /* tail of little bows */
+    ctx.strokeStyle = 'rgba(244,236,216,0.7)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, 19 * ks);
+    for (var i = 1; i <= 9; i++) ctx.lineTo(Math.sin(time * 3 + i * 0.9) * (2 + i * 0.9) * ks, (19 + i * 6.5) * ks);
+    ctx.stroke();
+    for (var j = 2; j <= 9; j += 2) {
+      var tx = Math.sin(time * 3 + j * 0.9) * (2 + j * 0.9) * ks, ty = (19 + j * 6.5) * ks;
+      ctx.fillStyle = j % 4 ? 'rgba(240,190,70,.95)' : 'rgba(210,80,70,.95)';
+      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx - 4 * ks, ty - 2.4 * ks); ctx.lineTo(tx - 4 * ks, ty + 2.4 * ks); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx + 4 * ks, ty - 2.4 * ks); ctx.lineTo(tx + 4 * ks, ty + 2.4 * ks); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+
+    /* the boy, leaning back with both arms up, watching it */
+    drawKid(bx, by, sc * 0.98, 1.3, dark, { v: 1, col: [60, 150, 130], dir: -1, kite: true, moving: false });
+    ctx.restore();
   }
 
   function drawBathers(p, dayA) {
@@ -1457,6 +1512,7 @@
 
     drawKids(p, dayA);
     drawBathers(p, dayA);
+    drawKiteBoy(p, dayA);
     drawFisherman(p, dayA);
     drawAarti(p, nightA);
 

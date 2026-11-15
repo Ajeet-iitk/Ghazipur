@@ -104,6 +104,25 @@
     brand.addEventListener('pointerleave', function () { brand.classList.remove('is-awake'); });
   }
 
+  /* the Google map loads when it nears the screen, and only once */
+  var msMap = document.getElementById('msMap');
+  function loadMap() {
+    if (!msMap || msMap.querySelector('iframe')) return;
+    var f = document.createElement('iframe');
+    f.src = 'https://maps.google.com/maps?q=Ghazipur%2C%20Uttar%20Pradesh&z=11&output=embed';
+    f.title = 'Map of Ghazipur, Uttar Pradesh';
+    f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade'; f.allowFullscreen = true;
+    msMap.appendChild(f); msMap.classList.add('is-loaded');
+  }
+  if (msMap) {
+    var btn = document.getElementById('msLoad');
+    if (btn) btn.addEventListener('click', loadMap);
+    if ('IntersectionObserver' in window) {
+      var mo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { loadMap(); mo.disconnect(); } }, { rootMargin: '300px' });
+      mo.observe(msMap);
+    }
+  }
+
   frame();
   setTimeout(function () { rest(true); }, 400);
 })();
