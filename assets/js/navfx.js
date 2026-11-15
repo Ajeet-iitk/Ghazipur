@@ -123,6 +123,60 @@
     }
   }
 
+  /* ══ the eye: fade the page away and just watch the view ══ */
+  var viewBtn = document.getElementById('viewBtn'), viewBar = document.getElementById('viewBar'), viewHint = document.getElementById('viewHint');
+  var viewing = false, drift = true, driftT0 = 0, driftTimer = null, hintTimer = null, lockTimer = null;
+  function lang() { return document.documentElement.getAttribute('data-lang') || 'en'; }
+  function T(k) { var d = window.I18N && (window.I18N[lang()] || window.I18N.en); return (d && d[k]) || (window.I18N && window.I18N.en[k]) || ''; }
+  function labelEye() { if (viewBtn) viewBtn.setAttribute('aria-label', T(viewing ? 'view.exit' : 'view.enter')); }
+  labelEye();
+  function setSky(t) { if (window.Scene && window.Scene.setTime) window.Scene.setTime(t); }
+  function startDrift() {
+    clearInterval(driftTimer);
+    if (reduced) return;
+    driftT0 = performance.now() - 6000;            /* begins in the lit part of the day */
+    driftTimer = setInterval(function () {
+      var p = ((performance.now() - driftT0) / 110000) % 1;            /* one slow day every ~110 seconds */
+      setSky(0.17 + (0.99 - 0.17) * (0.5 - 0.5 * Math.cos(p * Math.PI * 2)));
+    }, 250);
+  }
+  function enterView() {
+    if (viewing) return;
+    viewing = true;
+    document.body.classList.add('view-mode');
+    viewBtn.setAttribute('aria-pressed', 'true'); labelEye();
+    if (viewBar) viewBar.hidden = false;
+    hide(false);
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    clearTimeout(lockTimer);
+    lockTimer = setTimeout(function () { if (viewing) document.documentElement.classList.add('view-lock'); }, reduced ? 50 : 900);
+    drift = true;
+    if (viewBar) Array.prototype.forEach.call(viewBar.querySelectorAll('[data-vt]'), function (b) { b.classList.toggle('is-on', b.getAttribute('data-vt') === 'auto'); });
+    startDrift();
+    if (viewHint) { viewHint.classList.add('is-on'); clearTimeout(hintTimer); hintTimer = setTimeout(function () { viewHint.classList.remove('is-on'); }, 5000); }
+    if (window.Ambient && window.Ambient.chime) window.Ambient.chime();
+  }
+  function exitView() {
+    if (!viewing) return;
+    viewing = false;
+    clearInterval(driftTimer); clearTimeout(lockTimer);
+    document.body.classList.remove('view-mode');
+    document.documentElement.classList.remove('view-lock');
+    viewBtn.setAttribute('aria-pressed', 'false'); labelEye();
+    if (viewBar) viewBar.hidden = true;
+    window.dispatchEvent(new Event('scroll'));       /* the page takes the sky back */
+  }
+  if (viewBtn) viewBtn.addEventListener('click', function () { viewing ? exitView() : enterView(); });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && viewing) exitView(); });
+  if (viewBar) viewBar.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-vt]'); if (!b) return;
+    Array.prototype.forEach.call(viewBar.querySelectorAll('[data-vt]'), function (x) { x.classList.toggle('is-on', x === b); });
+    var v = b.getAttribute('data-vt');
+    if (v === 'auto') { drift = true; startDrift(); }
+    else { drift = false; clearInterval(driftTimer); setSky(parseFloat(v)); }
+  });
+  document.addEventListener('click', function (e) { if (e.target.closest('.lang button')) setTimeout(labelEye, 80); });
+
   frame();
   setTimeout(function () { rest(true); }, 400);
 })();
