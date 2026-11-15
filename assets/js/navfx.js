@@ -140,6 +140,13 @@
       setSky(0.17 + (0.99 - 0.17) * (0.5 - 0.5 * Math.cos(p * Math.PI * 2)));
     }, 250);
   }
+  function syncSeasons() {
+    if (!viewBar || !window.Scene || !window.Scene.getSeason) return;
+    var cur = window.Scene.getSeason();
+    Array.prototype.forEach.call(viewBar.querySelectorAll('[data-vs]'), function (b) {
+      var on = b.getAttribute('data-vs') === cur; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
   function enterView() {
     if (viewing) return;
     viewing = true;
@@ -153,6 +160,7 @@
     drift = true;
     if (viewBar) Array.prototype.forEach.call(viewBar.querySelectorAll('[data-vt]'), function (b) { b.classList.toggle('is-on', b.getAttribute('data-vt') === 'auto'); });
     startDrift();
+    syncSeasons();
     if (viewHint) { viewHint.classList.add('is-on'); clearTimeout(hintTimer); hintTimer = setTimeout(function () { viewHint.classList.remove('is-on'); }, 5000); }
     if (window.Ambient && window.Ambient.chime) window.Ambient.chime();
   }
@@ -169,6 +177,8 @@
   if (viewBtn) viewBtn.addEventListener('click', function () { viewing ? exitView() : enterView(); });
   window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && viewing) exitView(); });
   if (viewBar) viewBar.addEventListener('click', function (e) {
+    var sb = e.target.closest('[data-vs]');
+    if (sb) { if (window.Nature && window.Nature.setSeason) window.Nature.setSeason(sb.getAttribute('data-vs')); else if (window.Scene) window.Scene.setSeason(sb.getAttribute('data-vs')); syncSeasons(); return; }
     var b = e.target.closest('[data-vt]'); if (!b) return;
     Array.prototype.forEach.call(viewBar.querySelectorAll('[data-vt]'), function (x) { x.classList.toggle('is-on', x === b); });
     var v = b.getAttribute('data-vt');

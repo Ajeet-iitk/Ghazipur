@@ -2443,3 +2443,6 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
 .an-svg{ max-height:380px; margin:0 auto; }
 .an-canvas{ max-width:380px; }
 @media (max-width:620px){ .an-svg{ max-height:300px; } }
+
+.view-seasons button{ display:inline-flex; align-items:center; gap:.35rem; } .view-seasons .ic{ width:.95em; height:.95em; }
+@media (max-width:620px){ .view-seasons button{ padding:.42rem .5rem; } .view-seasons .ic{ display:none; } }

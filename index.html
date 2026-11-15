@@ -713,6 +713,11 @@
 <!-- ══ audio dock ══ -->
 <div class="view-bar" id="viewBar" hidden>
   <p class="view-hint" id="viewHint" data-i18n="view.hint">Tap the eye or press Esc to return</p>
+  <div class="view-times view-seasons" role="group" data-i18n-aria="season.label" aria-label="Season of the river">
+    <button type="button" data-vs="summer"><svg class="ic"><use href="#i-sun"/></svg><span data-i18n="season.summer">Summer</span></button>
+    <button type="button" data-vs="normal"><svg class="ic"><use href="#i-spark"/></svg><span data-i18n="season.normal">Clear</span></button>
+    <button type="button" data-vs="monsoon"><svg class="ic"><use href="#i-rain"/></svg><span data-i18n="season.monsoon">Monsoon</span></button>
+  </div>
   <div class="view-times" role="group" data-i18n-aria="view.times" aria-label="Time of day">
     <button type="button" data-vt="auto" class="is-on" data-i18n="view.drift">Drift</button>
     <button type="button" data-vt="0.17" data-i18n="view.dawn">Dawn</button>
