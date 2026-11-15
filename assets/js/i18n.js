@@ -165,6 +165,8 @@
       "pillar.note": "The glyphs here are stylised, Brahmi-style marks drawn for this page, and the words are chosen in the spirit of the edicts. This is a game, not a transcription of the inscription at Latiya.",
       "pillar.again": "Raise it again",
       "pillar.quit": "Back to the page",
+      "pillar.pill": "Play",
+      "pillar.openBtn": "Raise the pillar and read it",
       "season.label": "Season of the river",
       "season.summer": "Summer",
       "season.normal": "Clear",
@@ -349,6 +351,8 @@
       "pillar.note": "यहाँ के चिह्न इस पृष्ठ के लिए बनाए गए ब्राह्मी-शैली के चिह्न हैं, और शब्द अभिलेखों की भावना के अनुरूप चुने गए हैं। यह एक खेल है, लटिया के अभिलेख की नक़ल नहीं।",
       "pillar.again": "फिर खड़ा कीजिए",
       "pillar.quit": "पृष्ठ पर लौटें",
+      "pillar.pill": "खेलिए",
+      "pillar.openBtn": "स्तंभ खड़ा कीजिए और पढ़िए",
       "season.label": "नदी का मौसम",
       "season.summer": "गर्मी",
       "season.normal": "साफ़",
@@ -533,6 +537,8 @@
       "pillar.note": "Yahan ke chihn is page ke liye bane Brahmi-style chihn hain, aur shabd abhilekhon ki bhavna ke anurup chune gaye hain. Yeh ek game hai, Latiya ke abhilekh ki naqal nahin.",
       "pillar.again": "Phir khada kijiye",
       "pillar.quit": "Page par lautein",
+      "pillar.pill": "Khelein",
+      "pillar.openBtn": "Stambh khada kijiye aur padhiye",
       "season.label": "Nadi ka mausam",
       "season.summer": "Garmi",
       "season.normal": "Saaf",
@@ -739,7 +745,7 @@
         }
       },
       {
-        id: "lathiya", art: "pillar", era: "3rd c. BCE",
+        id: "lathiya", art: "pillar", era: "3rd c. BCE", game: "pillar",
         k: { en: "Mauryan · national monument", hi: "मौर्यकालीन · राष्ट्रीय स्मारक", eh: "Maurya kaal · national monument" },
         n: { en: "Lathiya Ashoka Pillar", hi: "लटिया अशोक स्तंभ", eh: "Lathiya Ashoka Stambh" },
         d: {

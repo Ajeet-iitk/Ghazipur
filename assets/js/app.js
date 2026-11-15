@@ -401,6 +401,7 @@
         '<span class="place-art">' + artSVG(p.art, 'p' + i, name) + '</span>' +
         '<span class="place-body">' +
         '<span class="place-kind">' + esc(pick(p.k)) + '</span>' +
+        (p.game ? '<span class="place-game"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>' + esc(L('pillar.pill')) + '</span>' : '') +
         '<h3>' + esc(name) + '</h3>' +
         '<span class="place-era">' + esc(p.era) + '</span>' +
         '<p>' + esc(clip(pick(p.d), 118)) + '</p>' +
@@ -666,7 +667,8 @@
     $('#sheetKind').textContent = pick(p.k);
     $('#sheetTitle').textContent = name;
     $('#sheetMeta').textContent = p.era;
-    $('#sheetText').innerHTML = '<p>' + esc(pick(p.d)) + '</p>';
+    $('#sheetText').innerHTML = '<p>' + esc(pick(p.d)) + '</p>' +
+      (p.game ? '<p><button type="button" class="btn btn-solid" data-game="' + p.game + '"><svg class="ic"><use href="#i-play"/></svg><span>' + esc(L('pillar.openBtn')) + '</span></button></p>' : '');
     sheet.hidden = false;
     document.body.classList.add('sheet-open');
     var close = $('.sheet-close', sheet);
@@ -682,6 +684,8 @@
   if (sheet) {
     sheet.addEventListener('click', function (e) {
       if (e.target.closest('[data-sheet-close]')) closeSheet();
+      var g = e.target.closest('[data-game]');
+      if (g && g.getAttribute('data-game') === 'pillar') { closeSheet(); if (window.Pillar) window.Pillar.open(); }
     });
   }
 

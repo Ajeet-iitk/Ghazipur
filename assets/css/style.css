@@ -1374,3 +1374,12 @@ body.pillar-open{ overflow:hidden; }
 html[lang="hi"] .pl-stage{ font-family:var(--deva); }
 html[lang="hi"] .pl-head p, html[lang="hi"] .pl-hold, html[lang="hi"] .pl-key{ text-transform:none; letter-spacing:.02em; }
 @media (max-width:640px){ .pl-tip{ font-size:.74rem; } .pl-words{ gap:.6rem 1rem; } }
+
+.place-game{
+  display:inline-flex; align-items:center; gap:.3rem; align-self:flex-start; width:fit-content;
+  margin:.1rem 0 .15rem; padding:.18rem .6rem; border-radius:999px;
+  font-size:.58rem; letter-spacing:.12em; text-transform:uppercase;
+  background:var(--accent); color:#1b130a;
+}
+.place-game .ic{ width:.8em; height:.8em; }
+html[lang="hi"] .place-game{ font-family:var(--deva); text-transform:none; letter-spacing:.02em; }
