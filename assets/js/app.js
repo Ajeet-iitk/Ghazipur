@@ -457,6 +457,7 @@
       return '<li class="tl-item rev"><span class="tl-year">' + esc(e.y) + '</span>' +
         '<div class="tl-body"><h3>' + esc(pick(e.t)) + '</h3><p>' + esc(pick(e.d)) + '</p></div></li>';
     }).join('');
+    if (window.Story) window.Story.build();
   }
 
   function renderPlaces() {
