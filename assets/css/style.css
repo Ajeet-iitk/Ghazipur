@@ -2487,3 +2487,18 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
 }
 
 .kc-head, .kc-breath{ transform-box:fill-box; }
+
+/* ── Lanka Maidan: the arrow game in a frame ── */
+.lk-frame{ position:relative; aspect-ratio:16/10; width:100%; border-radius:14px; overflow:hidden; background:#1a0a08; border:1px solid var(--line); }
+.lk-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+.lk-wait{ position:absolute; inset:0; margin:0; display:grid; place-items:center; color:#f0c97a; font-family:var(--serif); font-size:1.1rem; animation:lkPulse 1.6s ease-in-out infinite; }
+.lk-frame.is-ready .lk-wait{ display:none; }
+@keyframes lkPulse{ 0%,100%{ opacity:.45; } 50%{ opacity:1; } }
+.lk-bar{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.7rem; }
+.lk-bar .an-btn{ display:inline-flex; align-items:center; }
+.lk-i1{ stroke-dasharray:24; animation:anDraw 2.6s ease-in-out infinite; } .lk-i2{ animation:knRoll 2.4s ease-in-out infinite; }
+.lanka-nook .an-ic svg:first-child{ color:#d8542a; }
+@media (max-width:620px){ .lk-frame{ aspect-ratio:4/5; } }
+@media (prefers-reduced-motion:reduce){ .lk-i1,.lk-i2,.lk-wait{ animation:none !important; } }
+.lk-frame{ aspect-ratio:auto; height:clamp(440px,48vw,580px); }
+@media (max-width:620px){ .lk-frame{ aspect-ratio:auto; height:min(520px, 78vh); } }
