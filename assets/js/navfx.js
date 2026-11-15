@@ -153,6 +153,7 @@
     document.body.classList.add('view-mode');
     viewBtn.setAttribute('aria-pressed', 'true'); labelEye();
     if (viewBar) viewBar.hidden = false;
+    foldBar(false);
     hide(false);
     window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
     clearTimeout(lockTimer);
@@ -176,6 +177,18 @@
   }
   if (viewBtn) viewBtn.addEventListener('click', function () { viewing ? exitView() : enterView(); });
   window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && viewing) exitView(); });
+  /* on a phone the pills hide behind one small button, so they never cover the view */
+  var moreT = null;
+  function foldBar(open) {
+    if (!viewBar) return;
+    viewBar.classList.toggle('is-open', open);
+    var mb = document.getElementById('viewMore'); if (mb) mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+    clearTimeout(moreT);
+    if (open) moreT = setTimeout(function () { foldBar(false); }, 7000);
+  }
+  var vm = document.getElementById('viewMore');
+  if (vm) vm.addEventListener('click', function () { foldBar(!viewBar.classList.contains('is-open')); });
+  if (viewBar) viewBar.addEventListener('click', function () { if (viewBar.classList.contains('is-open')) foldBar(true); });
   if (viewBar) viewBar.addEventListener('click', function (e) {
     var sb = e.target.closest('[data-vs]');
     if (sb) { if (window.Nature && window.Nature.setSeason) window.Nature.setSeason(sb.getAttribute('data-vs')); else if (window.Scene) window.Scene.setSeason(sb.getAttribute('data-vs')); syncSeasons(); return; }
