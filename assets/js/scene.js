@@ -460,6 +460,25 @@
     }
   }
 
+  /* a ripple that reaches the boatman or the fisherman rocks his boat */
+  var rockB = { amp: 0, t0: 0, dir: 1 }, rockF = { amp: 0, t0: 0, dir: 1 }, boatPos = { x: -999, y: -999 }, fishPos = { x: -999, y: -999 };
+  function rockOf(r) { var k = time - r.t0; return k < 0 ? 0 : r.amp * r.dir * Math.sin(k * 12) * Math.exp(-k * 1.35); }
+  function stir(r, pos, cx, cy, reach) {
+    var d = Math.hypot(cx - pos.x, (cy - pos.y) * 1.8);
+    if (d > reach) return false;
+    var resid = Math.abs(rockOf(r)) * 0.6;
+    r.amp = Math.min(1, resid + 0.9 * (1 - d / reach) + 0.15);
+    r.dir = cx < pos.x ? 1 : -1;
+    r.t0 = time + d * 0.0016;                        /* the wave takes a moment to arrive */
+    setTimeout(function () { ripples.push({ x: pos.x, y: pos.y + 14, t: 0 }); if (window.Ambient && window.Ambient.oar) window.Ambient.oar(0.3); }, d * 1.6);
+    return true;
+  }
+  function stirBoats(cx, cy) {
+    var reach = Math.max(160, W * 0.2);
+    stir(rockB, boatPos, cx, cy, reach);
+    stir(rockF, fishPos, cx, cy, reach);
+  }
+
   function drawBoat(p) {
     var hz = horizonY();
     var t = time;
@@ -469,8 +488,11 @@
     var scale = clamp(Math.min(W, H) / 900, 0.55, 1.35);
     var dark = mix(p.hill, [10, 14, 16], 0.55);
 
+    boatPos.x = bx; boatPos.y = by + curBob;
+    var rk = rockOf(rockB);
     ctx.save();
-    ctx.translate(bx, by);
+    ctx.translate(bx + rk * 9, by + Math.abs(rk) * 3);
+    ctx.rotate(rk * 0.22);
     ctx.scale(scale, scale);
 
     /* reflection */
@@ -978,10 +1000,13 @@
     var bob = Math.sin(time * 0.82) * 2.2;
     var x = W * 0.485, y = H * 0.845 + bob;
     var cyc = (time % 7.4) / 7.4;
+    fishPos.x = x; fishPos.y = y + curBob;
+    var rf = rockOf(rockF);
 
     ctx.save();
     ctx.globalAlpha = a;
-    ctx.translate(x, y);
+    ctx.translate(x + rf * 8, y + Math.abs(rf) * 3);
+    ctx.rotate(rf * 0.2);
     ctx.scale(u, u);
 
     /* reflection */
@@ -1929,6 +1954,7 @@
     var y = e.clientY;
     if (y > horizonY() * 0.92) {
       api.ripple(e.clientX, y);
+      stirBoats(e.clientX, y);
       dripSound();
     }
   }, { passive: true });
