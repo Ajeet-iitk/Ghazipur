@@ -2485,3 +2485,5 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
   .ex-ctl{ justify-content:center; }
   .ex-tiles{ grid-template-columns:repeat(3,minmax(0,1fr)); }
 }
+
+.kc-head, .kc-breath{ transform-box:fill-box; }

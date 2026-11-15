@@ -29,20 +29,88 @@
   var st = { open: false, tab: 'litti', built: false, visible: false, raf: 0, last: 0 };
   var SCENES = {};
 
-  /* a seated cook: torso, head, cloth, two arms drawn each frame */
-  function cook(parent, x, y, o) {
-    var g = el('g', { transform: 'translate(' + x + ',' + y + ')' }, parent);
-    el('ellipse', { cy: 2, rx: 26, ry: 5, fill: '#000', opacity: .16 }, g);
-    el('path', { d: 'M-22 0q2-10 22-10t22 10z', fill: o.lower || '#e8e0cc' }, g);
-    el('path', { d: 'M-12 -8q-2-24 2-34h20q4 10 2 34z', fill: o.shirt }, g);
-    el('circle', { cx: 0, cy: -48, r: 9, fill: '#a56d47' }, g);
-    if (o.turban) el('ellipse', { cx: 0, cy: -55, rx: 10.5, ry: 6, fill: o.turban }, g);
-    else { el('path', { d: 'M-9.5 -50q9.5-14 19 0q0 -2 -4 -1q-5 -4 -11 1z', fill: '#2b2420' }, g); if (o.pallu) el('path', { d: 'M-9 -52q10-12 18 0l3 20-6-12z', fill: o.pallu }, g); }
-    var a1 = el('line', { x1: -9, y1: -36, x2: -20, y2: -14, stroke: '#a56d47', 'stroke-width': 5, 'stroke-linecap': 'round' }, g);
-    var a2 = el('line', { x1: 9, y1: -36, x2: 20, y2: -14, stroke: '#a56d47', 'stroke-width': 5, 'stroke-linecap': 'round' }, g);
-    return { g: g, a1: a1, a2: a2 };
+  /* ── the cooks: jointed arms, a face that blinks and smiles, a head that moves ── */
+  var SKIN = '#a56d47', SKIN_D = '#8a5636';
+  function limb(parent, col, w) {
+    var g = el('g', {}, parent);
+    var up = el('path', { stroke: col, 'stroke-width': w, 'stroke-linecap': 'round', fill: 'none' }, g);
+    var fo = el('path', { stroke: SKIN, 'stroke-width': w - 1, 'stroke-linecap': 'round', fill: 'none' }, g);
+    var hand = el('circle', { r: (w - 1) / 2 + 0.8, fill: SKIN }, g);
+    var bang = el('path', { stroke: '#f0c25a', 'stroke-width': 1.6, fill: 'none', 'stroke-linecap': 'round', opacity: 0 }, g);
+    return { g: g, up: up, fo: fo, hand: hand, bang: bang };
   }
-  function setArm(l, x1, y1, x2, y2) { l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); }
+  /* two-bone arm: shoulder (x1,y1) to hand (x2,y2), elbow bent downward */
+  function setArm(l, x1, y1, x2, y2) {
+    var L1 = 15, L2 = 15, dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy) || 0.01;
+    var dd = Math.min(d, L1 + L2 - 0.2), ux = dx / d, uy = dy / d;
+    var a = (L1 * L1 - L2 * L2 + dd * dd) / (2 * dd), h = Math.sqrt(Math.max(0, L1 * L1 - a * a));
+    var side = (l.side || 1);
+    var ex = x1 + ux * a + (-uy) * h * side, ey = y1 + uy * a + ux * h * side;
+    if (ey < y1 - 4 && side) { ex = x1 + ux * a + uy * h * side; ey = y1 + uy * a - ux * h * side; }
+    var hx = x1 + ux * dd, hy = y1 + uy * dd;
+    l.up.setAttribute('d', 'M' + x1 + ' ' + y1 + 'L' + ex.toFixed(1) + ' ' + ey.toFixed(1));
+    l.fo.setAttribute('d', 'M' + ex.toFixed(1) + ' ' + ey.toFixed(1) + 'L' + hx.toFixed(1) + ' ' + hy.toFixed(1));
+    l.hand.setAttribute('cx', hx.toFixed(1)); l.hand.setAttribute('cy', hy.toFixed(1));
+    var bx = hx + (ex - hx) * 0.28, by = hy + (ey - hy) * 0.28;
+    l.bang.setAttribute('d', 'M' + (bx - 2.4) + ' ' + (by - 1.4) + 'q2.4 -2 4.8 0');
+  }
+
+  function cook(parent, x, y, o) {
+    var root = el('g', { transform: 'translate(' + x + ',' + y + ')' }, parent);
+    el('ellipse', { cy: 2, rx: 28, ry: 5, fill: '#000', opacity: .16 }, root);
+    var body = el('g', {}, root);
+    /* folded legs and the cloth they sit on */
+    el('path', { d: 'M-26 1q4-12 26-12t26 12z', fill: o.lower || '#e8e0cc' }, body);
+    el('path', { d: 'M-26 1q8-4 26-4t26 4', stroke: 'rgba(0,0,0,.12)', 'stroke-width': 1.2, fill: 'none' }, body);
+    el('ellipse', { cx: -17, cy: -1, rx: 6, ry: 2.6, fill: SKIN }, body); el('ellipse', { cx: 17, cy: -1, rx: 6, ry: 2.6, fill: SKIN }, body);
+    var torso = el('g', { class: 'kc-breath' }, body);
+    el('path', { d: 'M-14 -8q-3-22 2-33q10-5 24 0q5 11 2 33z', fill: o.shirt }, torso);
+    if (o.apron) el('path', { d: 'M-9 -9q-1-14 0-24h18q1 10 0 24z', fill: o.apron, opacity: .92 }, torso);
+    if (o.pallu) { el('path', { d: 'M-12 -38q10 6 24-2l-2 8q-12 8-22 4z', fill: o.pallu }, torso); el('path', { d: 'M-12 -38q-2 12 2 24', stroke: o.pallu, 'stroke-width': 4, fill: 'none', 'stroke-linecap': 'round' }, torso); }
+    if (o.vest) el('path', { d: 'M-8 -40l8 12 8-12', stroke: o.vest, 'stroke-width': 2, fill: 'none' }, torso);
+    el('rect', { x: -3, y: -45, width: 6, height: 6, rx: 2, fill: SKIN_D }, torso);
+    /* the head: bobs, blinks, smiles */
+    var head = el('g', { class: 'kc-head' }, torso);
+    var hg = el('g', {}, head);
+    if (o.pallu) el('path', { d: 'M-11 -49q0-12 11-12t11 12q-2 -6 -11 -6t-11 6z', fill: '#2b2420' }, hg);
+    el('ellipse', { cx: 0, cy: -50, rx: 9.6, ry: 10.4, fill: SKIN }, hg);
+    el('ellipse', { cx: -9.4, cy: -50, rx: 2, ry: 3, fill: SKIN_D }, hg); el('ellipse', { cx: 9.4, cy: -50, rx: 2, ry: 3, fill: SKIN_D }, hg);
+    el('circle', { cx: -5.4, cy: -46, r: 2.2, fill: '#e07a6a', opacity: .35 }, hg); el('circle', { cx: 5.4, cy: -46, r: 2.2, fill: '#e07a6a', opacity: .35 }, hg);
+    var eyeL = el('ellipse', { cx: -3.6, cy: -51, rx: 1.4, ry: 1.7, fill: '#1c1512' }, hg), eyeR = el('ellipse', { cx: 3.6, cy: -51, rx: 1.4, ry: 1.7, fill: '#1c1512' }, hg);
+    el('path', { d: 'M-6 -54.4q2.4-1.8 4.6 0M1.4 -54.4q2.4-1.8 4.6 0', stroke: '#2b2420', 'stroke-width': 1, fill: 'none', 'stroke-linecap': 'round' }, hg);
+    el('path', { d: 'M0 -50.4v3', stroke: SKIN_D, 'stroke-width': 1, fill: 'none', 'stroke-linecap': 'round' }, hg);
+    var mouth = el('path', { d: 'M-3 -44q3 2.6 6 0', stroke: '#6a2a1e', 'stroke-width': 1.3, fill: 'none', 'stroke-linecap': 'round' }, hg);
+    if (o.turban) {
+      el('path', { d: 'M-11 -52q0-12 11-12t11 12q-5-4-11-4t-11 4z', fill: o.turban }, hg);
+      el('path', { d: 'M-10 -57q10-5 20 0M-10.6 -54.6q10.6-4 21.2 0', stroke: 'rgba(0,0,0,.14)', 'stroke-width': 1.1, fill: 'none' }, hg);
+      el('path', { d: 'M9 -55q5 2 3 9', stroke: o.turban, 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round' }, hg);
+    }
+    if (o.mustache) el('path', { d: 'M-5.4 -46.6q2.4-1.8 5.4 0q3-1.8 5.4 0q-2 2.2-5.4 .6q-3.4 1.6-5.4-.6z', fill: '#2b2420' }, hg);
+    if (o.female) {
+      el('circle', { cx: 0, cy: -55.4, r: 1.2, fill: '#c0302a' }, hg);                                  /* bindi */
+      el('circle', { cx: 4.6, cy: -47.4, r: .9, fill: '#f0c25a' }, hg);                                  /* nose pin */
+      el('circle', { cx: -9.6, cy: -46.6, r: 1.5, fill: '#f0c25a' }, hg); el('circle', { cx: 9.6, cy: -46.6, r: 1.5, fill: '#f0c25a' }, hg);
+      el('circle', { cx: 8, cy: -61, r: 4.4, fill: '#2b2420' }, hg);                                      /* a bun */
+    }
+    /* arms in front of the body */
+    var armCol = o.shirt;
+    var a1 = limb(root, armCol, 5.4), a2 = limb(root, armCol, 5.4);
+    a1.side = -1; a2.side = 1;
+    if (o.female) { a1.bang.setAttribute('opacity', 1); a2.bang.setAttribute('opacity', 1); }
+    return { g: root, a1: a1, a2: a2, torso: torso, head: head, eyeL: eyeL, eyeR: eyeR, mouth: mouth, ph: Math.random() * 6, mood: 0 };
+  }
+  /* breathing, head bob, blinking and expression, called every frame */
+  function cookLife(c, t, mood, lean) {
+    if (!c) return;
+    var br = Math.sin(t * 1.9 + c.ph) * 0.6, bob = Math.sin(t * 2.6 + c.ph) * 1.6 + (lean || 0);
+    c.torso.setAttribute('transform', 'translate(0,' + br.toFixed(2) + ') rotate(' + ((lean || 0) * 0.5).toFixed(2) + ' 0 -8)');
+    c.head.setAttribute('transform', 'translate(' + (Math.sin(t * 1.3 + c.ph) * 0.8).toFixed(2) + ',' + (Math.sin(t * 2.2 + c.ph) * 0.7).toFixed(2) + ') rotate(' + bob.toFixed(2) + ' 0 -42)');
+    var blink = (Math.sin(t * 0.9 + c.ph * 3) > 0.985 || (t + c.ph) % 4.3 < 0.12) ? 0.12 : 1;
+    c.eyeL.setAttribute('ry', 1.7 * blink); c.eyeR.setAttribute('ry', 1.7 * blink);
+    var m = mood > 0 ? 1 : 0;                                    /* a wide smile when a plate is done */
+    c.mouth.setAttribute('d', m ? 'M-4 -45.4q4 5.6 8 0q-4 1.8-8 0z' : 'M-3 -44q3 2.6 6 0');
+    c.mouth.setAttribute('fill', m ? '#8a2a1e' : 'none');
+  }
 
   /* ══ 1 · LITTI ══ */
   SCENES.litti = (function () {
@@ -62,10 +130,12 @@
         '<g transform="translate(252,184)"><ellipse rx="40" ry="9" fill="#000" opacity=".15"/><ellipse cx="0" cy="-6" rx="36" ry="10" fill="#f6f1e4"/><ellipse cx="0" cy="-8" rx="28" ry="7" fill="#e9e2d0"/>' +
         '<path d="M16 -14q8-10 16 0q-2 7-8 8q-8 0-8-8z" fill="#7a5a3a"/><path d="M-4 -17q10-4 14 -1" stroke="#fff" opacity=".5" fill="none"/></g>' +
         '<g id="kStack"></g><g class="k-steam" id="kPlateSteam"><circle cx="248" cy="150" r="4" fill="#fff"/><circle class="s2" cx="256" cy="150" r="3.4" fill="#fff"/><circle class="s3" cx="242" cy="150" r="3.6" fill="#fff"/></g>' +
-        '<g id="kCookG"></g><g id="kFlame"></g>';
+        '<g id="kCookG"></g><g id="kKid"></g><g id="kFlame"></g>';
       S.items.litti = svg.querySelector('#kLittis'); S.items.fly = svg.querySelector('#kFly'); S.items.stack = svg.querySelector('#kStack');
       S.items.sparks = svg.querySelector('#kSparks');
-      S.cook = cook(svg.querySelector('#kCookG'), 36, 196, { shirt: '#c0504a', pallu: '#f0c25a', lower: '#e9e0c8' });
+      S.kid = cook(svg.querySelector('#kKid'), 296, 198, { shirt: '#3f8f6a', lower: '#e9e0c8', female: false });
+      S.kid.g.setAttribute('transform', 'translate(292,198) scale(.62)'); S.kidArm = true;
+      S.cook = cook(svg.querySelector('#kCookG'), 36, 196, { shirt: '#c0504a', pallu: '#f0c25a', lower: '#d8742a', female: true });
       S.slots = SLOT.map(function (p) {
         var g = el('g', { transform: 'translate(' + p.x + ',' + p.y + ')', visibility: 'hidden' }, S.items.litti);
         var body = el('circle', { r: 10.5, fill: '#f1e2c0' }, g);
@@ -126,8 +196,11 @@
       if (S.done > 0) { S.done -= dt; if (S.done <= 0) { S.served = 0; S.done = 0; S.stackEls.forEach(function (g) { g.setAttribute('visibility', 'hidden'); }); S.svg.classList.remove('is-celebrate'); S.status(); } }
       /* the cook turns a litti every so often */
       var a = Math.sin(t * 1.8);
-      setArm(S.cook.a1, -9, -36, -16, -20);
-      setArm(S.cook.a2, 9, -36, 44 + a * 10, -22 + Math.sin(t * 3.6) * 5);
+      setArm(S.cook.a1, -10, -38, -14 + Math.sin(t * 1.4) * 2, -18);
+      setArm(S.cook.a2, 10, -38, 44 + a * 10, -22 + Math.sin(t * 3.6) * 5);
+      cookLife(S.cook, t, S.done, Math.sin(t * 1.8) * 1.4);
+      cookLife(S.kid, t, S.done > 0 ? 1 : (S.flying.length ? 1 : 0), 0);
+      if (S.kidArm) { var cl = S.done > 0 || S.flying.length ? Math.sin(t * 14) * 4 : 0; setArm(S.kid.a1, -7, -26, -4 + cl, -34 - (S.done > 0 ? 10 : 0)); setArm(S.kid.a2, 7, -26, 4 - cl, -34 - (S.done > 0 ? 10 : 0)); }
       if (Math.random() < dt * 5) {
         var sp = el('circle', { cx: 80 + Math.random() * 70, cy: 160, r: 1.5, fill: '#ffb347', class: 'k-spark' }, S.items.sparks);
         setTimeout(function () { if (sp.parentNode) sp.parentNode.removeChild(sp); }, 900);
@@ -166,7 +239,7 @@
       var pg = svg.querySelector('#kPestle');
       S.pestle = el('g', {}, pg);
       el('rect', { x: -4, y: -46, width: 8, height: 46, rx: 4, fill: '#8a6a42' }, S.pestle); el('ellipse', { cy: 2, rx: 9, ry: 6, fill: '#a98a58' }, S.pestle);
-      S.man = cook(svg.querySelector('#kManG'), 262, 196, { shirt: '#3f6f8f', turban: '#e9dcc0', lower: '#e6dcc4' });
+      S.man = cook(svg.querySelector('#kManG'), 262, 196, { shirt: '#3f6f8f', turban: '#e9dcc0', lower: '#e6dcc4', mustache: true, vest: '#2b4a63' });
       svg.onpointerdown = function () { S.tap(); };
       S.reset();
     };
@@ -203,8 +276,9 @@
       var mashing = S.n > 0 && S.n < ING.length + 1;
       var up = Math.abs(Math.sin(t * 5.2)) * (mashing ? 1 : 0.3);
       S.pestle.setAttribute('transform', 'translate(' + (BOWL.x + 6) + ',' + (BOWL.y - 28 - up * 22) + ')');
-      setArm(S.man.a1, -9, -36, -22, -18);
-      setArm(S.man.a2, 9, -36, -62, -52 - up * 14);
+      setArm(S.man.a1, -10, -38, -24, -20);
+      setArm(S.man.a2, 10, -38, -62, -52 - up * 14);
+      cookLife(S.man, t, S.hold > 0 ? 1 : 0, up * 2.4);
       if (S.hold > 0) { S.hold -= dt; if (S.hold <= 0) { S.svg.classList.remove('is-celebrate'); S.reset(); } }
     };
     return S;
@@ -232,7 +306,7 @@
         '<g transform="translate(262,184)"><ellipse rx="36" ry="9" fill="#000" opacity=".15"/><ellipse cy="-6" rx="34" ry="10" fill="#f6f1e4"/><ellipse cy="-8" rx="26" ry="7" fill="#e9e2d0"/></g><g id="kPlateS"></g>' +
         '<g class="k-steam"><circle cx="146" cy="132" r="4" fill="#fff"/><circle class="s2" cx="156" cy="132" r="3.4" fill="#fff"/><circle class="s3" cx="140" cy="132" r="3.8" fill="#fff"/></g><g id="kHalwai"></g>';
       S.items.pieces = svg.querySelector('#kPieces'); S.items.fly = svg.querySelector('#kFlyS'); S.items.bub = svg.querySelector('#kBubbles'); S.items.plate = svg.querySelector('#kPlateS');
-      S.man = cook(svg.querySelector('#kHalwai'), 214, 134, { shirt: '#e9dcc0', turban: '#c0504a', lower: '#e6dcc4' });
+      S.man = cook(svg.querySelector('#kHalwai'), 214, 134, { shirt: '#e9dcc0', turban: '#c0504a', lower: '#e6dcc4', mustache: true, apron: '#b8561f' });
       S.stackEls = [];
       for (var i = 0; i < 5; i++) { var g = el('g', { transform: 'translate(' + (PLATE.x - 20 + (i % 3) * 18 + (Math.floor(i / 3)) * 9) + ',' + (PLATE.y - 6 - Math.floor(i / 3) * 9) + ')', visibility: 'hidden' }, S.items.plate); piece(g, '#c47a2a'); S.stackEls.push(g); }
       svg.onpointerdown = function () { S.tap(); };
@@ -280,8 +354,9 @@
       }
       if (S.done > 0) { S.done -= dt; if (S.done <= 0) { S.served = 0; S.done = 0; S.stackEls.forEach(function (g) { g.setAttribute('visibility', 'hidden'); }); S.svg.classList.remove('is-celebrate'); S.status(); } }
       var s = Math.sin(t * 2.6);
-      setArm(S.man.a1, -9, -36, -24, -16);
-      setArm(S.man.a2, 9, -36, -44 + s * 8, -34 + Math.cos(t * 2.6) * 6);
+      setArm(S.man.a1, -10, -38, -26, -18);
+      setArm(S.man.a2, 10, -38, -44 + s * 8, -34 + Math.cos(t * 2.6) * 6);
+      cookLife(S.man, t, S.done > 0 ? 1 : 0, s * 1.2);
     };
     return S;
   })();

@@ -1300,7 +1300,7 @@
       {
         icon: "i-lamp", act: "kitchen",
         t: { en: "The kitchen corner", hi: "रसोई का कोना", eh: "Rasoi ka kona" },
-        d: { en: "Another hidden corner: roast litti on embers, mash chokha, fry launglata.", hi: "एक और छुपा कोना: अंगारों पर लिट्टी सेंकिए, चोखा मसलिए, लौंगलता तलिए।", eh: "Ek aur chhupa kona: angaaron par litti senkiye, chokha masliye, launglata taliye." },
+        d: { en: "Another hidden corner, with cooks who smile, blink and clap: roast litti on embers, mash chokha, fry launglata.", hi: "एक और छुपा कोना, जहाँ रसोइये मुस्कुराते, पलकें झपकाते और ताली बजाते हैं: अंगारों पर लिट्टी सेंकिए, चोखा मसलिए, लौंगलता तलिए।", eh: "Ek aur chhupa kona, jahan rasoiye muskurate, palkein jhapkate aur taali bajate hain: angaaron par litti senkiye, chokha masliye, launglata taliye." },
         b: { en: "Start cooking", hi: "पकाना शुरू करें", eh: "Pakana shuru karein" }
       },
       {
