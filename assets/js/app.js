@@ -376,11 +376,7 @@
   }
 
   function renderGhats() {
-    var el = $('#ghatList');
-    if (!el) return;
-    el.innerHTML = window.DATA.ghats.map(function (g, i) {
-      return '<li><b>' + esc(g.n) + '</b><span>' + esc(pick(g.t)) + '</span></li>';
-    }).join('');
+    if (window.Riverfront) window.Riverfront.build();
   }
 
   function renderTimeline() {

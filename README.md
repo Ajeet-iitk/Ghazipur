@@ -13,6 +13,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Season switch** — Summer (the river thins, sandbars rise), Clear, or Monsoon (rain, thunder, a swollen river flooding the lower ghat steps).
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
+- **The riverfront** — nine ghats drawn as one swipeable panorama; tap a ghat and the boatman rows to it, or take the tour. A ferry crosses to Tari Ghat.
 - **Explore** section listing every creative piece on the site.
 - Audio controller, language switch, theme switch, search, and a custom favicon.
 
@@ -41,5 +42,6 @@ python -m http.server 8000
 - `assets/js/nature.js` — season switch and wildlife spotting
 - `assets/js/yard.js` — the factory crew animation
 - `assets/js/pillar.js` — the Ashoka Pillar game
+- `assets/js/ghats.js` — the illustrated riverfront
 - `assets/js/audio.js` — music and sound effects (Web Audio)
 - `assets/js/i18n.js`, `assets/js/app.js` — languages and interactions

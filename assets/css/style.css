@@ -1458,3 +1458,106 @@ html[lang="hi"] .place-game{ font-family:var(--deva); text-transform:none; lette
   .dock-more{ min-height:42px; min-width:42px; }
   .site-foot a, .credits a{ display:inline-block; padding:.5rem 0; }
 }
+
+/* ══ the riverfront: nine ghats, drawn ═══════════════════════ */
+.rf{
+  --rf-sky1:#9cc3d8; --rf-sky2:#f6e2c0; --rf-far:#b9a898; --rf-stone:#b8a288; --rf-stone2:#d0bba1; --rf-stoned:#8e7962;
+  --rf-brick:#a85442; --rf-brickd:#7c3a2d; --rf-tree:#5f7a55; --rf-tree2:#738f64; --rf-bark:#6b4d3a; --rf-water1:#a6c7c6; --rf-water2:#5d8e96;
+  --rf-dark:#2b2420; --rf-win:#e7c88d; --rf-label:#fff7e8; --rf-orb:#fff0c8; --rf-orbglow:rgba(255,226,170,.5);
+  --rf-star:0; --rf-lampop:.35; --rf-skin:#b07a52; --rf-shirt:#d8c9a6; --rf-shirt2:#8c5a3e; --rf-hull:#4a3226; --rf-hull2:#6d4b36;
+  position:relative; border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  background:color-mix(in srgb, var(--card-solid) 55%, transparent); box-shadow:var(--shadow-sm);
+}
+html[data-theme="night"] .rf{
+  --rf-sky1:#0e1a44; --rf-sky2:#3c5796; --rf-far:#1d2c58; --rf-stone:#3e476c; --rf-stone2:#505b84; --rf-stoned:#2a3256;
+  --rf-brick:#5c3441; --rf-brickd:#43242f; --rf-tree:#1f3b4b; --rf-tree2:#27485a; --rf-bark:#241a22; --rf-water1:#2c4784; --rf-water2:#121f4a;
+  --rf-dark:#0a1130; --rf-win:#ffd79a; --rf-label:#dfe8ff; --rf-orb:#eef3ff; --rf-orbglow:rgba(190,210,255,.35);
+  --rf-star:1; --rf-lampop:.95; --rf-skin:#8a5c40; --rf-shirt:#9aa6c4; --rf-shirt2:#6d5a70; --rf-hull:#1c1520; --rf-hull2:#32232a;
+}
+.rf-frame{
+  overflow-x:auto; overflow-y:hidden; cursor:grab; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+  scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 34px),transparent 100%);
+}
+.rf-frame.is-drag{ cursor:grabbing; user-select:none; }
+.rf-svg{ display:block; height:clamp(300px,31vw,420px); width:auto; aspect-ratio:2200/400; max-width:none; }
+.rf-svg *{ vector-effect:none; }
+.rf-svg .rf-stone{ fill:var(--rf-stone); } .rf-svg .rf-stone2{ fill:var(--rf-stone2); } .rf-svg .rf-stone-d{ fill:var(--rf-stoned); }
+.rf-svg .rf-brick{ fill:var(--rf-brick); } .rf-svg .rf-brick-d{ fill:var(--rf-brickd); }
+.rf-svg .rf-tree{ fill:var(--rf-tree); } .rf-svg .rf-tree2{ fill:var(--rf-tree2); } .rf-svg .rf-bark{ fill:var(--rf-bark); }
+.rf-svg .rf-dark{ fill:var(--rf-dark); } .rf-svg .rf-win{ fill:var(--rf-win); }
+.rf-svg .rf-skin{ fill:var(--rf-skin); } .rf-svg .rf-shirt{ fill:var(--rf-shirt); } .rf-svg .rf-shirt2{ fill:var(--rf-shirt2); }
+.rf-svg .rf-hull{ fill:var(--rf-hull); } .rf-svg .rf-hull2{ fill:var(--rf-hull2); } .rf-svg .rf-cap{ fill:#e9dcc0; }
+.rf-svg .rf-far{ fill:var(--rf-far); }
+.rf-svg .rf-brass{ fill:#d3a24e; } .rf-svg .rf-flagcloth{ fill:var(--rf-brick); } .rf-svg .rf-cloth{ fill:#c9774a; opacity:.9; }
+.rf-svg .rf-line{ stroke:var(--rf-stoned); stroke-width:1; fill:none; opacity:.55; }
+.rf-svg .rf-brick ~ .rf-line{ stroke:var(--rf-brickd); }
+.rf-svg .rf-edge{ stroke:var(--rf-stoned); stroke-width:1.4; fill:none; opacity:.8; }
+.rf-svg .rf-wire{ stroke:#c9b8a6; stroke-width:1; fill:none; opacity:.7; }
+.rf-svg .rf-oar{ stroke:#8a6a52; stroke-width:2.2; stroke-linecap:round; fill:none; }
+.rf-svg .rf-stars circle{ fill:#fff6dc; opacity:calc(var(--rf-star) * .8); }
+.rf-svg .rf-orb{ fill:var(--rf-orb); } .rf-svg .rf-orb-glow{ fill:var(--rf-orbglow); filter:blur(14px); }
+.rf-svg .rf-smoke circle{ fill:#d9c9b8; opacity:.45; animation:rfSmoke 5s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+.rf-svg .rf-smoke circle:nth-child(2){ animation-delay:-1.6s; } .rf-svg .rf-smoke circle:nth-child(3){ animation-delay:-3.2s; }
+@keyframes rfSmoke{ 0%,100%{ transform:translate(0,0) scale(.9); opacity:.35; } 50%{ transform:translate(8px,-10px) scale(1.25); opacity:.12; } }
+.rf-svg .rf-flag{ transform-box:fill-box; transform-origin:left center; animation:rfFlag 2.6s ease-in-out infinite; }
+@keyframes rfFlag{ 0%,100%{ transform:skewY(0) scaleX(1); } 50%{ transform:skewY(-6deg) scaleX(.93); } }
+.rf-svg .rf-bell{ animation:rfBell 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center top; }
+@keyframes rfBell{ 0%,100%{ transform:rotate(0); } 50%{ transform:rotate(6deg); } }
+.rf-svg .rf-lamp{ fill:#ffd79a; } .rf-svg .rf-diya-b{ fill:#7a4a30; }
+.rf-svg .rf-lamp-halo{ fill:url(#rfGlowG); opacity:var(--rf-lampop); animation:rfFlick 3.1s ease-in-out infinite; }
+@keyframes rfFlick{ 0%,100%{ transform:scale(1); } 40%{ transform:scale(1.12); } 70%{ transform:scale(.95); } }
+.rf-svg .rf-glow{ fill:url(#rfGlowG); opacity:.18; transition:opacity .6s; }
+.rf-svg .rf-g.is-on .rf-glow{ opacity:.85; }
+.rf-svg .rf-diya{ opacity:.55; transition:opacity .5s; }
+.rf-svg .rf-g.is-on .rf-diya{ opacity:1; animation:rfFlick 2.4s ease-in-out infinite; }
+.rf-svg .rf-wave{ fill:none; stroke:#ffffff; stroke-width:1.4; opacity:.28; animation:rfWave 9s linear infinite; }
+.rf-svg .rf-wave1{ animation-duration:12s; opacity:.2; } .rf-svg .rf-wave2{ animation-duration:15s; opacity:.14; animation-direction:reverse; }
+@keyframes rfWave{ to{ transform:translateX(-60px); } }
+.rf-svg .rf-g{ cursor:pointer; outline:none; }
+.rf-svg .rf-hit{ fill:transparent; }
+.rf-svg .rf-art{ transition:transform .5s var(--ease-out); }
+.rf-svg .rf-g:hover .rf-art, .rf-svg .rf-g:focus-visible .rf-art{ transform:translateY(-4px); }
+.rf-svg .rf-g:focus-visible .rf-label{ text-decoration:underline; }
+.rf.has-on .rf-g:not(.is-on) .rf-art{ opacity:.86; }
+.rf-svg .rf-num{ font:500 10px var(--sans); letter-spacing:.2em; fill:var(--rf-label); opacity:.55; }
+.rf-svg .rf-label{ font:500 17px var(--serif); fill:var(--rf-label); opacity:.92; transition:fill .4s, font-size .4s; }
+.rf-svg .rf-g.is-on .rf-label{ fill:#ffd79a; font-size:20px; opacity:1; }
+.rf-svg .rf-g.is-on .rf-num{ opacity:1; fill:#ffd79a; }
+.rf-svg .rf-tarilabel{ font:500 13px var(--serif); fill:var(--rf-label); opacity:.75; }
+.rf-svg .rf-boat{ transition:transform 2.2s cubic-bezier(.45,.05,.25,1); }
+.rf-svg .rf-boat-in{ animation:rfBob 3.2s ease-in-out infinite; }
+@keyframes rfBob{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(2.5px) rotate(1deg); } }
+.rf-svg .rf-shadow{ fill:#000; opacity:.22; }
+.rf-svg .rf-ferry{ animation:rfFerry 26s ease-in-out infinite alternate; }
+@keyframes rfFerry{ from{ transform:translateX(0); } to{ transform:translateX(240px); } }
+
+.rf-cap{
+  display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; padding:.9rem 1.1rem 1rem;
+  border-top:1px solid var(--line); background:color-mix(in srgb, var(--card-solid) 80%, transparent);
+}
+.rf-now{ display:flex; flex-direction:column; gap:.1rem; min-width:11rem; flex:1 1 11rem; }
+.rf-count{ font-size:.58rem; letter-spacing:.18em; color:var(--accent); font-variant-numeric:tabular-nums; }
+.rf-now b{ font-family:var(--serif); font-weight:500; font-size:1.35rem; line-height:1.1; }
+.rf-now i{ font-style:normal; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--soft); }
+.rf-nav{
+  width:40px; height:40px; border-radius:50%; display:grid; place-items:center; flex:none;
+  border:1px solid var(--line-strong); color:var(--ink); transition:background .25s, transform .25s;
+}
+.rf-nav:hover{ background:color-mix(in srgb, var(--accent) 14%, transparent); transform:scale(1.05); }
+.rf-nav .ic{ width:16px; height:16px; }
+.rf-nav[data-rf="prev"] .ic{ transform:rotate(180deg); }
+.rf-hint{ flex-basis:100%; font-size:.62rem; letter-spacing:.1em; color:var(--soft); opacity:.8; }
+html[lang="hi"] .rf-now i, html[lang="hi"] .rf-hint{ text-transform:none; letter-spacing:.02em; font-family:var(--deva); }
+html[lang="hi"] .rf-svg .rf-label{ font-family:var(--deva); }
+@media (max-width:620px){
+  .rf-cap{ padding:.8rem .9rem; gap:.6rem; }
+  .rf-now b{ font-size:1.2rem; }
+  .rf-tour{ flex:1 1 100%; justify-content:center; order:5; }
+  .rf-svg{ height:300px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .rf-svg *{ animation:none !important; }
+  .rf-svg .rf-boat{ transition:none; }
+}
