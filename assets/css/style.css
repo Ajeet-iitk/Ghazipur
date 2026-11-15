@@ -2466,3 +2466,22 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
 .an-svg.is-celebrate{ animation:kCel .5s ease-in-out 3; } @keyframes kCel{ 0%,100%{ filter:none; } 50%{ filter:brightness(1.12) saturate(1.2); } }
 @media (max-width:900px){ .living-col{ align-self:stretch; } }
 @media (prefers-reduced-motion:reduce){ .kn-i1,.kn-i2,.kn-i3,.k-ember,#kSmoke circle,.k-steam circle,.k-oil,.k-syr,.an-svg.is-celebrate{ animation:none !important; } }
+
+/* the phone menu is a fixed sheet; the desktop wave's position:relative must not override it */
+@media (max-width:900px){
+  .site-nav{ position:fixed; }
+  .site-head{ height:auto; }
+}
+
+/* 320px phones: a tighter header, and Explore that never forces the page wider */
+.ex-wrap > *, .living-pair > *, .ex-side, .ex-stage{ min-width:0; }
+@media (max-width:360px){
+  .site-head{ padding-left:.6rem; padding-right:.6rem; gap:.2rem; }
+  .brand{ gap:0; }
+  .lang button{ min-width:28px; height:28px; padding:0 .3rem; font-size:.66rem; }
+  .site-head .icon-btn, .site-head .menu-btn{ width:34px; height:34px; min-width:34px; min-height:34px; }
+  .head-tools{ gap:0; }
+  .ex-stage{ flex-direction:column; text-align:center; align-items:center; }
+  .ex-ctl{ justify-content:center; }
+  .ex-tiles{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}

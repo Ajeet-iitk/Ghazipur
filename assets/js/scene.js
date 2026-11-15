@@ -1970,11 +1970,14 @@
   function spawnWild(id) {
     var hz = horizonY(), dir = Math.random() < 0.5 ? -1 : 1;
     var r = Math.random();
-    if (!id) id = r < 0.42 ? 'dolphin' : r < 0.74 ? 'geese' : 'ducks';
+    var vm = document.body.classList.contains('view-mode');
+    if (!id) id = vm ? (r < 0.78 ? 'dolphin' : r < 0.9 ? 'geese' : 'ducks') : (r < 0.42 ? 'dolphin' : r < 0.74 ? 'geese' : 'ducks');
     var u = (H - hz);
     if (id === 'dolphin') {
       var f = R(0.30, 0.58);
-      wildlife.push({ id: id, t: 0, dur: R(1.5, 1.9), dir: dir, x0: (dir > 0 ? R(0.12, 0.58) : R(0.42, 0.86)) * W, yb: hz + u * f, k: wk() * (0.7 + f * 0.7), in: false, out: false, hx: -999, hy: -999, vis: false });
+      /* in the eye view dolphins surface in pods of two or three */
+      var pod = vm ? 1 + Math.floor(R(1, 3.4)) : 1, px = R(0.12, 0.58);
+      for (var pi = 0; pi < pod; pi++) wildlife.push({ id: id, t: -pi * R(0.45, 0.8), dur: R(1.5, 1.9), dir: dir, x0: ((dir > 0 ? px : px + 0.3) + pi * R(0.05, 0.1) * dir) * W, yb: hz + u * clamp(f + (pi - 1) * 0.06, 0.28, 0.62), k: wk() * (0.7 + f * 0.7), in: false, out: false, hx: -999, hy: -999, vis: false });
     } else if (id === 'geese') {
       wildlife.push({ id: id, t: 0, dur: R(17, 23), dir: dir, y: R(0.10, 0.26) * H, n: 5 + Math.floor(R(0, 3)), pts: [] });
     } else {
@@ -2009,9 +2012,10 @@
 
     /* wildlife */
     nextWild -= dt;
+    var vmode = document.body.classList.contains('view-mode');
     if (nextWild <= 0) {
-      if (wildlife.length < 3) spawnWild();
-      nextWild = R(14, 28);
+      if (wildlife.length < (vmode ? 8 : 3)) spawnWild();
+      nextWild = vmode ? R(2.5, 5.5) : R(14, 28);
     }
     for (var w = wildlife.length - 1; w >= 0; w--) {
       var a = wildlife[w];
@@ -2025,6 +2029,7 @@
   }
 
   function drawDolphin(p, a) {
+    if (a.t < 0) return;
     var u = a.t / a.dur, k = a.k;
     var span = W * 0.11, ah = H * 0.05 * (0.7 + k * 0.3);
     var x = a.x0 + a.dir * u * span;
@@ -2151,6 +2156,7 @@
     },
     getSeason: function () { return seasonTarget === 0 ? 'summer' : seasonTarget === 1 ? 'monsoon' : 'normal'; },
     callWild: function (id) { spawnWild(id); },
+    _wild: function () { return wildlife.filter(function (w) { return w.id === 'dolphin' && w.t >= 0; }).length; },
     _rock: function () { return { boat: +Math.abs(rockOf(rockB)).toFixed(3), amp: +rockB.amp.toFixed(2), fish: +rockF.amp.toFixed(2) }; },
     ringBells: ringAllBells,
     ripple: function (x, y) {

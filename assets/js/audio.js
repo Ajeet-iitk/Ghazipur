@@ -260,14 +260,13 @@
 
   /* ── effects ──────────────────────────────────────────────── */
   function bellSound() {
-    if (!ctx) return;
-    if (!playing) start();
+    if (!sfxOn || !ensureFx()) return;
     var when = t() + 0.02;
     var base = 300 + Math.random() * 18;
     var partials = [1, 2.02, 2.98, 4.16, 5.43, 6.79];
     var amps = [1, 0.55, 0.42, 0.24, 0.14, 0.08];
     var out = gainNode(1);
-    out.connect(master);
+    out.connect(fx);
     var send = gainNode(0.6); out.connect(send); send.connect(verb);
     for (var i = 0; i < partials.length; i++) {
       var o = ctx.createOscillator();
@@ -320,7 +319,7 @@
   }
 
   function chime() {
-    if (!ctx || !playing || !sfxOn) return;
+    if (!sfxOn || !ensureFx()) return;
     var when = t() + 0.01;
     [1046.5, 1568, 2093].forEach(function (f, i) {
       var o = ctx.createOscillator();
@@ -329,14 +328,14 @@
       g.gain.setValueAtTime(0.0001, when);
       g.gain.exponentialRampToValueAtTime(0.030 / (i + 1), when + 0.008);
       g.gain.exponentialRampToValueAtTime(0.0001, when + 0.75 - i * 0.15);
-      o.connect(g); g.connect(master);
+      o.connect(g); g.connect(fx);
       var s = gainNode(0.5); g.connect(s); s.connect(verb);
       o.start(when); o.stop(when + 0.9);
     });
   }
 
   function plop() {
-    if (!ctx || !playing || !sfxOn) return;
+    if (!sfxOn || !ensureFx()) return;
     var when = t() + 0.01;
     var o = ctx.createOscillator();
     o.type = 'sine';
@@ -346,7 +345,7 @@
     g.gain.setValueAtTime(0.0001, when);
     g.gain.exponentialRampToValueAtTime(0.075, when + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, when + 0.22);
-    o.connect(g); g.connect(master);
+    o.connect(g); g.connect(fx);
     var s = gainNode(0.35); g.connect(s); s.connect(verb);
     o.start(when); o.stop(when + 0.3);
 
@@ -356,12 +355,12 @@
     ng.gain.setValueAtTime(0.0001, when);
     ng.gain.exponentialRampToValueAtTime(0.05, when + 0.005);
     ng.gain.exponentialRampToValueAtTime(0.0001, when + 0.12);
-    nz.connect(nf); nf.connect(ng); ng.connect(master);
+    nz.connect(nf); nf.connect(ng); ng.connect(fx);
     nz.start(when); nz.stop(when + 0.16);
   }
 
   function tick() {
-    if (!ctx || !playing || !sfxOn) return;
+    if (!sfxOn || !ensureFx()) return;
     var when = t() + 0.005;
     var o = ctx.createOscillator();
     o.type = 'sine'; o.frequency.value = 1850 + Math.random() * 300;
@@ -369,7 +368,7 @@
     g.gain.setValueAtTime(0.0001, when);
     g.gain.exponentialRampToValueAtTime(0.014, when + 0.004);
     g.gain.exponentialRampToValueAtTime(0.0001, when + 0.06);
-    o.connect(g); g.connect(master);
+    o.connect(g); g.connect(fx);
     o.start(when); o.stop(when + 0.08);
   }
 
