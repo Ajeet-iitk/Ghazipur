@@ -483,13 +483,7 @@
   }
 
   function renderFestivals() {
-    var el = $('#festivalGrid');
-    if (!el) return;
-    el.innerHTML = window.DATA.festivals.map(function (f, i) {
-      return '<article class="festival rev"><span class="fest-num">0' + (i + 1) + '</span>' +
-        '<h3>' + esc(pick(f.n)) + '</h3><p>' + esc(pick(f.d)) + '</p>' +
-        '<span class="fest-when">' + esc(pick(f.w)) + '</span></article>';
-    }).join('');
+    if (window.Festivals) window.Festivals.build();
   }
 
   function renderPhrases() {

@@ -1642,3 +1642,130 @@ path.art-flicker{ opacity:.95; }
   .poppy-end .poppy-quote blockquote{ font-size:1.1rem; max-width:none; }
   .poppy-end .poppy-note{ font-size:.72rem; }
 }
+
+/* ══ the living year: animated festival scenes + a match game ══ */
+.festival-grid{ background:none !important; border:0 !important; gap:clamp(.7rem,1.6vw,1.1rem) !important; border-radius:0 !important; overflow:visible !important; }
+.fest-card{
+  position:relative; display:flex; flex-direction:column; text-align:left; cursor:pointer; outline:none;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow-sm);
+  transition:transform .5s var(--ease-out), border-color .4s, box-shadow .5s;
+}
+.fest-card:hover, .fest-card:focus-visible{ transform:translateY(-5px); border-color:color-mix(in srgb, var(--accent) 48%, var(--line)); box-shadow:var(--shadow); }
+.fest-art{ position:relative; aspect-ratio:300/190; overflow:hidden; background:var(--paper-3); }
+.fest-art svg{ display:block; width:100%; height:100%; }
+.fest-art svg [class^="fa-"]{ transform-box:fill-box; }
+.fest-num{ position:absolute; top:.55rem; left:.7rem; font-size:.6rem; letter-spacing:.18em; color:#fff; text-shadow:0 1px 6px rgba(0,0,0,.55); }
+.fest-body{ padding:.85rem 1rem 1rem; display:flex; flex-direction:column; gap:.2rem; flex:1; }
+.fest-body h3{ font-size:1.18rem; line-height:1.15; }
+.fest-when{ font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+.fest-text{ margin-top:.25rem; font-size:.8rem; line-height:1.55; color:var(--soft); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.fest-card:hover .fest-text, .fest-card:focus-visible .fest-text{ -webkit-line-clamp:unset; }
+html[lang="hi"] .fest-when{ text-transform:none; letter-spacing:.02em; }
+
+/* the little motions */
+.fa-sun{ animation:faSun 6s ease-in-out infinite; transform-origin:50% 100%; }
+@keyframes faSun{ 0%,100%{ transform:translateY(2px) scale(.97); } 50%{ transform:translateY(-3px) scale(1.04); } }
+.fa-glint{ animation:faGlint 3.2s ease-in-out infinite; }
+@keyframes faGlint{ 0%,100%{ opacity:.55; transform:scaleX(.9); } 50%{ opacity:1; transform:scaleX(1.1); } }
+.fa-wave{ animation:faWave 8s linear infinite; }
+@keyframes faWave{ to{ transform:translateX(-60px); } }
+.fa-ring{ animation:faRing 4.5s ease-out infinite; opacity:0; transform-origin:center; }
+@keyframes faRing{ 0%{ transform:scale(.3); opacity:.7; } 100%{ transform:scale(1.6); opacity:0; } }
+.fa-soop{ animation:faSoop 3.4s ease-in-out infinite; }
+@keyframes faSoop{ 0%,100%{ transform:translateY(0) rotate(-1.5deg); } 50%{ transform:translateY(-3px) rotate(1.5deg); } }
+.fest-art.is-act .fa-soop{ animation:faRaise 1.8s ease-out; }
+@keyframes faRaise{ 0%{ transform:translateY(0); } 40%{ transform:translateY(-16px) scale(1.08); } 100%{ transform:translateY(0); } }
+.fest-art.is-act .fa-sun{ animation:faSunUp 1.8s ease-out; }
+@keyframes faSunUp{ 0%{ transform:scale(1); filter:brightness(1); } 40%{ transform:scale(1.25); filter:brightness(1.25); } 100%{ transform:scale(1); filter:brightness(1); } }
+.fa-star{ animation:faStar 3.6s ease-in-out infinite; }
+@keyframes faStar{ 0%,100%{ opacity:.25; } 50%{ opacity:1; } }
+.fa-moon{ animation:faSun 8s ease-in-out infinite; }
+.fa-diya{ animation:faDrift 18s ease-in-out infinite alternate; }
+@keyframes faDrift{ from{ transform:translateX(-16px); } to{ transform:translateX(22px); } }
+.fa-diya.fa-new{ animation:faDrift 18s ease-in-out infinite alternate, faNew .9s ease-out; }
+@keyframes faNew{ from{ opacity:0; transform:translateY(-8px) scale(.4); } to{ opacity:1; } }
+.fa-flame{ animation:faFlame 1.4s ease-in-out infinite; transform-origin:center bottom; }
+@keyframes faFlame{ 0%,100%{ transform:scale(1,1); } 40%{ transform:scale(1.1,1.2) skewX(3deg); } 70%{ transform:scale(.95,.9) skewX(-3deg); } }
+.fa-lantern{ animation:faLantern 11s ease-in infinite; opacity:0; }
+@keyframes faLantern{ 0%{ transform:translateY(0); opacity:0; } 12%{ opacity:.95; } 100%{ transform:translateY(-120px) translateX(14px); opacity:0; } }
+.fest-art.is-act .fa-lantern{ animation-duration:4s; }
+.fa-cloud{ animation:faCloud 14s ease-in-out infinite alternate; }
+.fa-cloud.c2{ animation-duration:19s; animation-direction:alternate-reverse; }
+@keyframes faCloud{ from{ transform:translateX(-14px); } to{ transform:translateX(16px); } }
+.fa-rain{ animation:faRain .9s linear infinite; }
+@keyframes faRain{ from{ transform:translateY(-12px); opacity:0; } 15%{ opacity:.7; } to{ transform:translateY(170px); opacity:0; } }
+.fa-bolt{ opacity:0; animation:faBolt 8s linear infinite; }
+@keyframes faBolt{ 0%,86%,100%{ opacity:0; } 88%{ opacity:1; } 90%{ opacity:.1; } 92%{ opacity:.9; } 95%{ opacity:0; } }
+.fest-art.is-act .fa-bolt{ animation:faBoltNow 1s linear; }
+@keyframes faBoltNow{ 0%{ opacity:1; } 15%{ opacity:.1; } 30%{ opacity:.95; } 100%{ opacity:0; } }
+.fa-walk{ animation:faWalk 16s linear infinite; }
+@keyframes faWalk{ from{ transform:translateX(-30px); } to{ transform:translateX(330px); } }
+.fa-kanwar{ transform-origin:50% 12%; animation:faSwing 1s ease-in-out infinite alternate; }
+@keyframes faSwing{ from{ transform:rotate(-3deg); } to{ transform:rotate(3deg); } }
+.fa-leg{ transform-origin:50% 0; animation:faLeg .6s ease-in-out infinite alternate; }
+.fa-leg.l2{ animation-direction:alternate-reverse; }
+@keyframes faLeg{ from{ transform:rotate(-26deg); } to{ transform:rotate(26deg); } }
+.fa-bulb{ animation:faBulb 2.2s ease-in-out infinite; }
+@keyframes faBulb{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } }
+.fa-sing{ transform-origin:50% 100%; animation:faSing 2.2s ease-in-out infinite; }
+@keyframes faSing{ 0%,100%{ transform:rotate(-1.5deg); } 50%{ transform:rotate(2.4deg) translateY(-1px); } }
+.fa-drum{ transform-origin:50% 100%; animation:faDrum .5s ease-in-out infinite alternate; }
+@keyframes faDrum{ from{ transform:translateY(0); } to{ transform:translateY(-2px) rotate(.6deg); } }
+.fa-note{ animation:faNote 5.4s ease-out infinite; opacity:0; }
+@keyframes faNote{ 0%{ transform:translate(0,0) rotate(0); opacity:0; } 15%{ opacity:1; } 100%{ transform:translate(26px,-96px) rotate(18deg); opacity:0; } }
+.fest-art.is-act .fa-note{ animation-duration:1.8s; }
+.fa-bar{ transform-origin:50% 100%; animation:faBar 1.1s ease-in-out infinite; }
+@keyframes faBar{ 0%,100%{ transform:scaleY(.35); } 50%{ transform:scaleY(1.6); } }
+.fa-rose{ transform-origin:50% 100%; animation:faSway 5s ease-in-out infinite; }
+.fa-rose:nth-child(2n){ animation-delay:-1.8s; }
+@keyframes faSway{ 0%,100%{ transform:rotate(-2deg); } 50%{ transform:rotate(2.4deg); } }
+.fa-petal{ animation:faPetal 8s linear infinite; }
+@keyframes faPetal{ 0%{ transform:translate(0,0) rotate(0); opacity:0; } 10%{ opacity:1; } 100%{ transform:translate(-40px,210px) rotate(360deg); opacity:.2; } }
+.fest-art.is-act .fa-petal{ animation-duration:2.4s; }
+.fa-steam{ animation:faSteam 3.2s ease-out infinite; opacity:0; }
+.fa-steam.s2{ animation-delay:-1s; } .fa-steam.s3{ animation-delay:-2s; }
+@keyframes faSteam{ 0%{ transform:translate(0,0) scale(.6); opacity:0; } 25%{ opacity:.7; } 100%{ transform:translate(8px,-36px) scale(1.7); opacity:0; } }
+.fa-drop{ animation:faDrop 2.2s ease-in infinite; }
+@keyframes faDrop{ 0%{ transform:translateY(0); opacity:1; } 80%{ transform:translateY(26px); opacity:1; } 100%{ transform:translateY(28px); opacity:0; } }
+.fa-fill{ transform-origin:50% 100%; animation:faFill 8s ease-in-out infinite; }
+@keyframes faFill{ 0%{ transform:scaleY(.25); } 85%,100%{ transform:scaleY(1); } }
+
+/* ── match the year ── */
+.fest-game{
+  margin-top:clamp(1.2rem,3vw,2rem); padding:clamp(1rem,2.4vw,1.5rem); border:1px solid var(--line); border-radius:var(--r);
+  background:color-mix(in srgb, var(--card-solid) 78%, transparent); box-shadow:var(--shadow-sm);
+}
+.fg-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; }
+.fg-head h3{ font-size:clamp(1.15rem,2vw,1.5rem); }
+.fg-head p{ margin:.2rem 0 0; font-size:.8rem; color:var(--soft); }
+.fg-stats{ display:flex; gap:1rem; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-variant-numeric:tabular-nums; }
+.fg-grid{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(.4rem,1.2vw,.8rem); margin-top:1rem; max-width:560px; }
+.fg-tile{ aspect-ratio:1; perspective:600px; padding:0; }
+.fg-in{ position:relative; display:block; width:100%; height:100%; transform-style:preserve-3d; transition:transform .55s var(--ease-out); }
+.fg-tile.is-flip .fg-in{ transform:rotateY(180deg); }
+.fg-back, .fg-face{ position:absolute; inset:0; display:grid; place-items:center; border-radius:12px; backface-visibility:hidden; -webkit-backface-visibility:hidden; border:1px solid var(--line-strong); }
+.fg-back{ color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, var(--card-solid)); }
+.fg-back svg, .fg-face svg{ width:70%; height:70%; }
+.fg-face{ transform:rotateY(180deg); background:var(--card-solid); }
+.fg-tile:not(.is-flip):hover .fg-in{ transform:rotateY(14deg) translateY(-2px); }
+.fg-tile.is-done .fg-face{ border-color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, var(--card-solid)); animation:fgDone .7s ease-out; }
+@keyframes fgDone{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 100%{ box-shadow:0 0 0 14px transparent; } }
+.fg-cap{ margin:.8rem 0 0; min-height:1.3em; font-size:.8rem; color:var(--soft); }
+.fg-cap b{ font-family:var(--serif); font-weight:500; font-size:1rem; color:var(--ink); }
+.fg-win{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:.6rem; padding:.7rem .9rem; border-radius:12px; background:color-mix(in srgb, var(--accent) 14%, transparent); animation:fadeIn .5s var(--ease); }
+.fg-win b{ font-family:var(--serif); font-weight:500; font-size:1.05rem; }
+html[lang="hi"] .fg-stats{ text-transform:none; letter-spacing:.02em; }
+
+@media (max-width:1180px){ .festival-grid{ grid-template-columns:repeat(3,minmax(0,1fr)) !important; } }
+@media (max-width:620px){
+  .festival-grid{ grid-template-columns:1fr !important; gap:.6rem !important; }
+  .fest-card{ flex-direction:row; border-radius:14px; }
+  .fest-card:hover{ transform:none; }
+  .fest-art{ aspect-ratio:auto; width:112px; flex:none; }
+  .fest-body{ padding:.6rem .8rem; gap:.1rem; min-width:0; }
+  .fest-body h3{ font-size:1.02rem; }
+  .fest-text{ font-size:.74rem; line-height:1.45; -webkit-line-clamp:2; }
+  .fest-card:hover .fest-text{ -webkit-line-clamp:2; }
+  .fg-grid{ max-width:none; }
+}
+@media (prefers-reduced-motion:reduce){ .fest-art svg [class^="fa-"]{ animation:none !important; } .fa-lantern,.fa-ring,.fa-steam,.fa-note,.fa-bolt{ opacity:0; } }
