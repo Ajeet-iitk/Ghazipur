@@ -567,6 +567,8 @@
       if (ctx && fx) fx.gain.setTargetAtTime(0.82 * Math.max(0.05, masterLevel), t(), 0.1);
     },
     setSfx: function (on) { sfxOn = !!on; },
+    sfxEnabled: function () { return sfxOn; },
+    getMaster: function () { return masterLevel; },
     bell: bellSound,
     chime: chime,
     plop: plop,

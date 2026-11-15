@@ -1274,13 +1274,27 @@
     tpY = (e.clientY / window.innerHeight - 0.5) * 2;
   }, { passive: true });
 
+  /* water click: drip.mp3, a fresh clone each time so rapid clicks overlap */
+  var dripSrc = 'assets/audio/drip.mp3', dripBase = null;
+  function dripSound() {
+    var A = window.Ambient;
+    if (A && A.sfxEnabled && !A.sfxEnabled()) return;
+    try {
+      if (!dripBase) { dripBase = new Audio(dripSrc); dripBase.preload = 'auto'; }
+      var a = dripBase.cloneNode();
+      var m = A && A.getMaster ? A.getMaster() : 0.7;
+      a.volume = Math.max(0.25, Math.min(1, m + 0.15));
+      var pr = a.play(); if (pr && pr.catch) pr.catch(function () {});
+    } catch (err) {}
+  }
+
   document.addEventListener('click', function (e) {
     var el = e.target.closest('a,button,input,label,select,textarea,[data-no-ripple]');
     if (el) return;
     var y = e.clientY;
     if (y > horizonY() * 0.92) {
       api.ripple(e.clientX, y);
-      if (window.Ambient && window.Ambient.plop) window.Ambient.plop();
+      dripSound();
     }
   }, { passive: true });
 
