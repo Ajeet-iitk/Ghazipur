@@ -148,7 +148,7 @@
         /* vines */
         t += '<path d="M64 196c8-30 22-52 44-68M118 196c-2-26 6-46 20-62M296 196c-6-34-20-54-40-68" stroke="#5e7a4c" stroke-width="2.6" fill="none" opacity=".85"/>';
         for (var v = 0; v < 14; v++) {
-          t += '<ellipse cx="' + (66 + v * 17) + '" cy="' + (152 - (v % 4) * 16) + '" rx="6" ry="3" fill="#6c8a54" opacity=".8"/>';
+          t += '<ellipse cx="' + (66 + v * 17) + '" cy="' + (152 - (v % 4) * 16) + '" rx="6" ry="3" class="art-leaf" fill="#6c8a54" opacity=".8"/>';
         }
         t += '<path d="M188 90c9-4 19-4 26 0" stroke="#5c4436" stroke-width="1.4" fill="none" opacity=".5"/>';
         return t;
@@ -169,7 +169,7 @@
         t += '<path d="M236 176v-22c0-10 7-18 16-18s16 8 16 18v22z" fill="#c9bda6" opacity=".8"/>';
         /* cypress */
         [[170, 74], [186, 60], [334, 66], [352, 82]].forEach(function (c) {
-          t += '<path d="M' + c[0] + ' 176c-6-20-2-' + c[1] + ' 6-' + c[1] + 's12 ' + (c[1] - 20) + ' 6 ' + c[1] + 'z" fill="#5f7a63" opacity=".9"/>';
+          t += '<path d="M' + c[0] + ' 176c-6-20-2-' + c[1] + ' 6-' + c[1] + 's12 ' + (c[1] - 20) + ' 6 ' + c[1] + 'z" class="art-sway" fill="#5f7a63" opacity=".9"/>';
         });
         /* tank */
         t += '<path d="M16 240l34-46h300l34 46z" fill="#cfcbb8"/>';
@@ -230,9 +230,9 @@
         }
         t += '<rect x="286" y="150" width="96" height="8" fill="#b98f68"/>';
         /* boat */
-        t += '<path d="M188 214c14 6 40 6 56 0l-6 8h-44z" fill="#5f4636" opacity=".85"/>';
-        t += '<path d="M214 214v-16" stroke="#5f4636" stroke-width="2"/>';
-        t += '<path d="M214 200l14 8" stroke="#5f4636" stroke-width="1.6"/>';
+        t += '<path class="art-boat" d="M188 214c14 6 40 6 56 0l-6 8h-44z" fill="#5f4636" opacity=".85"/>';
+        t += '<path class="art-boat" d="M214 214v-16" stroke="#5f4636" stroke-width="2"/>';
+        t += '<path class="art-boat" d="M214 200l14 8" stroke="#5f4636" stroke-width="1.6"/>';
         return t;
       }
     },
@@ -250,7 +250,7 @@
         t += '<path d="M200 221c-13 0-22 8-24 19h48c-2-11-11-19-24-19z" fill="#1a1412"/>';
         /* trees */
         [[44, 96], [72, 70], [346, 82], [374, 100]].forEach(function (c) {
-          t += '<path d="M' + c[0] + ' 240c-8-30-3-' + c[1] + ' 7-' + c[1] + 's15 ' + (c[1] - 30) + ' 7 ' + c[1] + 'z" fill="#4d5f45" opacity=".85"/>';
+          t += '<path d="M' + c[0] + ' 240c-8-30-3-' + c[1] + ' 7-' + c[1] + 's15 ' + (c[1] - 30) + ' 7 ' + c[1] + 'z" class="art-sway" fill="#4d5f45" opacity=".85"/>';
         });
         t += '<path d="M24 236c22-10 40-4 58-8" stroke="#3d4a38" stroke-width="2" fill="none" opacity=".6"/>';
         return t;
@@ -299,7 +299,7 @@
         t += '<rect x="282" y="196" width="10" height="14" fill="#7c5438"/>';
         /* flag */
         t += '<rect x="266" y="112" width="2.5" height="34" fill="#6d4a34"/>';
-        t += '<path d="M268 112l26 7-26 8z" fill="#b8503f"/>';
+        t += '<path class="art-flag" d="M268 112l26 7-26 8z" fill="#b8503f"/>';
         /* scatter */
         t += '<path d="M40 226c18-6 34 0 50-4M318 220c18-6 34 0 50-4" stroke="#8a613f" stroke-width="1.4" fill="none" opacity=".5"/>';
         return t;
@@ -330,6 +330,80 @@
     }
   };
 
+
+  /* ── the little lives inside each picture ─────────────────── */
+  function halo(x, y) { return '<circle class="art-halo" cx="' + x + '" cy="' + y + '" r="46" fill="#fff4cf"/>'; }
+  function cloud(x, y, d, s) {
+    return '<g class="art-cloud" style="animation-delay:-' + d + 's;animation-duration:' + (48 + d) + 's" opacity=".5"><g transform="translate(' + x + ',' + y + ') scale(' + (s || 1) + ')">' +
+      '<ellipse rx="34" ry="8.5" fill="#fff"/><ellipse cx="22" cy="-6" rx="22" ry="8" fill="#fff"/><ellipse cx="-20" cy="-4" rx="18" ry="7" fill="#fff"/></g></g>';
+  }
+  function bird(y, d, t, sc) {
+    return '<g class="art-fly" style="animation-delay:-' + d + 's;animation-duration:' + t + 's"><g transform="translate(0,' + y + ') scale(' + (sc || 1) + ')">' +
+      '<path class="art-wing" d="M0 0q5-6 10 0q5-6 10 0" stroke="#5a4436" stroke-width="1.6" fill="none"/></g></g>';
+  }
+  function waves(y0, n, col) {
+    var h = '', i;
+    for (i = 0; i < n; i++) {
+      h += '<path class="art-wave" style="animation-duration:' + (7 + i * 2) + 's" d="M-40 ' + (y0 + i * 11) + 'q15-4 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0" stroke="' + (col || '#fff') + '" stroke-width="1.3" fill="none" opacity=".35"/>';
+    }
+    return h;
+  }
+  function motes(y, n, col) {
+    var h = '', i;
+    for (i = 0; i < n; i++) {
+      h += '<circle class="art-mote" style="animation-delay:-' + (i * 1.7) + 's;animation-duration:' + (7 + (i % 3) * 2) + 's" cx="' + (60 + i * 52) + '" cy="' + y + '" r="1.6" fill="' + (col || '#fff2cf') + '"/>';
+    }
+    return h;
+  }
+  function ripple(x, y, n) {
+    var h = '', i;
+    for (i = 0; i < n; i++) h += '<ellipse class="art-ripple" style="animation-delay:-' + (i * 1.5) + 's" cx="' + x + '" cy="' + y + '" rx="26" ry="6" fill="none" stroke="#fff" stroke-width="1.3"/>';
+    return h;
+  }
+  function glow(x, y, r) { return '<circle class="art-flicker" cx="' + x + '" cy="' + y + '" r="' + r + '" fill="#ffb45a"/>'; }
+
+  var LIVE = {
+    arch: function () {
+      return cloud(70, 34, 6, 0.9) + bird(44, 0, 15, 1) + bird(60, 5, 18, .8) + bird(34, 10, 21, .7) + motes(190, 7);
+    },
+    garden: function () {
+      return halo(86, 72) + cloud(300, 36, 9, 1) +
+        '<g clip-path="inset(0)">' + waves(208, 3) + '</g>' + ripple(200, 212, 2) +
+        '<g class="art-flit"><ellipse cx="150" cy="110" rx="4" ry="2.4" fill="#f6d27a"/><ellipse cx="154" cy="107" rx="3" ry="2" fill="#f0b25a"/></g>' + bird(50, 3, 20, .8);
+    },
+    dome: function () {
+      return cloud(110, 50, 2, 1.2) + cloud(300, 36, 20, 1.4) + waves(206, 3) + bird(100, 4, 16, .8) + bird(88, 9, 19, .7) + bird(112, 14, 22, .6);
+    },
+    ghat: function () {
+      return halo(286, 76) + cloud(80, 44, 5, 1) + waves(194, 4) +
+        '<g class="art-bob"><ellipse cx="150" cy="226" rx="5" ry="2" fill="#7a4a30"/><path class="art-flicker" d="M150 224c-2-3-1-6 0-8 1 2 2 5 0 8z" fill="#ffd27a"/></g>' + bird(52, 2, 19, .8);
+    },
+    cave: function () {
+      return halo(318, 64) + glow(200, 214, 30) +
+        '<path class="art-rise" d="M200 168c-8-10 8-16 0-28" stroke="#e8dccb" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+        '<path class="art-rise r2" d="M206 170c-8-10 8-16 0-28" stroke="#e8dccb" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+        '<path class="art-rise r3" d="M194 170c-8-10 8-16 0-28" stroke="#e8dccb" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+        motes(150, 5, '#ffe9a8') + bird(40, 3, 20, .8);
+    },
+    pillar: function () {
+      var spokes = '', i, st = '';
+      for (i = 0; i < 8; i++) spokes += '<path d="M0 0L-7 -70L7 -70z" transform="rotate(' + (i * 45) + ')" fill="#fff4cf"/>';
+      for (i = 0; i < 22; i++) st += '<path class="art-sway" style="animation-delay:-' + (i * 0.3) + 's" d="M' + (18 + i * 18) + ' 226q1-10 3-16" stroke="#8d9a5a" stroke-width="1.4" fill="none"/>';
+      return '<g class="art-spin" transform="translate(322 58)" opacity=".16"><g>' + spokes + '</g></g>' + halo(322, 58) +
+        cloud(90, 40, 4, 1) + bird(70, 0, 14, .9) + bird(84, 6, 17, .7) + st;
+    },
+    fort: function () {
+      return halo(96, 62) + cloud(250, 40, 7, 1.1) + bird(60, 1, 16, 1) +
+        glow(249, 203, 12) + glow(287, 203, 12) +
+        '<ellipse class="art-drift" cx="40" cy="214" rx="26" ry="3" fill="#e9c996" opacity=".35"/><ellipse class="art-drift d2" cx="200" cy="222" rx="30" ry="3" fill="#e9c996" opacity=".3"/>';
+    },
+    tank: function () {
+      return halo(300, 62) + cloud(100, 40, 3, 1) + ripple(200, 214, 3) + waves(196, 3) +
+        glow(313, 140, 10) +
+        '<g class="art-drift d3"><ellipse cx="120" cy="212" rx="7" ry="3" fill="#f2ead8"/><circle cx="126" cy="208" r="2.4" fill="#f2ead8"/></g>' + bird(52, 5, 18, .8);
+    }
+  };
+
   function artSVG(kind, uid, label) {
     var a = ART[kind] || ART.ghat;
     var vign = 'vig' + uid, sky = 'sky' + uid, glow = 'glow' + uid;
@@ -345,6 +419,7 @@
       '<rect width="400" height="250" fill="url(#' + sky + ')"/>' +
       '<circle cx="200" cy="150" r="130" fill="url(#' + glow + ')"/>' +
       a.inner() +
+      (LIVE[kind] ? '<g class="art-live">' + LIVE[kind]() + '</g>' : '') +
       '<rect width="400" height="250" fill="url(#' + vign + ')"/>' +
       '</svg>';
   }

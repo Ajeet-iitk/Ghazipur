@@ -1561,3 +1561,68 @@ html[lang="hi"] .rf-svg .rf-label{ font-family:var(--deva); }
   .rf-svg *{ animation:none !important; }
   .rf-svg .rf-boat{ transition:none; }
 }
+
+/* ══ the places come alive ═══════════════════════════════════ */
+.place-art svg .art-live, .place-art svg [class^="art-"], .sheet-art svg [class^="art-"]{ transform-box:fill-box; }
+.art-cloud{ animation:artCloud 52s linear infinite; }
+@keyframes artCloud{ from{ transform:translateX(-140px); } to{ transform:translateX(520px); } }
+.art-fly{ animation:artFly 16s linear infinite; }
+@keyframes artFly{ from{ transform:translateX(-40px); } to{ transform:translateX(440px); } }
+.art-wing{ transform-box:fill-box; transform-origin:center bottom; animation:artFlap .5s ease-in-out infinite alternate; }
+@keyframes artFlap{ from{ transform:scaleY(1); } to{ transform:scaleY(.25); } }
+.art-halo{ transform-box:fill-box; transform-origin:center; animation:artHalo 5s ease-in-out infinite; opacity:.18; }
+@keyframes artHalo{ 0%,100%{ transform:scale(.85); opacity:.14; } 50%{ transform:scale(1.2); opacity:.34; } }
+.art-spin{ transform-box:view-box; }
+.art-spin > g{ transform-origin:0 0; animation:artSpin 60s linear infinite; }
+@keyframes artSpin{ to{ transform:rotate(360deg); } }
+.art-sway{ transform-box:fill-box; transform-origin:50% 100%; animation:artSway 4.6s ease-in-out infinite; }
+@keyframes artSway{ 0%,100%{ transform:rotate(-2.2deg) skewX(-1deg); } 50%{ transform:rotate(2.4deg) skewX(1.4deg); } }
+.art-leaf{ transform-box:fill-box; transform-origin:center; animation:artLeaf 3.4s ease-in-out infinite; }
+.art-leaf:nth-of-type(odd){ animation-delay:-1.4s; }
+@keyframes artLeaf{ 0%,100%{ transform:rotate(-10deg) translateY(0); } 50%{ transform:rotate(12deg) translateY(-1.4px); } }
+.art-flag{ transform-box:fill-box; transform-origin:left center; animation:artFlag 1.8s ease-in-out infinite; }
+@keyframes artFlag{ 0%,100%{ transform:skewY(0) scaleX(1); } 50%{ transform:skewY(-9deg) scaleX(.86); } }
+.art-wave{ animation:artWave 9s linear infinite; }
+@keyframes artWave{ to{ transform:translateX(-60px); } }
+.art-ripple{ transform-box:fill-box; transform-origin:center; animation:artRipple 4.5s ease-out infinite; opacity:0; }
+@keyframes artRipple{ 0%{ transform:scale(.2); opacity:.7; } 100%{ transform:scale(1.7); opacity:0; } }
+.art-boat{ animation:artBoat 7s ease-in-out infinite alternate; }
+@keyframes artBoat{ from{ transform:translate(-26px,0); } 50%{ transform:translate(0,2px); } to{ transform:translate(30px,-1px); } }
+.art-bob{ animation:artBob 3s ease-in-out infinite; }
+@keyframes artBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+.art-flicker{ animation:artFlick 2.3s ease-in-out infinite; transform-box:fill-box; transform-origin:center bottom; opacity:.28; }
+@keyframes artFlick{ 0%,100%{ opacity:.18; transform:scale(.9); } 35%{ opacity:.42; transform:scale(1.08); } 60%{ opacity:.24; transform:scale(.96); } 80%{ opacity:.38; transform:scale(1.04); } }
+path.art-flicker{ opacity:.95; }
+.art-rise{ transform-box:fill-box; animation:artRise 5s ease-in infinite; opacity:0; }
+.art-rise.r2{ animation-delay:-1.7s; } .art-rise.r3{ animation-delay:-3.4s; }
+@keyframes artRise{ 0%{ transform:translateY(8px) scaleY(.6); opacity:0; } 25%{ opacity:.7; } 100%{ transform:translateY(-42px) scaleY(1.3); opacity:0; } }
+.art-mote{ animation:artMote 8s ease-in-out infinite; opacity:0; }
+@keyframes artMote{ 0%{ transform:translate(0,0); opacity:0; } 25%{ opacity:.9; } 60%{ transform:translate(10px,-34px); opacity:.6; } 100%{ transform:translate(-6px,-70px); opacity:0; } }
+.art-drift{ animation:artDrift 11s ease-in-out infinite alternate; }
+.art-drift.d2{ animation-duration:15s; } .art-drift.d3{ animation-duration:20s; }
+@keyframes artDrift{ from{ transform:translateX(-10px); } to{ transform:translateX(90px); } }
+.art-flit{ animation:artFlit 9s ease-in-out infinite; }
+@keyframes artFlit{ 0%{ transform:translate(0,0); } 20%{ transform:translate(40px,-14px); } 40%{ transform:translate(66px,6px); } 60%{ transform:translate(110px,-12px); } 80%{ transform:translate(150px,4px); } 100%{ transform:translate(0,0); } }
+.place-art::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none; transform:translateX(-120%);
+  background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%);
+  transition:transform .9s var(--ease-out);
+}
+.place-card:hover .place-art::before{ transform:translateX(120%); }
+@media (prefers-reduced-motion:reduce){ [class^="art-"], .art-wing{ animation:none !important; } .art-halo,.art-ripple,.art-mote,.art-rise{ opacity:0; } }
+
+/* ── places, compact on a phone: one small row per place ── */
+@media (max-width:620px){
+  .place-grid{ grid-template-columns:1fr; gap:.65rem; }
+  .place-card{ flex-direction:row; align-items:stretch; border-radius:14px; }
+  .place-card:hover{ transform:none; }
+  .place-art{ aspect-ratio:auto; width:104px; flex:none; }
+  .place-art::after{ background:linear-gradient(to right, transparent 60%, color-mix(in srgb, var(--card-solid) 35%, transparent)); }
+  .place-body{ padding:.65rem .85rem .7rem; gap:.12rem; min-width:0; }
+  .place-kind{ font-size:.54rem; letter-spacing:.12em; }
+  .place-body h3{ font-size:1.08rem; }
+  .place-era{ font-size:.7rem; }
+  .place-body p{ font-size:.76rem; line-height:1.45; margin:.1rem 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .place-open{ padding-top:.35rem; font-size:.62rem; }
+  .place-game{ margin:0; font-size:.52rem; padding:.12rem .5rem; }
+}
