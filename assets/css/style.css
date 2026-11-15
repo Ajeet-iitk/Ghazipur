@@ -2056,8 +2056,8 @@ html[lang="hi"] .g2-stats i, html[lang="hi"] .g2-seg button, html[lang="hi"] .g2
   .hero-actions .btn-solid{ flex-basis:100%; }
   .eyebrow{ align-items:flex-start; }
   .eyebrow .dot{ margin-top:.3rem; flex:none; }
-  .spot-label{ font-size:30px; }
+  .spot-label{ font-size:26px; }
   .atlas-edge{ font-size:22px; }
   .atlas-water{ font-size:26px; }
-  html[lang="hi"] .spot-label{ font-size:27px; }
+  html[lang="hi"] .spot-label{ font-size:24px; }
 }
