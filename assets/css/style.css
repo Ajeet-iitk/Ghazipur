@@ -1298,3 +1298,17 @@ html[lang="hi"] .season button, html[lang="hi"] .spot-pill{ font-family:var(--de
 .naav-levels button:hover{ background:rgba(255,240,214,.16); }
 .naav-levels button.is-on{ background:#ffe0a6; border-color:#ffe0a6; color:#241509; }
 html[lang="hi"] .naav-levels button{ font-family:var(--deva); letter-spacing:.02em; text-transform:none; }
+
+/* ── the crew: a little depth, and windows that flicker with the machinery ── */
+.yard-frame{ perspective:1200px; overflow:hidden; }
+.yard-frame svg{ transition:transform .35s var(--ease-out); transform-origin:50% 60%; will-change:transform; }
+.yard-bldg g[fill="#f3bd74"] rect{ animation:yardWin 3.6s ease-in-out infinite; }
+.yard-bldg g[fill="#f3bd74"] rect:nth-child(2n){ animation-duration:4.7s; animation-delay:-1.2s; }
+.yard-bldg g[fill="#f3bd74"] rect:nth-child(3n){ animation-duration:2.9s; animation-delay:-2.1s; }
+@keyframes yardWin{ 0%,100%{ opacity:.95; } 46%{ opacity:.55; } 52%{ opacity:1; } 70%{ opacity:.7; } }
+.yard-frame.is-siren svg{ animation:yardShake .18s linear infinite; }
+@keyframes yardShake{ 0%,100%{ translate:0 0; } 25%{ translate:.8px -.5px; } 75%{ translate:-.8px .5px; } }
+@media (prefers-reduced-motion:reduce){
+  .yard-bldg g[fill="#f3bd74"] rect, .yard-frame.is-siren svg{ animation:none; }
+  .yard-frame svg{ transition:none; }
+}

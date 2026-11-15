@@ -141,13 +141,6 @@
         <button type="button" data-season="normal" aria-pressed="true"><svg class="ic"><use href="#i-spark"/></svg><span data-i18n="season.normal">Clear</span></button>
         <button type="button" data-season="monsoon" aria-pressed="false"><svg class="ic"><use href="#i-rain"/></svg><span data-i18n="season.monsoon">Monsoon</span></button>
       </div>
-      <div class="journal">
-        <button type="button" class="yard-btn" id="journal" data-i18n-aria="spot.hint" aria-label="Tap the animals when they appear on the river">
-          <svg class="ic"><use href="#i-bird"/></svg>
-          <span><span data-i18n="spot.journal">Field journal</span> <b id="journalCount">0/3</b></span>
-        </button>
-        <ul class="journal-list" id="journalList" aria-label="Species spotted"></ul>
-      </div>
     </div>
     <dl class="hero-facts rev">
       <div><dt data-i18n="hero.f1">Area</dt><dd>3,377 <small data-i18n="hero.areaU">km²</small></dd></div>
@@ -469,12 +462,8 @@
             <circle cx="214" cy="354" r="12" fill="url(#yardGlowG)" opacity=".5"/>
           </g>
 
-          <!-- a couple of workers, a barrel -->
+          <!-- a barrel; the crew is drawn by yard.js -->
           <g fill="#1c1512">
-            <circle cx="708" cy="382" r="5"/>
-            <path d="M702 389h12l2 18h-16z"/>
-            <circle cx="742" cy="386" r="4.4"/>
-            <path d="M737 392h10l2 15h-14z"/>
             <rect x="640" y="396" width="18" height="18" rx="3"/>
             <rect x="638" y="403" width="22" height="4" fill="#6b4c38"/>
           </g>
@@ -772,6 +761,7 @@
 <script src="assets/js/scene.js"></script>
 <script src="assets/js/naav.js"></script>
 <script src="assets/js/nature.js"></script>
+<script src="assets/js/yard.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>
