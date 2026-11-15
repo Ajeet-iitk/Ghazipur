@@ -18,7 +18,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **A navbar on the water** — a boat sails along the header as a scroll-progress river, a wave glides under the links and rests under your chapter, the brand diya flickers and wakes on hover, and the links drop in one by one.
 - **The time machine** — the Story chapter as one riverbank diorama that grows across eleven eras, with a layers-of-silt selector, a rolling year counter and a "run the centuries" play button.
 - **Eight rivers, one slow current** — a full-width river-system panorama: the Ganga across the page, seven rivers flowing in, boats and lamps on the water, a ferry at Ghazipur. Hover or tap a river.
-- **The riverfront** — nine ghats drawn as one swipeable panorama; tap a ghat and the boatman rows to it, or take the tour. A ferry crosses to Tari Ghat.
+- **The riverfront** — nine ghats drawn as one swipeable panorama, alive with walkers, a chai-wala, a flower seller, a pandit and a kulfi cart, cows, goats, a dog, pigeons and a monkey, trees, birds and kites, a flowing river with drifting boats, garlands and diyas, and leaping fish. Tap a ghat and the boatman rows to it, or take the tour.
 - **Explore** section listing every creative piece on the site.
 - Audio controller, language switch, theme switch, search, and a custom favicon.
 

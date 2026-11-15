@@ -139,6 +139,159 @@
       '<path class="rf-dark" d="M24 -6V-26"/><circle class="rf-lamp-halo" cx="24" cy="-28" r="16"/><rect class="rf-lamp" x="21" y="-32" width="6" height="7" rx="2"/></g>';
   }
 
+  /* ══ life on the riverfront: people, animals, vendors, trees, birds, and a moving river ══ */
+  function across(cls, y, dur, del, dir, inner) {
+    return '<g transform="translate(0,' + y + ')" class="rf-nopt"><g class="rf-mv ' + (dir < 0 ? 'rf-mvL ' : '') + cls + '" style="animation-duration:' + dur + 's;animation-delay:-' + del + 's"><g transform="scale(' + (dir < 0 ? -1 : 1) + ',1)">' + inner + '</g></g></g>';
+  }
+
+  function person(col, pants, kind, hair) {
+    var h = '<ellipse cy="1" rx="8" ry="2" fill="#000" opacity=".22"/>' +
+      '<g class="rf-wb"><g class="rf-leg"><rect x="-3.4" y="-15" width="2.9" height="15" rx="1.3" fill="' + pants + '"/></g><g class="rf-leg l2"><rect x="0.6" y="-15" width="2.9" height="15" rx="1.3" fill="' + pants + '"/></g>' +
+      (kind === 'saree' ? '<path d="M-5.5 -14L5.5 -14L7 -1L-7 -1Z" fill="' + col + '"/>' : '') +
+      '<path d="M-5 -14L5 -14L4.2 -31Q0 -34 -4.2 -31Z" fill="' + col + '"/>' +
+      '<g class="rf-arm"><rect x="-1.2" y="-31" width="2.5" height="12" rx="1.2" fill="var(--rf-skin)"/></g>' +
+      '<circle cy="-36" r="4.4" fill="var(--rf-skin)"/>';
+    if (kind === 'turban') h += '<ellipse cy="-39.5" rx="5.2" ry="3" fill="' + hair + '"/>';
+    else if (kind === 'pot') h += '<path d="M-4.6 -39.5q4.6 -4.6 9.2 0" fill="' + hair + '"/><ellipse cx="0.4" cy="-43" rx="4.4" ry="3.4" fill="#c98b3a"/><rect x="-1.8" y="-47" width="3.6" height="2.4" fill="#c98b3a"/>';
+    else if (kind === 'bundle') h += '<path d="M-4.6 -39.5q4.6 -4.6 9.2 0" fill="' + hair + '"/><rect x="-6" y="-46" width="12" height="6.4" rx="3" fill="#b79a68"/>';
+    else if (kind === 'umb') h += '<path d="M-4.6 -39.5q4.6 -4.6 9.2 0" fill="' + hair + '"/><path d="M-13 -44q13 -14 26 0z" fill="' + col + '" opacity=".95"/><path d="M0 -44V-30" stroke="#4a3a2a" stroke-width="1"/>';
+    else h += '<path d="M-4.6 -39.5q4.6 -4.6 9.2 0" fill="' + hair + '"/>';
+    return h + '</g>';
+  }
+
+  function cow(lying) {
+    if (lying) {
+      return '<ellipse cy="2" rx="22" ry="3" fill="#000" opacity=".2"/><path d="M-20 0Q-24 -14 -10 -17Q8 -19 18 -13Q22 -6 18 0Z" fill="#d9d2c0"/><path d="M-6 -17Q2 -21 8 -16Q4 -10 -6 -12Z" fill="#8a7a62"/>' +
+        '<g class="rf-chew"><path d="M16 -13Q26 -17 30 -10Q29 -3 22 -2Q16 -4 16 -13Z" fill="#d9d2c0"/><circle cx="25" cy="-11" r="1" fill="#2b2420"/><path d="M19 -15l-3 -5M24 -16l2 -5" stroke="#8a7a62" stroke-width="1.5" stroke-linecap="round"/></g>' +
+        '<g class="rf-tail"><path d="M-20 -8q-8 -2 -9 6" stroke="#8a7a62" stroke-width="1.6" fill="none"/></g>';
+    }
+    return '<ellipse cy="1" rx="26" ry="3" fill="#000" opacity=".22"/>' +
+      '<g class="rf-cleg"><rect x="-17" y="-18" width="3.4" height="18" fill="#cfc7b2"/></g><g class="rf-cleg l2"><rect x="-8" y="-18" width="3.4" height="18" fill="#bdb49e"/></g>' +
+      '<g class="rf-cleg l2"><rect x="9" y="-18" width="3.4" height="18" fill="#cfc7b2"/></g><g class="rf-cleg"><rect x="17" y="-18" width="3.4" height="18" fill="#bdb49e"/></g>' +
+      '<path d="M-24 -24Q-26 -36 -10 -37Q10 -39 22 -34Q26 -28 22 -22Q4 -17 -24 -24Z" fill="#ddd6c4"/><path d="M-12 -35Q-2 -39 6 -33Q0 -27 -10 -29Z" fill="#8a7a62"/>' +
+      '<path d="M22 -34l5 -8 3 7" fill="#cfc7b2"/><g class="rf-head"><path d="M22 -36Q34 -38 36 -28Q35 -20 28 -19Q22 -22 22 -36Z" fill="#ddd6c4"/><circle cx="31" cy="-29" r="1.1" fill="#2b2420"/><path d="M24 -37l-2 -6M30 -38l3 -5" stroke="#8a7a62" stroke-width="1.7" stroke-linecap="round"/></g>' +
+      '<g class="rf-tail"><path d="M-24 -30q-9 0 -10 9" stroke="#8a7a62" stroke-width="1.6" fill="none"/></g>';
+  }
+  function goat() {
+    return '<ellipse cy="1" rx="11" ry="2" fill="#000" opacity=".2"/><g class="rf-cleg"><rect x="-8" y="-10" width="2" height="10" fill="#8a6f55"/></g><g class="rf-cleg l2"><rect x="-3" y="-10" width="2" height="10" fill="#7a6048"/></g>' +
+      '<g class="rf-cleg l2"><rect x="4" y="-10" width="2" height="10" fill="#8a6f55"/></g><g class="rf-cleg"><rect x="8" y="-10" width="2" height="10" fill="#7a6048"/></g>' +
+      '<path d="M-11 -13Q-12 -20 -3 -20Q8 -21 11 -17Q10 -11 -11 -13Z" fill="#a98b6a"/><g class="rf-head"><path d="M10 -20Q16 -22 17 -16Q15 -12 11 -13Z" fill="#a98b6a"/><path d="M12 -21l-1 -4M14 -21l2 -3" stroke="#6a523c" stroke-width="1.2"/><path d="M16 -13l0 3" stroke="#6a523c" stroke-width="1"/></g>';
+  }
+  function dog() {
+    return '<ellipse cy="1" rx="12" ry="2" fill="#000" opacity=".2"/><g class="rf-cleg"><rect x="-9" y="-9" width="2" height="9" fill="#9a7a52"/></g><g class="rf-cleg l2"><rect x="-4" y="-9" width="2" height="9" fill="#876944"/></g>' +
+      '<g class="rf-cleg l2"><rect x="5" y="-9" width="2" height="9" fill="#9a7a52"/></g><g class="rf-cleg"><rect x="9" y="-9" width="2" height="9" fill="#876944"/></g>' +
+      '<path d="M-11 -12Q-12 -17 -4 -17Q8 -18 12 -14Q10 -9 -11 -12Z" fill="#b08a5c"/><path d="M11 -17Q18 -19 19 -13Q16 -9 11 -11Z" fill="#b08a5c"/><path d="M12 -19l2 -4 2 4" fill="#8a6a44"/><circle cx="16" cy="-14.5" r="0.9" fill="#222"/>' +
+      '<g class="rf-wag"><path d="M-11 -14q-6 -6 -9 -4" stroke="#b08a5c" stroke-width="2" fill="none" stroke-linecap="round"/></g>';
+  }
+  function bird(y, dur, del, sc, col) {
+    return '<g class="rf-nopt"><g class="rf-mv rf-bird" style="animation-duration:' + dur + 's;animation-delay:-' + del + 's"><g transform="translate(0,' + y + ') scale(' + sc + ')">' +
+      [[0, 0], [-16, 7], [-14, -6], [-30, 12], [-28, -11]].map(function (o, k) { return '<g transform="translate(' + o[0] + ',' + o[1] + ')"><path class="rf-wingf" style="animation-delay:-' + (k * 0.13) + 's" d="M0 0q5 -8 10 0q5 -8 10 0" stroke="' + col + '" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>'; }).join('') +
+      '</g></g></g>';
+  }
+  function treeBack(x, y, sc, kind) {
+    if (kind === 'palm') {
+      var fr = '';
+      for (var f = 0; f < 7; f++) fr += '<path d="M0 0q' + (14 + f * 2) + ' -12 ' + (30 - Math.abs(f - 3) * 3) + ' ' + (6 + Math.abs(f - 3) * 4) + '" stroke="var(--rf-tree)" stroke-width="3.2" fill="none" stroke-linecap="round" transform="rotate(' + (f * 51 - 150) + ')"/>';
+      return '<g transform="translate(' + x + ',' + y + ') scale(' + sc + ')"><path d="M-3 0Q-6 -50 -2 -92L3 -92Q0 -50 3 0Z" fill="var(--rf-bark)"/><g class="rf-sway" transform="translate(0,-92)">' + fr + '</g></g>';
+    }
+    return '<g transform="translate(' + x + ',' + y + ') scale(' + sc + ')"><path d="M-5 0Q-6 -22 -10 -44L-2 -44Q0 -22 6 0Z" fill="var(--rf-bark)"/><path d="M0 -26Q10 -34 22 -52" stroke="var(--rf-bark)" stroke-width="4" fill="none"/>' +
+      '<g class="rf-sway"><circle cy="-62" r="26" fill="var(--rf-tree)"/><circle cx="-26" cy="-48" r="19" fill="var(--rf-tree2)"/><circle cx="28" cy="-52" r="21" fill="var(--rf-tree)"/><circle cx="4" cy="-84" r="17" fill="var(--rf-tree2)"/>' +
+      '<circle class="rf-leaf-a" cx="-12" cy="-70" r="3" fill="var(--rf-tree2)"/></g></g>';
+  }
+
+  function riverLife(r) {
+    var s = '', i;
+    /* currents: long dashed lines sliding downstream, faster toward the middle of the river */
+    [[8, 4, 3.4, 0.34], [21, 6, 2.6, 0.26], [34, 8, 2.2, 0.22], [49, 11, 1.8, 0.18], [64, 14, 1.4, 0.14]].forEach(function (c, k) {
+      s += '<path class="rf-cur" d="M-80 ' + (WATER + c[0]) + 'H2300" style="animation-duration:' + c[1] + 's;stroke-width:' + c[2] + 'px;opacity:' + c[3] + ';stroke-dasharray:' + (26 + k * 8) + ' ' + (70 + k * 14) + '"/>';
+    });
+    /* things on the current: garlands, leaves, diyas, paper boats */
+    var kinds = ['garland', 'leaf', 'diya', 'paper', 'garland', 'leaf', 'diya', 'leaf', 'garland'];
+    for (i = 0; i < 9; i++) {
+      var y = WATER + 10 + r() * 58, dur = 60 + r() * 50, k = kinds[i], g;
+      if (k === 'garland') g = '<ellipse rx="9" ry="3" fill="none" stroke="#f0a02c" stroke-width="3.4" stroke-dasharray="2 2"/><ellipse rx="9" ry="3" fill="none" stroke="#e46a24" stroke-width="1.2" stroke-dasharray="2 4"/>';
+      else if (k === 'leaf') g = '<path d="M-7 0Q0 -5 7 0Q0 4 -7 0Z" fill="#6f8f4e"/><path d="M-6 0H6" stroke="#4e6a36" stroke-width=".8"/>';
+      else if (k === 'diya') g = '<ellipse rx="5" ry="2" fill="#7a4a30"/><path class="rf-fl-flame" d="M0 -1.4C-2 -3 -1 -6 0 -8 1 -6 2 -3 0 -1.4z" fill="#ffd27a"/><circle r="9" cy="-3" fill="#ffd27a" opacity=".22"/>';
+      else g = '<path d="M-6 0L6 0L3 3H-3z" fill="#f4ecd8"/><path d="M0 0V-6L5 0z" fill="#f4ecd8"/>';
+      s += '<g transform="translate(0,' + y.toFixed(0) + ')" class="rf-nopt"><g class="rf-mv rf-drift" style="animation-duration:' + dur.toFixed(0) + 's;animation-delay:-' + (r() * dur).toFixed(0) + 's"><g class="rf-bobw" style="animation-delay:-' + (r() * 3).toFixed(1) + 's">' + g + '</g></g></g>';
+    }
+    /* fish that leap now and then */
+    [[330, 0], [1010, 3.2], [1730, 6.1]].forEach(function (f) {
+      s += '<g transform="translate(' + f[0] + ',' + (WATER + 30) + ')" class="rf-nopt"><ellipse class="rf-fring" rx="14" ry="3.5" fill="none" stroke="#fff" stroke-width="1.2" style="animation-delay:-' + f[1] + 's"/>' +
+        '<g class="rf-fish" style="animation-delay:-' + f[1] + 's"><path d="M-6 0Q0 -4 6 0Q0 4 -6 0zM-5 0L-10 -3V3z" fill="#e8eef0"/></g></g>';
+    });
+    /* boats drifting past: a rowing boat, a net boat, a sail boat */
+    s += across('rf-slow', WATER + 44, 95, 10, 1, '<ellipse cy="9" rx="26" ry="3" fill="#000" opacity=".15"/><path d="M-26 0Q0 12 26 0L21 -5H-21z" class="rf-hull"/><circle cx="-6" cy="-12" r="3.6" fill="var(--rf-skin)"/><path d="M-11 -5l2 -8h8l2 8z" fill="#c9774a"/><circle cx="8" cy="-11" r="3.2" fill="var(--rf-skin)"/><path d="M4 -5l2 -7h7l1 7z" fill="#4a7a9a"/><path class="rf-oarb" d="M-10 -9L-30 6" stroke="#8a6a52" stroke-width="2" stroke-linecap="round"/>');
+    s += across('rf-slow', WATER + 20, 140, 60, -1, '<ellipse cy="9" rx="30" ry="3" fill="#000" opacity=".15"/><path d="M-30 0Q0 12 30 0L24 -6H-24z" class="rf-hull"/><circle cx="-10" cy="-14" r="3.6" fill="var(--rf-skin)"/><path d="M-15 -6l2 -9h8l2 9z" fill="#d8c9a6"/><path d="M4 -6L20 -26M20 -26L30 -4" stroke="#6b5240" stroke-width="1.4" fill="none"/><path d="M20 -26L30 -4L8 -5z" fill="none" stroke="#b8a58a" stroke-width=".8" stroke-dasharray="2 2"/>');
+    s += across('rf-slow', WATER + 8, 170, 100, 1, '<ellipse cy="9" rx="34" ry="3" fill="#000" opacity=".14"/><path d="M-34 0Q0 12 34 0L28 -6H-28z" class="rf-hull"/><path d="M0 -6V-44" stroke="#5a4636" stroke-width="2"/><path d="M0 -42L24 -10H0z" fill="#e9dcc0"/><path d="M0 -40L-14 -10H0z" fill="#d8bf92"/><circle cx="-20" cy="-12" r="3.4" fill="var(--rf-skin)"/>');
+    return s;
+  }
+
+  function lifeFront(r) {
+    var s = '', i, cols = ['#c0504a', '#3f6f8f', '#d8a43a', '#5e8f62', '#8a5aa0', '#d8d0bc', '#b8663a', '#2f5f6f'];
+    var pants = ['#2f2a28', '#e8e0cc', '#3a4a5a', '#6a4a3a'];
+    var kinds = ['saree', 'pot', 'plain', 'turban', 'bundle', 'saree', 'umb', 'plain', 'pot', 'turban', 'saree', 'plain'];
+    /* walkers on the steps, both ways, at their own pace */
+    for (i = 0; i < 14; i++) {
+      var dir = i % 3 === 1 ? -1 : 1, lane = [14, 30, 46, 22, 38, 54, 18][i % 7], dur = 48 + (i * 13) % 40;
+      var k = kinds[i % kinds.length];
+      s += across('rf-walk', WALL + lane, dur, (i * 37) % dur, dir, '<g transform="scale(' + (0.86 + lane / 120).toFixed(2) + ')">' + person(cols[i % cols.length], k === 'saree' ? cols[(i + 3) % cols.length] : pants[i % pants.length], k, i % 2 ? '#2b2420' : '#4a3a2c') + '</g>');
+    }
+    /* children running between the ghats */
+    for (i = 0; i < 3; i++) s += across('rf-walk rf-fast', WALL + 58 - i * 8, 26 + i * 4, i * 9, i % 2 ? -1 : 1, '<g transform="scale(.62)">' + person(cols[(i * 2 + 1) % cols.length], '#e8e0cc', 'plain', '#2b2420') + '</g>');
+
+    /* animals */
+    s += across('rf-walk rf-slow2', WALL + 40, 190, 70, 1, '<g transform="scale(.9)">' + cow(false) + '</g>');
+    s += '<g transform="translate(' + (cx(3) + 62) + ',' + (WALL + 52) + ') scale(.85)" class="rf-nopt">' + cow(true) + '</g>';
+    s += across('rf-walk rf-fast', WALL + 60, 24, 6, -1, '<g transform="scale(.85)">' + dog() + '</g>');
+    [0, 1, 2].forEach(function (g) { s += across('rf-walk rf-slow2', WALL + 26 + g * 6, 120, 20 + g * 4, 1, '<g transform="scale(' + (0.8 + g * 0.05) + ')">' + goat() + '</g>'); });
+    /* pigeons pecking at the steps, and a flock that takes off now and then */
+    s += '<g transform="translate(' + (cx(1) - 40) + ',' + (WALL + 60) + ')" class="rf-nopt">';
+    for (i = 0; i < 6; i++) s += '<g transform="translate(' + (i * 15) + ',' + ((i % 2) * 3) + ')"><g class="rf-peck" style="animation-delay:-' + (i * 0.45).toFixed(2) + 's"><ellipse rx="4.2" ry="2.8" fill="#8a909a"/><circle cx="4" cy="-2.4" r="1.9" fill="#6f7580"/><path d="M5.6 -2.4l2.2 .6" stroke="#caa56a" stroke-width="1"/></g></g>';
+    s += '</g>';
+    s += '<g class="rf-nopt"><g class="rf-takeoff" transform="translate(' + (cx(1) + 10) + ',' + (WALL + 56) + ')">' + [0, 1, 2, 3].map(function (k) { return '<g transform="translate(' + (k * 11) + ',' + (-k * 5) + ')"><path class="rf-wingf" style="animation-delay:-' + (k * 0.1) + 's" d="M0 0q4 -7 8 0q4 -7 8 0" stroke="#7a808a" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>'; }).join('') + '</g></g>';
+    /* a monkey on the pavilion roof */
+    s += '<g transform="translate(' + (cx(6) + 30) + ',' + (WALL - 76) + ')" class="rf-nopt"><ellipse cy="1" rx="6" ry="1.5" fill="#000" opacity=".2"/><path d="M-5 0Q-6 -10 0 -12Q6 -10 5 0Z" fill="#9a8468"/><circle cy="-15" r="4.2" fill="#9a8468"/><circle cy="-14.5" r="2.6" fill="#d9bfa0"/><g class="rf-scratch"><path d="M3 -9L9 -15" stroke="#9a8468" stroke-width="2.2" stroke-linecap="round"/></g><path class="rf-tail" d="M-5 -2q-9 0 -9 -8" stroke="#9a8468" stroke-width="1.8" fill="none"/></g>';
+
+    /* vendors */
+    var stall = function (x, can, can2, body) {
+      return '<g transform="translate(' + x + ',' + (WALL + 30) + ')" class="rf-nopt"><ellipse cy="14" rx="32" ry="4" fill="#000" opacity=".2"/><path d="M0 -4V-46" stroke="#5a4636" stroke-width="2"/>' +
+        '<path d="M-34 -42Q0 -66 34 -42Z" fill="' + can + '"/><path d="M-34 -42Q-17 -52 0 -42Q17 -52 34 -42" fill="none" stroke="' + can2 + '" stroke-width="3" stroke-dasharray="7 6"/>' + body + '</g>';
+    };
+    /* chai-wala: kettle, steam, and two customers */
+    s += stall(cx(1) + 112, '#c0504a', '#f0d9a6',
+      '<rect x="-26" y="-8" width="52" height="5" rx="1.5" fill="#6a4b38"/><path d="M-22 -3v16M22 -3v16" stroke="#4a3426" stroke-width="3"/><g transform="translate(-8,-11)"><path d="M-7 3Q-9 -8 0 -9Q9 -8 7 3Z" fill="#b8c0c6"/><path d="M6 -4l7 -5" stroke="#b8c0c6" stroke-width="2.4"/><path d="M-7 -9l7 -4 7 4" fill="none" stroke="#8a9096" stroke-width="1.2"/></g>' +
+      '<circle class="rf-steam" cx="-6" cy="-24" r="3" fill="#fff"/><circle class="rf-steam s2" cx="-3" cy="-24" r="2.6" fill="#fff"/><circle class="rf-steam s3" cx="-9" cy="-24" r="2.4" fill="#fff"/>' +
+      '<g transform="translate(14,12) scale(.8)">' + person('#3f6f8f', '#2f2a28', 'turban', '#d8a43a') + '</g><g transform="translate(26,14) scale(.7)"><g class="rf-sip">' + person('#d8d0bc', '#6a4a3a', 'plain', '#2b2420') + '</g></g>');
+    /* flower seller with marigolds and hanging garlands */
+    var mar = '';
+    for (i = 0; i < 18; i++) mar += '<circle cx="' + (-18 + (i % 9) * 4.4) + '" cy="' + (-11 - Math.floor(i / 9) * 4) + '" r="2.6" fill="' + (i % 3 ? '#f0a02c' : '#e46a24') + '"/>';
+    s += stall(cx(4) + 104, '#d8a43a', '#c0504a',
+      '<path d="M-24 -8Q0 2 24 -8L22 -2Q0 8 -22 -2Z" fill="#7a5a3a"/>' + mar +
+      [-26, -12, 4, 20].map(function (x, k) { return '<g class="rf-garl" style="animation-delay:-' + k * 0.7 + 's"><path d="M' + x + ' -42V-22" stroke="#f0a02c" stroke-width="3.4" stroke-dasharray="2.4 1.6"/><circle cx="' + x + '" cy="-20" r="2.6" fill="#e46a24"/></g>'; }).join('') +
+      '<g transform="translate(-30,14) scale(.8)"><g class="rf-fan">' + person('#c0504a', '#c0504a', 'saree', '#2b2420') + '</g></g>');
+    /* the pandit under his umbrella, ringing a small bell */
+    s += stall(cx(6) - 108, '#e9dcc0', '#c0504a',
+      '<rect x="-14" y="-6" width="28" height="4" rx="1" fill="#a8855a"/><g transform="translate(0,9) scale(.9)">' + person('#e8e0cc', '#e8e0cc', 'plain', '#2b2420') + '</g><circle cx="0" cy="-14" r="5" fill="none" stroke="#f0a02c" stroke-width="1.6" stroke-dasharray="2 1.4"/>' +
+      '<g class="rf-ding"><path d="M10 -12q3 -6 6 0z" fill="#d9a441"/></g>');
+    /* a kulfi cart */
+    s += stall(cx(7) + 100, '#4a8f9a', '#f4ecd8',
+      '<rect x="-24" y="-12" width="48" height="12" rx="2" fill="#f0e6cc"/><path d="M-24 -12h48" stroke="#4a8f9a" stroke-width="2"/><circle cx="-14" cy="3" r="6" fill="#3a2a22" stroke="#8a6a52" stroke-width="1.4"/><circle cx="14" cy="3" r="6" fill="#3a2a22" stroke="#8a6a52" stroke-width="1.4"/>' +
+      '<g transform="translate(30,12) scale(.85)"><g class="rf-fan">' + person('#d8a43a', '#2f2a28', 'turban', '#c0504a') + '</g></g>');
+    return s;
+  }
+
+  function skyLife(r) {
+    var s = '';
+    s += bird(70, 34, 6, 1, '#4a3a30') + bird(104, 46, 22, 0.8, '#4a3a30') + bird(52, 58, 40, 0.65, '#4a3a30');
+    /* a pair of kites over the ghats */
+    [[620, 70, '#c0504a', 0], [1480, 96, '#3f8a8f', 2.3]].forEach(function (k) {
+      s += '<g transform="translate(' + k[0] + ',' + k[1] + ')" class="rf-nopt"><g class="rf-kite" style="animation-delay:-' + k[3] + 's"><path d="M0 -12L9 0L0 14L-9 0Z" fill="' + k[2] + '"/><path d="M0 -12V14M-9 0H9" stroke="#f4ecd8" stroke-width=".8" opacity=".8"/>' +
+        '<path class="rf-ktail" d="M0 14q4 8 -2 14t2 14" stroke="' + k[2] + '" stroke-width="1.6" fill="none"/><path d="M0 14L-30 150" stroke="#e8e0cc" stroke-width=".7" opacity=".5"/></g></g>';
+    });
+    return s;
+  }
+
   function panorama(data) {
     var r = rng(77), i, s = '';
     s += '<defs>' +
@@ -151,6 +304,7 @@
     s += '<g class="rf-stars">';
     for (i = 0; i < 60; i++) s += '<circle cx="' + (r() * W).toFixed(0) + '" cy="' + (r() * 150).toFixed(0) + '" r="' + (0.6 + r() * 1.1).toFixed(1) + '"/>';
     s += '</g><circle class="rf-orb-glow" cx="170" cy="80" r="80"/><circle class="rf-orb" cx="170" cy="80" r="26"/>';
+    s += skyLife(r);
     /* the far bank */
     var x = -10, far = '';
     while (x < W) {
@@ -161,6 +315,10 @@
     }
     s += '<g class="rf-far">' + far + '</g>';
     s += '<rect class="rf-far" x="0" y="' + (WALL - 26) + '" width="' + W + '" height="30"/>';
+    /* trees behind the ghats */
+    [[40, 'neem', 0.8], [330, 'palm', 0.85], [660, 'neem', 0.7], [990, 'palm', 0.95], [1290, 'neem', 0.78], [1640, 'palm', 0.9], [1930, 'neem', 0.85], [2160, 'palm', 0.8]].forEach(function (t) {
+      s += treeBack(t[0], WALL + 4, t[2], t[1]);
+    });
     /* Tari Ghat across the water, at the strip's far end */
     s += '<g class="rf-tari" transform="translate(2090,' + (WALL - 6) + ')"><path class="rf-stone" d="M-60 0C-30 -14 30 -14 80 0V70H-60z"/><path class="rf-stone-d" d="M-8 -8v-30a12 12 0 0 1 24 0v30z"/><path class="rf-edge" d="M4 -50V-66"/><circle class="rf-lamp" cx="4" cy="-68" r="3"/>' +
       '<text class="rf-tarilabel" x="10" y="92" text-anchor="middle">' + esc(L('rf.tari')) + '</text></g>';
@@ -171,6 +329,7 @@
       for (n = 0; n < 75; n++) d += (n === 0 ? 'q15 -4 30 0' : 't30 0');
       s += '<path class="rf-wave rf-wave' + i + '" d="' + d + '"/>';
     }
+    s += riverLife(r);
     /* the nine ghats */
     for (i = 0; i < data.length; i++) {
       s += '<g class="rf-g' + (i === cur ? ' is-on' : '') + '" data-i="' + i + '" tabindex="0" role="button" aria-label="' + esc(data[i].n) + '" transform="translate(' + cx(i) + ',' + WALL + ')">' +
@@ -181,6 +340,7 @@
         '<text class="rf-num" x="0" y="106" text-anchor="middle">0' + (i + 1) + '</text>' +
         '<text class="rf-label" x="0" y="126" text-anchor="middle">' + esc(data[i].n) + '</text></g>';
     }
+    s += '<g class="rf-life">' + lifeFront(r) + '</g>';
     /* the ferry that crosses to Tari Ghat, and the boatman who visits the ghats */
     s += '<g transform="translate(' + (cx(8) - 6) + ',' + (WATER + 6) + ')"><g class="rf-ferry">' +
       '<path class="rf-hull" d="M-44 0C-30 12 30 12 44 0L38 -7H-38z"/><path class="rf-cloth" d="M-30 -8Q0 -34 30 -8z"/>' +
