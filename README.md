@@ -13,7 +13,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Season switch** — Summer (the river thins, sandbars rise), Clear, or Monsoon (rain, thunder, a swollen river flooding the lower ghat steps).
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
-- **The living year** — the five festivals as little animated scenes you can poke (raise the arghya, add a diya, call the lightning), plus a "Match the year" memory game.
+- **The living year** — the five festivals as little animated scenes you can poke (raise the arghya, add a diya, call the lightning), plus "Match Ghazipur", a memory game with ten things of the district (twins or name-it modes, three levels, timer, streaks, peek and hint, a collection panel).
 - **The time machine** — the Story chapter as one riverbank diorama that grows across eleven eras, with a layers-of-silt selector, a rolling year counter and a "run the centuries" play button.
 - **Eight rivers, one slow current** — a full-width river-system panorama: the Ganga across the page, seven rivers flowing in, boats and lamps on the water, a ferry at Ghazipur. Hover or tap a river.
 - **The riverfront** — nine ghats drawn as one swipeable panorama; tap a ghat and the boatman rows to it, or take the tour. A ferry crosses to Tari Ghat.

@@ -1941,3 +1941,80 @@ html[lang="hi"] .tm-count, html[lang="hi"] .tm-hint, html[lang="hi"] .tm-more su
 @media (prefers-reduced-motion:reduce){ .tm-svg *{ animation:none !important; } .tm-svg .tm-e,.tm-svg .tm-sky,.tm-svg .tm-orb{ transition:none; } }
 .tm-svg #tmCam{ transition:transform 1.6s cubic-bezier(.4,.05,.25,1); }
 .rf-nav[data-tm="prev"] .ic{ transform:rotate(180deg); }
+
+/* ══ Match Ghazipur ═══════════════════════════════════════════ */
+.fest-game{ padding:clamp(1rem,2.4vw,1.6rem); }
+.g2-top{ display:flex; justify-content:space-between; align-items:flex-end; gap:1rem 2rem; flex-wrap:wrap; }
+.g2-top h3{ font-size:clamp(1.25rem,2.2vw,1.7rem); }
+.g2-top p{ margin:.2rem 0 0; font-size:.82rem; color:var(--soft); max-width:46ch; }
+.g2-stats{ display:flex; gap:clamp(.8rem,2vw,1.6rem); }
+.g2-stats span{ display:flex; flex-direction:column; align-items:flex-end; }
+.g2-stats i{ font-style:normal; font-size:.54rem; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); }
+.g2-stats b{ font-family:var(--serif); font-weight:500; font-size:1.35rem; line-height:1.1; color:var(--ink); font-variant-numeric:tabular-nums; }
+.g2-ctl{ display:flex; flex-wrap:wrap; gap:.55rem; align-items:center; margin-top:1rem; }
+.g2-seg{ display:inline-flex; padding:3px; border:1px solid var(--line-strong); border-radius:999px; background:color-mix(in srgb, var(--card-solid) 70%, transparent); }
+.g2-seg button{ padding:.42rem .85rem; border-radius:999px; font-size:.66rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); transition:background .25s, color .25s; }
+.g2-seg button[aria-pressed="true"]{ background:var(--ink); color:var(--paper); }
+.g2-btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.5rem .95rem; border-radius:999px; border:1px solid var(--line-strong); font-size:.66rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); transition:background .25s, border-color .25s, transform .25s, opacity .25s; }
+.g2-btn .ic{ width:.95em; height:.95em; color:var(--accent); }
+.g2-btn em{ font-style:normal; color:var(--accent); font-weight:600; }
+.g2-btn:hover:not(:disabled){ border-color:var(--ink); transform:translateY(-1px); }
+.g2-btn:disabled{ opacity:.4; cursor:default; }
+.g2-btn-solid{ background:var(--ink); color:var(--paper); border-color:var(--ink); } .g2-btn-solid .ic{ color:var(--paper); }
+.g2-diyas{ display:flex; gap:.45rem; margin:1rem 0 .2rem; min-height:26px; flex-wrap:wrap; }
+.g2-diya svg{ width:26px; height:26px; display:block; opacity:.4; filter:grayscale(.7); transition:opacity .5s, filter .5s, transform .5s; }
+.g2-diya .g2-fl{ opacity:0; transition:opacity .5s; transform-box:fill-box; transform-origin:center bottom; }
+.g2-diya.is-lit svg{ opacity:1; filter:none; transform:translateY(-3px); }
+.g2-diya.is-lit .g2-fl{ opacity:1; animation:g2Fl 1.4s ease-in-out infinite; }
+@keyframes g2Fl{ 0%,100%{ transform:scale(1,1); } 50%{ transform:scale(1.1,1.25) skewX(3deg); } }
+.g2-main{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:clamp(1rem,3vw,2rem); align-items:start; margin-top:.8rem; }
+.g2-grid{ display:grid; grid-template-columns:repeat(var(--cols,4),minmax(0,1fr)); gap:clamp(.4rem,1.1vw,.7rem); }
+.g2-tile{ aspect-ratio:1; perspective:700px; padding:0; position:relative; }
+.g2-in{ position:relative; display:block; width:100%; height:100%; transform-style:preserve-3d; transition:transform .55s var(--ease-out); }
+.g2-tile.is-flip .g2-in{ transform:rotateY(180deg); }
+.g2-tile:not(.is-flip):hover .g2-in{ transform:rotateY(14deg) translateY(-3px); }
+.g2-back, .g2-face{ position:absolute; inset:0; display:grid; place-items:center; border-radius:14px; overflow:hidden; backface-visibility:hidden; -webkit-backface-visibility:hidden; border:1px solid var(--line-strong); }
+.g2-back{ color:var(--accent); background:radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--accent) 18%, var(--card-solid)), color-mix(in srgb, var(--accent) 7%, var(--card-solid))); }
+.g2-back svg{ width:66%; height:66%; }
+.g2-face{ transform:rotateY(180deg); background:var(--card-solid); }
+.g2-face > svg{ width:100%; height:100%; display:block; }
+.g2-label{ display:flex; flex-direction:column; gap:.2rem; padding:.4rem; text-align:center; }
+.g2-label b{ font-family:var(--serif); font-weight:500; font-size:clamp(.78rem,1.5vw,1.05rem); line-height:1.1; color:var(--ink); }
+.g2-label i{ font-style:normal; font-size:.5rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+.g2-tile.is-done .g2-face{ border-color:var(--accent); animation:g2Done .7s ease-out; }
+@keyframes g2Done{ 0%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 65%, transparent); } 100%{ box-shadow:0 0 0 16px transparent; } }
+.g2-tile.is-hint .g2-back{ border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent); animation:g2Hint .6s ease-in-out infinite alternate; }
+@keyframes g2Hint{ from{ transform:scale(1); } to{ transform:scale(1.07); } }
+.g2-burst{ position:absolute; z-index:3; left:50%; top:50%; width:7px; height:7px; border-radius:50%; pointer-events:none; animation:g2Burst .85s ease-out forwards; }
+@keyframes g2Burst{ from{ transform:translate(-50%,-50%) scale(1); opacity:1; } to{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2); opacity:0; } }
+.g2-found{ padding:.9rem 1rem; border:1px solid var(--line); border-radius:var(--r); background:color-mix(in srgb, var(--card-solid) 70%, transparent); }
+.g2-found h4{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-family:var(--sans); font-weight:500; margin:0 0 .6rem; }
+.g2-found ul{ list-style:none; margin:0; padding:0; display:grid; gap:.45rem; }
+.g2-card{ display:flex; align-items:center; gap:.7rem; padding:.35rem; border-radius:12px; background:color-mix(in srgb, var(--accent) 8%, transparent); animation:g2Card .6s var(--ease-out); }
+@keyframes g2Card{ from{ opacity:0; transform:translateX(14px) scale(.96); } to{ opacity:1; transform:none; } }
+.g2-card svg{ width:44px; height:44px; flex:none; border-radius:9px; }
+.g2-card span{ display:flex; flex-direction:column; min-width:0; }
+.g2-card b{ font-family:var(--serif); font-weight:500; font-size:1rem; line-height:1.15; }
+.g2-card i{ font-style:normal; font-size:.56rem; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+.g2-empty{ font-size:.78rem; color:var(--soft); padding:.4rem .2rem; }
+.g2-win{ display:flex; align-items:center; gap:1rem 1.6rem; flex-wrap:wrap; margin-top:1rem; padding:.9rem 1.1rem; border-radius:14px; background:color-mix(in srgb, var(--accent) 16%, transparent); animation:fadeIn .5s var(--ease); }
+.g2-stars{ display:flex; gap:.2rem; font-size:1.7rem; line-height:1; }
+.g2-star{ color:var(--line-strong); }
+.g2-star.is-on{ color:#f2a63b; animation:g2Star .6s var(--ease-out) backwards; text-shadow:0 0 14px rgba(242,166,59,.7); }
+@keyframes g2Star{ from{ transform:scale(0) rotate(-40deg); opacity:0; } to{ transform:none; opacity:1; } }
+.g2-wtext{ display:flex; flex-direction:column; gap:.15rem; flex:1 1 14rem; }
+.g2-wtext b{ font-family:var(--serif); font-weight:500; font-size:1.1rem; }
+.g2-wtext span{ font-size:.74rem; color:var(--soft); }
+.g2-wact{ display:flex; gap:.5rem; flex-wrap:wrap; }
+html[lang="hi"] .g2-stats i, html[lang="hi"] .g2-seg button, html[lang="hi"] .g2-btn, html[lang="hi"] .g2-label i, html[lang="hi"] .g2-card i, html[lang="hi"] .g2-found h4{ text-transform:none; letter-spacing:.02em; }
+@media (max-width:820px){ .g2-main{ grid-template-columns:1fr; } }
+@media (max-width:620px){
+  .g2-stats{ width:100%; justify-content:space-between; } .g2-stats span{ align-items:flex-start; }
+  .g2-seg button{ padding:.42rem .6rem; font-size:.62rem; }
+  .g2-ctl{ gap:.4rem; } .g2-btn{ padding:.5rem .7rem; }
+  .g2-btn-solid{ margin-left:auto; }
+  .g2-label b{ font-size:.74rem; } .g2-label i{ display:none; }
+  .g2-found ul{ grid-template-columns:1fr 1fr; }
+}
+@media (pointer:coarse){ .g2-seg button, .g2-btn{ min-height:40px; } }
+@media (prefers-reduced-motion:reduce){ .g2-in{ transition:none; } .g2-burst, .g2-card, .g2-star.is-on, .g2-tile.is-hint .g2-back{ animation:none; } }

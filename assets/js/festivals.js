@@ -156,94 +156,243 @@ var SCENES = {
     else { snd('bell'); }
   }
 
-  /* ── the game: match the year ─────────────────────────────── */
-  var GLYPH = {
-    chhath: '<circle cx="24" cy="22" r="9" fill="#f2a63b"/><path d="M6 32c6-4 12-4 18 0s12 4 18 0M6 40c6-4 12-4 18 0s12 4 18 0" stroke="#4d8f94" stroke-width="2.6" fill="none" stroke-linecap="round"/>',
-    kartik: '<path d="M8 28q16 14 32 0z" fill="#8a5232"/><path d="M24 26c-7-7-4-16 0-22 4 6 7 15 0 22z" fill="#f2a63b"/><path d="M24 24c-3-3-2-8 0-11 2 3 3 8 0 11z" fill="#ffe08a"/>',
-    sawan: '<path d="M12 28a8 8 0 0 1 1-16 11 11 0 0 1 21 3 7 7 0 0 1 1 13z" fill="#6c8c85"/><path d="M15 33l-3 8M24 33l-3 8M33 33l-3 8" stroke="#4d8f94" stroke-width="2.6" stroke-linecap="round"/>',
-    birha: '<circle cx="17" cy="35" r="7" fill="#9a4a5c"/><path d="M24 35V10q10 2 12 12" stroke="#9a4a5c" stroke-width="3.4" fill="none" stroke-linecap="round"/>',
-    gulab: '<circle cx="24" cy="22" r="14" fill="#d6416a"/><circle cx="24" cy="22" r="9" fill="#e8607f"/><circle cx="24" cy="22" r="4.4" fill="#b8284f"/><path d="M24 36v8M24 42l-7-4M24 42l7-4" stroke="#58733f" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+  /* ── the game: Match Ghazipur ─────────────────────────────── */
+  /* ten things of the district, drawn small in the same hand as the rest of the page */
+  var ICONS = {
+    chhath: '<rect width="64" height="64" fill="#f5c08a"/><circle cx="32" cy="36" r="14" fill="#ffe29a"/><rect y="38" width="64" height="26" fill="#6fa3a8"/><path d="M0 48q8-4 16 0t16 0t16 0t16 0" stroke="#fff" opacity=".55" fill="none" stroke-width="1.4"/><path d="M14 62V46a4.5 4.5 0 0 1 9 0v16zM41 62V46a4.5 4.5 0 0 1 9 0v16z" fill="#3a2a22"/><circle cx="18.5" cy="40" r="4.2" fill="#3a2a22"/><circle cx="45.5" cy="40" r="4.2" fill="#3a2a22"/><ellipse cx="18.5" cy="28" rx="11" ry="3" fill="#c98b4a"/><path d="M7.5 28q11 9 22 0" fill="#a8692f"/><circle cx="14" cy="25" r="2.4" fill="#e9a23b"/><circle cx="21" cy="24" r="2.4" fill="#d4572b"/><ellipse cx="45.5" cy="28" rx="11" ry="3" fill="#c98b4a"/><path d="M34.5 28q11 9 22 0" fill="#a8692f"/><circle cx="41" cy="25" r="2.4" fill="#f2c14e"/>',
+    kartik: '<rect width="64" height="64" fill="#1c2a5c"/><circle cx="50" cy="14" r="7" fill="#eef3ff"/><circle cx="12" cy="10" r="1" fill="#fff"/><circle cx="26" cy="18" r="1.2" fill="#fff"/><circle cx="38" cy="8" r="1" fill="#fff"/><rect y="40" width="64" height="24" fill="#2b4585"/><path d="M0 50q8-3 16 0t16 0t16 0t16 0" stroke="#9cb4ff" opacity=".4" fill="none"/><circle cx="32" cy="36" r="17" fill="#ffb454" opacity=".25"/><path d="M18 40q14 12 28 0z" fill="#8a5232"/><path d="M32 38c-7-7-4-15 0-21 4 6 7 14 0 21z" fill="#f2a63b"/><path d="M32 36c-3-3-2-8 0-11 2 3 3 8 0 11z" fill="#ffe08a"/><ellipse cx="14" cy="54" rx="5" ry="1.8" fill="#7a4a30"/><path d="M14 53c-2-2-1-4 0-6 1 2 2 4 0 6z" fill="#ffd27a"/><ellipse cx="51" cy="56" rx="5" ry="1.8" fill="#7a4a30"/><path d="M51 55c-2-2-1-4 0-6 1 2 2 4 0 6z" fill="#ffd27a"/>',
+    sawan: '<rect width="64" height="64" fill="#5d7d70"/><ellipse cx="18" cy="12" rx="16" ry="6" fill="#33463f"/><ellipse cx="46" cy="9" rx="17" ry="6" fill="#2c3f3a"/><path d="M0 40c14-6 30-4 64 2v22H0z" fill="#5f8a55"/><rect y="52" width="64" height="12" fill="#6b5a45"/><path d="M12 6l-3 16M24 8l-3 16M36 6l-3 16M48 8l-3 16M58 6l-3 16" stroke="#d3e6dc" opacity=".6" stroke-width="1.2"/><path d="M14 32h36" stroke="#6d4a2a" stroke-width="2.6"/><path d="M16 32v8M48 32v8" stroke="#6d4a2a"/><ellipse cx="16" cy="43" rx="5.4" ry="5" fill="#d98a3d"/><ellipse cx="48" cy="43" rx="5.4" ry="5" fill="#d98a3d"/><circle cx="32" cy="22" r="4.6" fill="#3a2a22"/><path d="M26 30h12l-1 20h-10z" fill="#e8793a"/><path d="M29 50v8M35 50v8" stroke="#3a2a22" stroke-width="3" stroke-linecap="round"/>',
+    birha: '<rect width="64" height="64" fill="#7a3b46"/><circle cx="32" cy="36" r="28" fill="#ffcf8a" opacity=".22"/><path d="M0 12q16 8 32 2t32-2" stroke="#d9b08a" fill="none"/><circle cx="8" cy="14" r="2" fill="#ffd27a"/><circle cx="24" cy="17" r="2" fill="#ffd27a"/><circle cx="42" cy="16" r="2" fill="#ffd27a"/><circle cx="57" cy="13" r="2" fill="#ffd27a"/><rect y="50" width="64" height="14" fill="#4a2a2a"/><rect x="12" y="30" width="40" height="20" rx="10" fill="#a8692f"/><ellipse cx="12" cy="40" rx="4" ry="10" fill="#e9c58c"/><ellipse cx="52" cy="40" rx="4" ry="10" fill="#d8b277"/><path d="M16 32l8 16M24 32l8 16M32 32l8 16M40 32l8 16" stroke="#7a4a30" stroke-width="1.6"/><circle cx="50" cy="16" r="3.4" fill="#ffe3a0"/><path d="M53 16V6q6 1 6 6" stroke="#ffe3a0" stroke-width="1.8" fill="none"/>',
+    gulab: '<rect width="64" height="64" fill="#f8dccd"/><path d="M0 52c16-8 32-6 64 0v12H0z" fill="#8aa56a"/><rect x="22" y="30" width="22" height="30" rx="6" fill="#eaf3f1" opacity=".9"/><rect x="29" y="20" width="8" height="12" fill="#eaf3f1" opacity=".9"/><rect x="24" y="42" width="18" height="16" rx="4" fill="#f2a7b6"/><circle cx="33" cy="15" r="10" fill="#d6416a"/><circle cx="33" cy="15" r="6.6" fill="#e8607f"/><circle cx="33" cy="15" r="3" fill="#b8284f"/><circle cx="12" cy="40" r="6" fill="#e5557a"/><circle cx="12" cy="40" r="3.4" fill="#c63a62"/><path d="M12 46v10" stroke="#58733f" stroke-width="2"/>',
+    poppy: '<rect width="64" height="64" fill="#f2e2c4"/><path d="M0 54c16-6 32-6 64 0v10H0z" fill="#9aae6a"/><path d="M32 60V30" stroke="#58733f" stroke-width="2.6"/><path d="M32 46q-10-2-12-10M32 50q10-2 12-10" stroke="#58733f" stroke-width="2" fill="none"/><g transform="translate(32 24)"><ellipse cx="-10" cy="-2" rx="11" ry="9" fill="#d63a2e"/><ellipse cx="10" cy="-2" rx="11" ry="9" fill="#e4483a"/><ellipse cx="-4" cy="-9" rx="9" ry="10" fill="#c92f26"/><ellipse cx="5" cy="5" rx="10" ry="8" fill="#e85a46"/><circle r="5" fill="#2a1a22"/><circle r="9" fill="none" stroke="#2a1a22" stroke-width="1.2" stroke-dasharray="1.4 2.6" opacity=".6"/></g><ellipse cx="12" cy="44" rx="4.4" ry="5.6" fill="#8aa56a"/><path d="M9 39h6" stroke="#58733f" stroke-width="1.4"/>',
+    chihal: '<rect width="64" height="64" fill="#f1c68f"/><circle cx="14" cy="14" r="7" fill="#fff0c9" opacity=".9"/><rect y="52" width="64" height="12" fill="#8a674c"/><rect x="5" y="26" width="54" height="26" fill="#b2855c"/><rect x="3" y="22" width="58" height="5" fill="#c99a6d"/><path d="M7 20h4v-4H7zM15 20h4v-4h-4zM23 20h4v-4h-4zM31 20h4v-4h-4zM39 20h4v-4h-4zM47 20h4v-4h-4zM55 20h4v-4h-4z" fill="#a37853"/><path d="M10 52V42a5 5 0 0 1 10 0v10zM25 52V38a6.5 6.5 0 0 1 13 0v14zM43 52V42a5 5 0 0 1 10 0v10z" fill="#5f4535"/><path d="M12 52c8-14 14-20 20-26M52 52c-6-14-12-20-20-26" stroke="#5e7a4c" stroke-width="1.6" fill="none" opacity=".7"/>',
+    pillar: '<rect width="64" height="64" fill="#f1d9a8"/><circle cx="50" cy="12" r="7" fill="#fff4d8"/><path d="M0 52c16-6 32-6 64 0v12H0z" fill="#a08056"/><path d="M26 56l2-6h8l2 6z" fill="#c9ad83"/><path d="M29 50l1.4-34h3.2l1.4 34z" fill="#d6bb90"/><rect x="26.5" y="12" width="11" height="4" fill="#d9c093"/><circle cx="32" cy="8" r="4.6" fill="#d9c093"/><path d="M6 60q2-8 4-12M14 60q2-8 4-12M46 60q2-8 4-12M54 60q2-8 4-12" stroke="#8d9a5a" stroke-width="1.6" fill="none"/>',
+    cornwallis: '<rect width="64" height="64" fill="#cdd9d8"/><ellipse cx="14" cy="12" rx="12" ry="4" fill="#fff" opacity=".7"/><rect y="52" width="64" height="12" fill="#8ea9a4"/><path d="M0 57h64M0 61h64" stroke="#e3eeea" opacity=".4"/><rect x="8" y="46" width="48" height="6" fill="#d8d3c2"/><rect x="12" y="42" width="40" height="5" fill="#e7e1d0"/><path d="M14 42v-14M22 42v-14M30 42v-14M38 42v-14M46 42v-14M52 42v-14" stroke="#efe9d8" stroke-width="3.4"/><rect x="11" y="24" width="42" height="4" fill="#eae4d2"/><path d="M17 24c0-12 7-18 15-18s15 6 15 18z" fill="#f4efe0"/><rect x="31" y="2" width="2" height="6" fill="#d5cdb8"/>',
+    chitnath: '<rect width="64" height="64" fill="#f5c08a"/><circle cx="52" cy="14" r="7" fill="#ffeec4"/><rect y="46" width="64" height="18" fill="#7f9f9e"/><path d="M0 52h64M0 58h64" stroke="#dfeae4" opacity=".35"/><rect x="14" y="36" width="36" height="12" fill="#c69d74"/><rect x="20" y="30" width="24" height="8" fill="#d3ad84"/><path d="M20 30c0-14 6-22 12-28 6 6 12 14 12 28z" fill="#a85442"/><path d="M22 24h20M23 17h18M25 10h14" stroke="#7c3a2d" stroke-width="1.2"/><path d="M28 36v-4a4 4 0 0 1 8 0v4z" fill="#33261f"/><circle cx="32" cy="2" r="2" fill="#ffd27a"/>'
   };
-  var G = { tiles: [], first: null, lock: false, moves: 0, matched: {}, built: false };
+  var ITEMS = [
+    { id: 'chhath', kind: 'fest', idx: 0 }, { id: 'kartik', kind: 'fest', idx: 1 }, { id: 'sawan', kind: 'fest', idx: 2 },
+    { id: 'birha', kind: 'fest', idx: 3 }, { id: 'gulab', kind: 'fest', idx: 4 }, { id: 'poppy', kind: 'key' },
+    { id: 'chihal', kind: 'place', pid: 'chihal-satun' }, { id: 'pillar', kind: 'place', pid: 'lathiya' },
+    { id: 'cornwallis', kind: 'place', pid: 'cornwallis' }, { id: 'chitnath', kind: 'place', pid: 'chitnath' }
+  ];
+  var SIZES = { easy: 4, medium: 6, hard: 10 };
+  var COLS = { easy: 4, medium: 4, hard: 5 };
 
-  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-
-  function newDeal() {
-    G.tiles = shuffle(ORDER.concat(ORDER).map(function (id, i) { return { id: id, k: i }; }));
-    G.first = null; G.lock = false; G.moves = 0; G.matched = {};
+  function itemOf(id) { for (var i = 0; i < ITEMS.length; i++) if (ITEMS[i].id === id) return ITEMS[i]; return ITEMS[0]; }
+  function placeOf(pid) { var a = window.DATA.places; for (var i = 0; i < a.length; i++) if (a[i].id === pid) return a[i]; return null; }
+  function itemName(it) {
+    if (it.kind === 'fest') return pick(window.DATA.festivals[it.idx].n);
+    if (it.kind === 'place') { var p = placeOf(it.pid); return p ? pick(p.n) : it.id; }
+    return L('fest.i.poppy');
+  }
+  function itemTag(it) {
+    if (it.kind === 'fest') return pick(window.DATA.festivals[it.idx].w);
+    if (it.kind === 'place') { var p = placeOf(it.pid); return p ? pick(p.era) : ''; }
+    return L('fest.i.poppyTag');
   }
 
-  function best() { return parseInt(store.get('gzp.fest.best') || '0', 10) || 0; }
+  var G = { size: store.get('gzp.fest.size') || 'medium', mode: store.get('gzp.fest.mode') || 'twins', tiles: [], first: null, lock: false,
+    moves: 0, matched: {}, order: [], streak: 0, topStreak: 0, secs: 0, started: false, won: false, peeks: 1, hints: 3, ticker: 0 };
+  if (!SIZES[G.size]) G.size = 'medium';
+  if (G.mode !== 'twins' && G.mode !== 'name') G.mode = 'twins';
+
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function bestKey() { return 'gzp.fest.best2.' + G.mode + '.' + G.size; }
+  function best() { return parseInt(store.get(bestKey()) || '0', 10) || 0; }
+  function pairs() { return SIZES[G.size]; }
+  function fmtTime(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+  function newDeal() {
+    clearInterval(G.ticker);
+    var pool = shuffle(ITEMS.slice()).slice(0, pairs()), k = 0, tiles = [];
+    pool.forEach(function (it) {
+      tiles.push({ id: it.id, k: k++, t: 'pic' });
+      tiles.push({ id: it.id, k: k++, t: G.mode === 'name' ? 'name' : 'pic' });
+    });
+    G.tiles = shuffle(tiles); G.first = null; G.lock = false; G.moves = 0; G.matched = {}; G.order = pool.map(function (x) { return x.id; });
+    G.streak = 0; G.topStreak = 0; G.secs = 0; G.started = false; G.won = false; G.peeks = 1; G.hints = 3; G.found = [];
+  }
+
+  function seg(name, opts, cur) {
+    return '<div class="g2-seg" role="group" data-seg="' + name + '">' + opts.map(function (o) {
+      return '<button type="button" data-v="' + o[0] + '" aria-pressed="' + (o[0] === cur ? 'true' : 'false') + '">' + esc(o[1]) + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function tileHtml(t, i) {
+    var it = itemOf(t.id), done = !!G.matched[t.id], on = done || G.first === i;
+    var face = t.t === 'pic'
+      ? '<svg viewBox="0 0 64 64" aria-hidden="true">' + ICONS[t.id] + '</svg>'
+      : '<span class="g2-label"><b>' + esc(itemName(it)) + '</b><i>' + esc(itemTag(it)) + '</i></span>';
+    return '<button type="button" data-f="' + t.id + '" data-k="' + t.k + '" class="g2-tile' + (on ? ' is-flip' : '') + (done ? ' is-done' : '') + '" data-i="' + i + '" aria-label="' + (on ? esc(itemName(it)) : esc(L('fest.card'))) + '"' + (done ? ' disabled' : '') + '>' +
+      '<span class="g2-in"><span class="g2-back"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".5"/>' +
+      '<path d="M24 11c4 3 6 8 6 12 0 5-3 8-6 11-3-3-6-6-6-11 0-4 2-9 6-12z" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/><path d="M24 11v23M17 22c3 3 5 5 7 8 2-3 4-5 7-8" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".45"/>' +
+      '<path d="M10 40h28M13 36h22" stroke="currentColor" stroke-width="1.2" opacity=".35"/></svg></span>' +
+      '<span class="g2-face">' + face + '</span></span></button>';
+  }
+
+  function foundHtml() {
+    if (!G.found.length) return '<li class="g2-empty">' + esc(L('fest.empty')) + '</li>';
+    return G.found.map(function (id) {
+      var it = itemOf(id);
+      return '<li class="g2-card"><svg viewBox="0 0 64 64" aria-hidden="true">' + ICONS[id] + '</svg><span><b>' + esc(itemName(it)) + '</b><i>' + esc(itemTag(it)) + '</i></span></li>';
+    }).join('');
+  }
+
+  function diyaRow() {
+    return G.order.map(function (id) {
+      var lit = !!G.matched[id];
+      return '<span class="g2-diya' + (lit ? ' is-lit' : '') + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15q9 8 18 0z" fill="#8a5232"/><path class="g2-fl" d="M12 13c-4-4-3-8 0-12 3 4 4 8 0 12z" fill="#ffd27a"/></svg></span>';
+    }).join('');
+  }
 
   function renderGame() {
     var host = document.getElementById('festGame');
     if (!host) return;
-    var fest = window.DATA.festivals;
     host.innerHTML =
-      '<div class="fg-head"><div><h3>' + esc(L('fest.gameTitle')) + '</h3><p>' + esc(L('fest.gameHint')) + '</p></div>' +
-      '<div class="fg-stats"><span id="fgMoves">' + esc(tpl(L('fest.moves'), { n: G.moves })) + '</span>' +
-      '<span id="fgBest">' + (best() ? esc(tpl(L('fest.best'), { n: best() })) : '') + '</span></div></div>' +
-      '<div class="fg-grid" id="fgGrid">' + G.tiles.map(function (t, i) {
-        var on = G.matched[t.id] || G.first === i;
-        var idx = ORDER.indexOf(t.id);
-        return '<button type="button" data-f="' + t.id + '" class="fg-tile' + (on ? ' is-flip' : '') + (G.matched[t.id] ? ' is-done' : '') + '" data-i="' + i + '" aria-label="' + (on ? esc(pick(fest[idx].n)) : esc(L('fest.card'))) + '"' + (G.matched[t.id] ? ' disabled' : '') + '>' +
-          '<span class="fg-in"><span class="fg-back"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".5"/><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".4" stroke-dasharray="2 4"/><path d="M24 12v24M12 24h24" stroke="currentColor" stroke-width="1.2" opacity=".35"/></svg></span>' +
-          '<span class="fg-face"><svg viewBox="0 0 48 48" aria-hidden="true">' + GLYPH[t.id] + '</svg></span></span></button>';
-      }).join('') + '</div>' +
-      '<p class="fg-cap" id="fgCap" aria-live="polite"></p>' +
-      '<div class="fg-win" id="fgWin" hidden></div>';
-    var grid = host.querySelector('#fgGrid');
-    grid.addEventListener('click', function (e) {
-      var b = e.target.closest('.fg-tile');
-      if (b && !b.disabled) flip(+b.getAttribute('data-i'), b);
-    });
-    G.built = true;
-    if (Object.keys(G.matched).length === ORDER.length) showWin();
+      '<div class="g2-top"><div><h3>' + esc(L('fest.gameTitle')) + '</h3><p>' + esc(L('fest.gameHint')) + '</p></div>' +
+      '<div class="g2-stats"><span><i>' + esc(L('fest.time')) + '</i><b id="g2Time">' + fmtTime(G.secs) + '</b></span>' +
+      '<span><i>' + esc(L('fest.movesL')) + '</i><b id="g2Moves">' + G.moves + '</b></span>' +
+      '<span><i>' + esc(L('fest.streakL')) + '</i><b id="g2Streak">' + G.streak + '</b></span>' +
+      '<span><i>' + esc(L('fest.bestL')) + '</i><b id="g2Best">' + (best() || '–') + '</b></span></div></div>' +
+      '<div class="g2-ctl">' +
+      seg('size', [['easy', L('fest.easy')], ['medium', L('fest.medium')], ['hard', L('fest.hard')]], G.size) +
+      seg('mode', [['twins', L('fest.modeTwins')], ['name', L('fest.modeName')]], G.mode) +
+      '<button type="button" class="g2-btn" data-act="peek"' + (G.peeks < 1 || G.won ? ' disabled' : '') + '><svg class="ic"><use href="#i-spark"/></svg><span>' + esc(L('fest.peek')) + '</span></button>' +
+      '<button type="button" class="g2-btn" data-act="hint"' + (G.hints < 1 || G.won ? ' disabled' : '') + '><svg class="ic"><use href="#i-pin"/></svg><span>' + esc(L('fest.hint')) + ' <em id="g2Hints">' + G.hints + '</em></span></button>' +
+      '<button type="button" class="g2-btn g2-btn-solid" data-act="deal"><svg class="ic"><use href="#i-play"/></svg><span>' + esc(L('fest.restart')) + '</span></button></div>' +
+      '<div class="g2-diyas" id="g2Diyas" aria-hidden="true">' + diyaRow() + '</div>' +
+      '<div class="g2-main"><div class="g2-grid" id="g2Grid" style="--cols:' + COLS[G.size] + '">' + G.tiles.map(tileHtml).join('') + '</div>' +
+      '<aside class="g2-found"><h4>' + esc(L('fest.found')) + '</h4><ul id="g2Found">' + foundHtml() + '</ul></aside></div>' +
+      '<div class="g2-win" id="g2Win" hidden></div>';
+    if (G.won) showWin(true);
+    if (G.started && !G.won) startTicker();
   }
 
-  function setStat() {
-    var m = document.getElementById('fgMoves');
-    if (m) m.textContent = tpl(L('fest.moves'), { n: G.moves });
-    var b = document.getElementById('fgBest');
-    if (b) b.textContent = best() ? tpl(L('fest.best'), { n: best() }) : '';
+  function stat(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+  function startTicker() {
+    clearInterval(G.ticker);
+    G.ticker = setInterval(function () { if (!G.won) { G.secs++; stat('g2Time', fmtTime(G.secs)); } }, 1000);
   }
 
-  function flip(i, btn) {
-    if (G.lock || G.first === i || G.matched[G.tiles[i].id]) return;
-    btn.classList.add('is-flip');
-    snd('tick');
-    if (G.first === null) { G.first = i; return; }
-    G.moves++; setStat();
-    var a = G.tiles[G.first], b = G.tiles[i];
-    var grid = document.getElementById('fgGrid');
-    var btnA = grid.querySelector('[data-i="' + G.first + '"]');
-    G.first = null;
-    if (a.id === b.id) {
-      G.matched[a.id] = true;
-      [btnA, btn].forEach(function (x) { x.classList.add('is-done'); x.disabled = true; });
-      var f = window.DATA.festivals[ORDER.indexOf(a.id)];
-      var cap = document.getElementById('fgCap');
-      if (cap) cap.innerHTML = '<b>' + esc(pick(f.n)) + '</b> · ' + esc(pick(f.w));
-      snd('coin');
-      if (Object.keys(G.matched).length === ORDER.length) setTimeout(showWin, 650);
-    } else {
-      G.lock = true;
-      setTimeout(function () { btnA.classList.remove('is-flip'); btn.classList.remove('is-flip'); G.lock = false; }, 850);
+  function burst(btn) {
+    if (reduced) return;
+    var cols = ['#f2a63b', '#e5557a', '#6fa3a8', '#ffd27a', '#8aa56a'], i;
+    for (i = 0; i < 10; i++) {
+      var s = document.createElement('span');
+      s.className = 'g2-burst';
+      var a = (i / 10) * 6.283, d = 34 + Math.random() * 26;
+      s.style.cssText = '--dx:' + (Math.cos(a) * d).toFixed(0) + 'px;--dy:' + (Math.sin(a) * d).toFixed(0) + 'px;background:' + cols[i % cols.length];
+      btn.appendChild(s);
+      setTimeout(function (el) { return function () { el.remove(); }; }(s), 900);
     }
   }
 
-  function showWin() {
-    var w = document.getElementById('fgWin');
+  function flip(i, btn) {
+    if (G.lock || G.won || G.first === i || G.matched[G.tiles[i].id]) return;
+    if (!G.started) { G.started = true; startTicker(); }
+    btn.classList.add('is-flip');
+    snd('tick');
+    if (G.first === null) { G.first = i; return; }
+    G.moves++; stat('g2Moves', G.moves);
+    var a = G.tiles[G.first], b = G.tiles[i];
+    var grid = document.getElementById('g2Grid');
+    var btnA = grid.querySelector('[data-i="' + G.first + '"]');
+    G.first = null;
+    if (a.id === b.id && a.k !== b.k) {
+      G.matched[a.id] = true; G.streak++; G.topStreak = Math.max(G.topStreak, G.streak); stat('g2Streak', G.streak);
+      [btnA, btn].forEach(function (x) { x.classList.add('is-done'); x.disabled = true; burst(x); });
+      G.found.push(a.id);
+      var f = document.getElementById('g2Found');
+      if (f) f.innerHTML = foundHtml();
+      var d = document.getElementById('g2Diyas');
+      if (d) d.innerHTML = diyaRow();
+      snd(G.streak >= 3 ? 'bell' : 'coin');
+      if (G.streak >= 2 && window.Scene && window.Scene.releaseDiya) window.Scene.releaseDiya(1);
+      if (Object.keys(G.matched).length === pairs()) setTimeout(function () { showWin(false); }, 700);
+    } else {
+      G.streak = 0; stat('g2Streak', 0);
+      G.lock = true;
+      setTimeout(function () { btnA.classList.remove('is-flip'); btn.classList.remove('is-flip'); G.lock = false; }, 900);
+    }
+  }
+
+  function stars() {
+    var n = pairs();
+    return G.moves <= n + 2 ? 3 : G.moves <= Math.ceil(n * 1.7) ? 2 : 1;
+  }
+
+  function showWin(quiet) {
+    var w = document.getElementById('g2Win');
     if (!w) return;
-    var isBest = !best() || G.moves < best();
-    if (isBest) store.set('gzp.fest.best', String(G.moves));
-    setStat();
+    if (!quiet) {
+      G.won = true; clearInterval(G.ticker);
+      var b = best();
+      G.newBest = !b || G.moves < b;
+      if (G.newBest) store.set(bestKey(), String(G.moves));
+      stat('g2Best', best());
+      snd('bell');
+      if (window.Scene && window.Scene.releaseDiya) window.Scene.releaseDiya(8);
+      var peek = document.querySelector('[data-act="peek"]'), hint = document.querySelector('[data-act="hint"]');
+      if (peek) peek.disabled = true; if (hint) hint.disabled = true;
+    }
+    var st = stars(), s = '';
+    for (var i = 0; i < 3; i++) s += '<span class="g2-star' + (i < st ? ' is-on' : '') + '" style="animation-delay:' + (i * 0.18) + 's">★</span>';
+    var next = G.size === 'easy' ? 'medium' : G.size === 'medium' ? 'hard' : null;
     w.hidden = false;
-    w.innerHTML = '<b>' + esc(tpl(L('fest.win'), { n: G.moves })) + (isBest ? ' ' + esc(L('fest.newBest')) : '') + '</b>' +
-      '<button type="button" class="yard-btn" id="fgAgain"><svg class="ic"><use href="#i-spark"/></svg><span>' + esc(L('fest.again')) + '</span></button>';
-    w.querySelector('#fgAgain').addEventListener('click', function () { newDeal(); renderGame(); });
-    snd('bell');
-    if (window.Scene && window.Scene.releaseDiya) window.Scene.releaseDiya(6);
+    w.innerHTML = '<div class="g2-stars">' + s + '</div><div class="g2-wtext"><b>' + esc(tpl(L('fest.win2'), { n: G.moves, t: fmtTime(G.secs) })) + (G.newBest ? ' ' + esc(L('fest.newBest')) : '') + '</b>' +
+      (G.topStreak > 1 ? '<span>' + esc(tpl(L('fest.topStreak'), { n: G.topStreak })) + '</span>' : '') + '</div>' +
+      '<div class="g2-wact"><button type="button" class="g2-btn g2-btn-solid" data-act="deal"><span>' + esc(L('fest.again')) + '</span></button>' +
+      (next ? '<button type="button" class="g2-btn" data-act="up" data-v="' + next + '"><span>' + esc(L('fest.harder')) + '</span></button>' : '') + '</div>';
+  }
+
+  function peek() {
+    if (G.peeks < 1 || G.lock || G.won) return;
+    G.peeks--; G.moves += 3; stat('g2Moves', G.moves);
+    if (!G.started) { G.started = true; startTicker(); }
+    G.lock = true;
+    var grid = document.getElementById('g2Grid'), shown = [];
+    Array.prototype.forEach.call(grid.querySelectorAll('.g2-tile'), function (b) { if (!b.classList.contains('is-flip')) { b.classList.add('is-flip', 'is-peek'); shown.push(b); } });
+    var pb = document.querySelector('[data-act="peek"]'); if (pb) pb.disabled = true;
+    snd('chime');
+    setTimeout(function () { shown.forEach(function (b) { b.classList.remove('is-flip', 'is-peek'); }); G.lock = false; }, 1900);
+  }
+
+  function hint() {
+    if (G.hints < 1 || G.lock || G.won) return;
+    var grid = document.getElementById('g2Grid');
+    var hide = G.tiles.map(function (t, i) { return { t: t, i: i }; }).filter(function (o) { return !G.matched[o.t.id] && G.first !== o.i; });
+    var pick1;
+    if (G.first !== null) {
+      var f = G.tiles[G.first];
+      pick1 = hide.filter(function (o) { return o.t.id === f.id && o.t.k !== f.k; });
+    } else {
+      var one = hide[Math.floor(Math.random() * hide.length)];
+      pick1 = hide.filter(function (o) { return o.t.id === one.t.id; });
+    }
+    G.hints--; G.moves += 1; stat('g2Moves', G.moves); stat('g2Hints', G.hints);
+    pick1.forEach(function (o) { var b = grid.querySelector('[data-i="' + o.i + '"]'); if (b) { b.classList.add('is-hint'); setTimeout(function () { b.classList.remove('is-hint'); }, 1500); } });
+    var hb = document.querySelector('[data-act="hint"]'); if (hb && G.hints < 1) hb.disabled = true;
+    snd('tick');
+  }
+
+  function gameClick(e) {
+    var t = e.target.closest('.g2-tile');
+    if (t && !t.disabled) { flip(+t.getAttribute('data-i'), t); return; }
+    var sg = e.target.closest('.g2-seg button');
+    if (sg) {
+      var name = sg.parentNode.getAttribute('data-seg'), v = sg.getAttribute('data-v');
+      if (name === 'size') { G.size = v; store.set('gzp.fest.size', v); } else { G.mode = v; store.set('gzp.fest.mode', v); }
+      newDeal(); renderGame(); snd('tick'); return;
+    }
+    var a = e.target.closest('[data-act]');
+    if (!a || a.disabled) return;
+    var act = a.getAttribute('data-act');
+    if (act === 'deal') { newDeal(); renderGame(); snd('tick'); }
+    else if (act === 'up') { G.size = a.getAttribute('data-v'); store.set('gzp.fest.size', G.size); newDeal(); renderGame(); }
+    else if (act === 'peek') peek();
+    else if (act === 'hint') hint();
   }
 
   function bindCards() {
@@ -257,10 +406,18 @@ var SCENES = {
     });
   }
 
+  function bindGame() {
+    var el = document.getElementById('festGame');
+    if (!el || el._bound) return;
+    el._bound = true;
+    el.addEventListener('click', gameClick);
+  }
+
   window.Festivals = {
     build: function () {
       renderCards();
       bindCards();
+      bindGame();
       if (!G.tiles.length) newDeal();
       renderGame();
     }
