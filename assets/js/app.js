@@ -443,11 +443,7 @@
   }
 
   function renderRivers() {
-    var el = $('#riverList');
-    if (!el) return;
-    el.innerHTML = window.DATA.rivers.map(function (r) {
-      return '<li><b>' + esc(lang === 'hi' ? r.hi : r.n) + '</b><span>' + esc(pick(r.t)) + '</span></li>';
-    }).join('');
+    if (window.Rivers) window.Rivers.build();
   }
 
   function renderGhats() {

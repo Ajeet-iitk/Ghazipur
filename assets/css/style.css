@@ -1769,3 +1769,87 @@ html[lang="hi"] .fg-stats{ text-transform:none; letter-spacing:.02em; }
   .fg-grid{ max-width:none; }
 }
 @media (prefers-reduced-motion:reduce){ .fest-art svg [class^="fa-"]{ animation:none !important; } .fa-lantern,.fa-ring,.fa-steam,.fa-note,.fa-bolt{ opacity:0; } }
+
+/* ══ eight rivers, one slow current: a full-width panorama ══ */
+.river-grid{ grid-template-columns:1fr !important; }
+.river-grid .prose{ column-count:2; column-gap:clamp(1.4rem,3vw,2.6rem); }
+.river-grid .prose p{ break-inside:avoid-column; }
+.river-grid .prose .pull{ column-span:all; }
+@media (max-width:820px){ .river-grid .prose{ column-count:1; } }
+
+.rs{
+  --rs-land:#e3d6b8; --rs-f0:#d9c99c; --rs-f1:#c9d3a0; --rs-f2:#e8dcc0; --rs-f3:#bccb92; --rs-tree:#7a9a62;
+  --rs-w1:#8ec1c4; --rs-w2:#55909c; --rs-bank:#cdb892; --rs-name:#3b2f26; --rs-lit:0; --rs-mist:.5;
+  position:relative; width:100%; margin:clamp(1.6rem,4vw,2.8rem) 0 0; overflow:hidden;
+  border-block:1px solid var(--line); background:var(--rs-land);
+}
+html[data-theme="night"] .rs{
+  --rs-land:#16234a; --rs-f0:#1c2c58; --rs-f1:#1a2a52; --rs-f2:#1f3060; --rs-f3:#182850; --rs-tree:#1f3b4b;
+  --rs-w1:#35579a; --rs-w2:#1b3270; --rs-bank:#2a3a6a; --rs-name:#dfe8ff; --rs-lit:1; --rs-mist:.18;
+}
+.rs-svg{ display:block; width:100%; height:clamp(340px,38vw,540px); }
+.rs-svg .rs-land{ fill:var(--rs-land); }
+.rs-svg .rs-f{ opacity:.85; } .rs-svg .rs-f0{ fill:var(--rs-f0); } .rs-svg .rs-f1{ fill:var(--rs-f1); } .rs-svg .rs-f2{ fill:var(--rs-f2); } .rs-svg .rs-f3{ fill:var(--rs-f3); }
+.rs-svg .rs-tree{ fill:var(--rs-tree); opacity:.8; }
+.rs-svg .rs-vil rect{ fill:#8a6a4e; } .rs-svg .rs-lit{ fill:#ffd79a; opacity:calc(var(--rs-lit) * .55); animation:rsTwinkle 3.4s ease-in-out infinite; }
+@keyframes rsTwinkle{ 0%,100%{ opacity:calc(var(--rs-lit) * .3); } 50%{ opacity:calc(var(--rs-lit) * .75); } }
+.rs-svg .rs-bank, .rs-svg .rs-water, .rs-svg .rs-flow, .rs-svg .rs-gw, .rs-svg .rs-gflow, .rs-svg .rs-hit{ fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.rs-svg .rs-bank{ stroke:var(--rs-bank); opacity:.9; }
+.rs-svg .rs-hit{ stroke:transparent; stroke-width:34; cursor:pointer; }
+.rs-svg .rs-hit-g{ stroke-width:80; }
+.rs-svg .rs-flow{ stroke:#fff; stroke-dasharray:5 15; opacity:.6; animation:rsFlow 2.2s linear infinite; }
+@keyframes rsFlow{ to{ stroke-dashoffset:-40; } }
+.rs-svg .rs-gflow{ stroke:#fff; stroke-dasharray:34 60; opacity:.5; animation:rsGFlow 7s linear infinite; }
+.rs-svg .rs-gf2{ animation-duration:9s; opacity:.35; stroke-dasharray:22 80; } .rs-svg .rs-gf3{ animation-duration:11s; opacity:.3; stroke-dasharray:18 70; }
+@keyframes rsGFlow{ to{ stroke-dashoffset:-188; } }
+.rs-svg .rs-name{ font:500 17px var(--serif); font-style:italic; fill:var(--rs-name); opacity:.8; paint-order:stroke; stroke:var(--rs-land); stroke-width:4px; stroke-linejoin:round; transition:opacity .4s, font-size .4s; }
+.rs-svg .rs-name-g{ font-size:34px; font-style:normal; letter-spacing:.04em; }
+.rs-svg .rs-cityname{ font:600 15px var(--serif); fill:var(--rs-name); paint-order:stroke; stroke:var(--rs-land); stroke-width:4px; }
+.rs-svg .rs-b{ fill:#6d4a36; } html[data-theme="night"] .rs-svg .rs-b{ fill:#2a2440; }
+.rs-svg .rs-citylit{ opacity:calc(.3 + var(--rs-lit) * .6); animation:rsTwinkle 4s ease-in-out infinite; }
+.rs-svg.has-sel .rs-r:not(.is-on){ opacity:.5; transition:opacity .5s; }
+.rs-svg .rs-r{ transition:opacity .5s; }
+.rs-svg .rs-r.is-on .rs-water, .rs-svg .rs-r.is-on .rs-gw{ filter:drop-shadow(0 0 7px rgba(255,255,255,.55)); }
+.rs-svg .rs-r.is-on .rs-flow{ opacity:.95; stroke-width:3px; }
+.rs-svg .rs-r.is-on .rs-name{ opacity:1; font-size:21px; }
+.rs-svg .rs-r.is-on .rs-name-g{ font-size:38px; }
+.rs-svg .rs-glowc{ animation:rsTwinkle 2.4s ease-in-out infinite; }
+.rs-svg .rs-mist{ opacity:var(--rs-mist); animation:rsMist 38s ease-in-out infinite alternate; }
+.rs-svg .rs-mist2{ animation-duration:52s; animation-direction:alternate-reverse; }
+@keyframes rsMist{ from{ transform:translateX(-90px); } to{ transform:translateX(90px); } }
+.rs-svg .rs-bird{ animation:rsBird 30s linear infinite; }
+@keyframes rsBird{ from{ transform:translateX(-80px); } to{ transform:translateX(1700px); } }
+.rs-svg .rs-wing{ transform-box:fill-box; transform-origin:center bottom; animation:rsFlap .55s ease-in-out infinite alternate; }
+@keyframes rsFlap{ from{ transform:scaleY(1); } to{ transform:scaleY(.3); } }
+html[data-theme="night"] .rs-svg .rs-wing{ stroke:#9aa8d0; }
+.rs-title{
+  position:absolute; z-index:2; top:clamp(.8rem,2vw,1.4rem); left:clamp(1.15rem,4.2vw,4.5rem); pointer-events:none;
+  padding:.55rem .9rem; border-radius:12px; background:color-mix(in srgb, var(--card-solid) 78%, transparent);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border:1px solid var(--line);
+}
+.rs-title h3{ font-size:1.05rem; } .rs-title p{ margin:.1rem 0 0; font-size:.62rem; letter-spacing:.12em; color:var(--soft); text-transform:uppercase; }
+.rs-bar{
+  display:flex; align-items:center; gap:.7rem 1.4rem; flex-wrap:wrap; padding:.9rem clamp(1.15rem,4.2vw,4.5rem) 1rem;
+  background:color-mix(in srgb, var(--card-solid) 86%, transparent); border-top:1px solid var(--line);
+}
+.rs-chips{ display:flex; gap:.4rem; flex-wrap:wrap; }
+.rs-chip{
+  display:inline-flex; align-items:center; gap:.4rem; padding:.38rem .75rem; border-radius:999px; font-size:.72rem;
+  border:1px solid var(--line-strong); color:var(--ink-2); transition:background .25s, color .25s, border-color .25s;
+}
+.rs-chip i{ width:8px; height:8px; border-radius:50%; flex:none; }
+.rs-chip:hover{ border-color:var(--ink); }
+.rs-chip.is-on{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+.rs-now{ margin:0; flex:1 1 18rem; font-size:.84rem; color:var(--soft); min-height:1.3em; }
+.rs-now b{ font-family:var(--serif); font-weight:500; font-size:1.1rem; color:var(--ink); }
+.rs-fine{ flex-basis:100%; margin:0; font-size:.62rem; }
+html[lang="hi"] .rs-title p{ text-transform:none; letter-spacing:.02em; }
+@media (max-width:620px){
+  .rs-title{ padding:.4rem .7rem; } .rs-title h3{ font-size:.92rem; }
+  .rs-svg{ height:clamp(300px,80vw,380px); }
+  .rs-chip{ padding:.45rem .7rem; font-size:.74rem; }
+}
+@media (pointer:coarse){ .rs-chip{ min-height:40px; } }
+@media (prefers-reduced-motion:reduce){ .rs-svg *{ animation:none !important; } }
+.rs-title{ left:44%; }
+@media (max-width:900px){ .rs-title{ left:auto; right:1rem; } }

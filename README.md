@@ -14,6 +14,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
 - **The living year** — the five festivals as little animated scenes you can poke (raise the arghya, add a diya, call the lightning), plus a "Match the year" memory game.
+- **Eight rivers, one slow current** — a full-width river-system panorama: the Ganga across the page, seven rivers flowing in, boats and lamps on the water, a ferry at Ghazipur. Hover or tap a river.
 - **The riverfront** — nine ghats drawn as one swipeable panorama; tap a ghat and the boatman rows to it, or take the tour. A ferry crosses to Tari Ghat.
 - **Explore** section listing every creative piece on the site.
 - Audio controller, language switch, theme switch, search, and a custom favicon.
@@ -43,6 +44,7 @@ python -m http.server 8000
 - `assets/js/nature.js` — season switch and wildlife spotting
 - `assets/js/yard.js` — the factory crew animation
 - `assets/js/pillar.js` — the Ashoka Pillar game
+- `assets/js/rivers.js` — the full-width river-system panorama
 - `assets/js/ghats.js` — the illustrated riverfront
 - `assets/js/festivals.js` — animated festival scenes and the match game
 - `assets/js/audio.js` — music and sound effects (Web Audio)
