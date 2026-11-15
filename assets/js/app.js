@@ -506,17 +506,86 @@
     }).join('');
   }
 
+  /* ── the Explorer's Dial: small tiles to choose from, one stage that shows and launches ── */
+  var exCur = 0, exCat = 'all', exTimer = null, exUser = false, exVisible = false, exObs = null;
+  var EX_CAT = { pillar: 'play', wildlife: 'play', bell: 'play', diya: 'play', naav: 'play',
+    toggle: 'sound', mixer: 'sound', sfx: 'sound', phrases: 'sound', 'yard-siren': 'sound',
+    monsoon: 'sky', sky: 'sky', theme: 'sky', aarti: 'sky', 'ghat-life': 'sky',
+    atlas: 'go', places: 'go', 'yard-train': 'go', search: 'go', lang: 'go' };
+  function exOf(i) { return window.DATA.explore[i]; }
+  function exVisibleList() {
+    var out = [];
+    window.DATA.explore.forEach(function (x, i) { if (exCat === 'all' || EX_CAT[x.act] === exCat) out.push(i); });
+    return out;
+  }
+  function exSelect(i, user) {
+    var list = exVisibleList();
+    if (!list.length) return;
+    if (list.indexOf(i) < 0) i = list[0];
+    if (user) { exUser = true; clearInterval(exTimer); }
+    exCur = i;
+    var x = exOf(i), stage = $('#exStage');
+    if (!stage) return;
+    stage.setAttribute('data-cat', EX_CAT[x.act] || 'go');
+    $('#exTitle').textContent = pick(x.t);
+    $('#exDesc').textContent = pick(x.d);
+    $('#exBtn').textContent = pick(x.b);
+    $('#exCount').textContent = ('0' + (list.indexOf(i) + 1)).slice(-2) + ' / ' + ('0' + list.length).slice(-2);
+    var go = $('#exGo'); if (go) go.setAttribute('data-act', x.act);
+    var use = $('#exBig use'); if (use) use.setAttribute('href', '#' + x.icon);
+    stage.classList.remove('is-pop'); void stage.offsetWidth; stage.classList.add('is-pop');
+    $$('.ex-tile').forEach(function (t) { t.classList.toggle('is-on', +t.getAttribute('data-ex') === i); });
+  }
+  function exStep(d, user) {
+    var list = exVisibleList(), at = list.indexOf(exCur);
+    exSelect(list[(at + d + list.length) % list.length], user);
+  }
+  function exStartAuto() {
+    clearInterval(exTimer);
+    if (exUser || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    exTimer = setInterval(function () { if (exVisible && !exUser) exStep(1, false); }, 4200);
+  }
+
   function renderExplore() {
     var el = $('#exploreGrid');
     if (!el) return;
-    el.innerHTML = window.DATA.explore.map(function (x) {
-      return '<article class="ex-card rev">' +
-        '<span class="ex-ic"><svg class="ic" aria-hidden="true"><use href="#' + x.icon + '"/></svg></span>' +
-        '<h3>' + esc(pick(x.t)) + '</h3><p>' + esc(pick(x.d)) + '</p>' +
-        '<button type="button" class="ex-act" data-act="' + x.act + '">' + esc(pick(x.b)) +
-        ' <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>' +
-        '</article>';
-    }).join('');
+    clearInterval(exTimer);
+    var cats = ['all', 'play', 'sound', 'sky', 'go'];
+    el.innerHTML = '<div class="ex-wrap">' +
+      '<div class="ex-side"><div class="ex-chips" role="group" aria-label="' + esc(L('explore.cats')) + '">' + cats.map(function (c) {
+        return '<button type="button" class="ex-chip' + (c === exCat ? ' is-on' : '') + '" data-cat="' + c + '" aria-pressed="' + (c === exCat ? 'true' : 'false') + '">' + esc(L('explore.cat.' + c)) + '</button>';
+      }).join('') + '</div><div class="ex-tiles" id="exTiles">' + window.DATA.explore.map(function (x, i) {
+        var on = exCat === 'all' || EX_CAT[x.act] === exCat;
+        return '<button type="button" class="ex-tile" data-ex="' + i + '" data-cat="' + (EX_CAT[x.act] || 'go') + '"' + (on ? '' : ' hidden') + ' aria-label="' + esc(pick(x.t)) + '">' +
+          '<span class="ex-tic"><svg class="ic" aria-hidden="true"><use href="#' + x.icon + '"/></svg></span><span class="ex-tlab">' + esc(pick(x.t)) + '</span></button>';
+      }).join('') + '</div></div>' +
+      '<aside class="ex-stage" id="exStage" data-cat="go" aria-live="polite">' +
+      '<div class="ex-orb"><svg class="ex-rings" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" class="r1"/><circle cx="100" cy="100" r="70" class="r2"/><circle cx="100" cy="100" r="48" class="r3"/>' +
+      '<g class="ex-orbit o1"><circle cx="100" cy="8" r="5"/></g><g class="ex-orbit o2"><circle cx="100" cy="30" r="4"/></g><g class="ex-orbit o3"><circle cx="100" cy="52" r="3"/></g></svg>' +
+      '<span class="ex-big" id="exBig"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span></div>' +
+      '<div class="ex-body"><p class="ex-count" id="exCount"></p><h3 id="exTitle"></h3><p class="ex-desc" id="exDesc"></p>' +
+      '<div class="ex-ctl"><button type="button" class="ex-nav" data-exn="-1" aria-label="' + esc(L('explore.prev')) + '"><svg class="ic"><use href="#i-arrow"/></svg></button>' +
+      '<button type="button" class="ex-act ex-go" id="exGo" data-act=""><span id="exBtn"></span> <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>' +
+      '<button type="button" class="ex-nav" data-exn="1" aria-label="' + esc(L('explore.next')) + '"><svg class="ic"><use href="#i-arrow"/></svg></button></div></div></aside></div>';
+
+    el.querySelector('.ex-chips').addEventListener('click', function (e) {
+      var b = e.target.closest('.ex-chip'); if (!b) return;
+      exCat = b.getAttribute('data-cat');
+      $$('.ex-chip').forEach(function (c) { var on = c === b; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      $$('.ex-tile').forEach(function (t) { var x = exOf(+t.getAttribute('data-ex')); t.hidden = !(exCat === 'all' || EX_CAT[x.act] === exCat); });
+      exSelect(exCur, true);
+    });
+    $('#exTiles').addEventListener('click', function (e) {
+      var t = e.target.closest('.ex-tile'); if (t) exSelect(+t.getAttribute('data-ex'), true);
+    });
+    $$('.ex-nav', el).forEach(function (b) { b.addEventListener('click', function () { exStep(+b.getAttribute('data-exn'), true); }); });
+    var stage = $('#exStage');
+    stage.addEventListener('pointerenter', function () { exUser = true; clearInterval(exTimer); });
+    exSelect(exCur, false);
+    if (exObs) exObs.disconnect();
+    if ('IntersectionObserver' in window) { exObs = new IntersectionObserver(function (es) { exVisible = es[0].isIntersecting; }, { threshold: 0.25 }); exObs.observe(el); }
+    else exVisible = true;
+    exStartAuto();
   }
 
   function renderMixer() {

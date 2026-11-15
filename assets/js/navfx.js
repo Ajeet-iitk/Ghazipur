@@ -57,12 +57,30 @@
   nav.addEventListener('focusin', function (e) { var a = e.target.closest('a'); if (a) place(a, false); });
   nav.addEventListener('focusout', function () { setTimeout(function () { if (!nav.contains(document.activeElement)) rest(false); }, 0); });
 
+  /* ── hiding on scroll: it slides away going down, and returns going up, at the top, or at the pointer ── */
+  var lastY = window.scrollY, hidden = false;
+  function setHeight() { head.style.setProperty('--hh', head.offsetHeight + 'px'); }
+  setHeight();
+  window.addEventListener('resize', setHeight);
+  function hide(on) {
+    if (on === hidden) return;
+    if (on && (document.body.classList.contains('nav-open') || head.matches(':focus-within'))) return;
+    hidden = on; head.classList.toggle('is-hidden', on);
+  }
+  window.addEventListener('pointermove', function (e) { if (hidden && e.pointerType === 'mouse' && e.clientY < 36) hide(false); }, { passive: true });
+  head.addEventListener('focusin', function () { hide(false); });
+
   /* ── scroll: progress and chapter ─────────────────────────── */
   var ticking = false, lastActive = null;
   function frame() {
     ticking = false;
     var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     var p = Math.min(1, Math.max(0, window.scrollY / max));
+    var y = window.scrollY, dy = y - lastY;
+    if (y < 90) hide(false);
+    else if (dy > 6) hide(true);
+    else if (dy < -6) hide(false);
+    if (Math.abs(dy) > 6) lastY = y;
     head.style.setProperty('--hp', (p * 100).toFixed(2) + '%');
     boat.style.left = (p * 100).toFixed(2) + '%';
     var act = nav.querySelector('a.is-active');
