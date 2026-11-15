@@ -511,7 +511,8 @@
   var EX_CAT = { pillar: 'play', wildlife: 'play', bell: 'play', diya: 'play', naav: 'play',
     toggle: 'sound', mixer: 'sound', sfx: 'sound', phrases: 'sound', 'yard-siren': 'sound',
     monsoon: 'sky', sky: 'sky', theme: 'sky', aarti: 'sky', 'ghat-life': 'sky',
-    atlas: 'go', places: 'go', 'yard-train': 'go', search: 'go', lang: 'go' };
+    atlas: 'go', places: 'go', 'yard-train': 'go', search: 'go', lang: 'go',
+    eye: 'sky', song: 'sound', match: 'play', artnook: 'play', kitchen: 'play', story: 'go', riverfront: 'go' };
   function exOf(i) { return window.DATA.explore[i]; }
   function exVisibleList() {
     var out = [];
@@ -1026,6 +1027,25 @@
     }
     else if (act === 'naav') { openNaav(); }
     else if (act === 'pillar') { if (window.Pillar) window.Pillar.open(); }
+    else if (act === 'eye') { var eb = $('#viewBtn'); if (eb && !document.body.classList.contains('view-mode')) eb.click(); }
+    else if (act === 'song') {
+      scrollTo('living');
+      setTimeout(function () { var c = $('.fest-card[data-fest="chhath"]'); if (c) c.click(); }, 700);
+    }
+    else if (act === 'match') { scrollTo('festGame'); }
+    else if (act === 'artnook' || act === 'kitchen') {
+      var nid = act === 'artnook' ? 'artNook' : 'kitchenNook', hid = act === 'artnook' ? 'anHead' : 'knHead';
+      scrollTo(nid);
+      setTimeout(function () { var h = $('#' + hid), n = $('#' + nid); if (h && n && !n.classList.contains('is-open')) h.click(); }, 800);
+    }
+    else if (act === 'story') {
+      scrollTo('timemachine');
+      setTimeout(function () { var pb = $('.tm-play'); if (pb && pb.getAttribute('aria-pressed') !== 'true') pb.click(); }, 900);
+    }
+    else if (act === 'riverfront') {
+      scrollTo('riverfront');
+      setTimeout(function () { var tb = $('.rf-tour'); if (tb && tb.getAttribute('aria-pressed') !== 'true') tb.click(); }, 900);
+    }
     else if (act === 'monsoon') {
       scrollTo('top');
       setTimeout(function () { if (window.Nature) window.Nature.setSeason('monsoon'); }, 500);

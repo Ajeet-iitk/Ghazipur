@@ -5,6 +5,8 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 
 ![Hero](assets/img/screens/hero.png)
 
+**Everything on the site is drawn in code (canvas, SVG and Web Audio), apart from two short audio clips. No framework, no build step.** The home view reacts to the weather, the time of day and your clicks; every chapter has something to play with, and the Explorer's Dial lists all of it.
+
 ## Highlights
 
 - **Day and night, blended smoothly.** By day, kids play on the ghat and a fisherman casts his net. At night, the Ganga Aarti begins, diyas are lit along the steps, and people sit and watch.
@@ -23,17 +25,26 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **The time machine** — the Story chapter as one riverbank diorama that grows across eleven eras, with a layers-of-silt selector, a rolling year counter and a "run the centuries" play button.
 - **Eight rivers, one slow current** — a full-width river-system panorama: the Ganga across the page, seven rivers flowing in, boats and lamps on the water, a ferry at Ghazipur. Hover or tap a river.
 - **The riverfront** — nine ghats drawn as one swipeable panorama, alive with walkers, a chai-wala, a flower seller, a pandit and a kulfi cart, cows, goats, a dog, pigeons and a monkey, trees, birds and kites, a flowing river with drifting boats, garlands and diyas, and leaping fish. Tap a ghat and the boatman rows to it, or take the tour.
-- **A Google Map strip** above the footer, loaded only when you scroll near it, with an "Open in Google Maps" link.
+- **A small Google Map strip** above the footer, loaded only when you scroll near it, with an "Open in Google Maps" link.
 - **The Explorer's Dial** — every feature as a small coloured tile (filter by Play, Sound, Sky & weather, Go to). A stage card shows and launches the chosen one, with orbiting rings, and it cycles through them on its own.
-- Audio controller, language switch, theme switch, search, and a custom favicon.
+- **Home-screen details** — click the water and it drips (only on the home view); click near a boat and it rocks; a boy flies a kite; kids, bathers, a diver, walkers, wildlife.
+- Audio controller, language switch (English / हिन्दी / Hinglish), day and night theme, command search, and a custom favicon.
 
-| Night | The yard | Places |
+| Clear day | Monsoon | Summer |
 |---|---|---|
-| ![Night](assets/img/screens/night-hero.png) | ![Poppy](assets/img/screens/poppy.png) | ![Places](assets/img/screens/places.png) |
+| ![Hero](assets/img/screens/hero.png) | ![Monsoon](assets/img/screens/monsoon.png) | ![Summer](assets/img/screens/summer.png) |
 
-| River | Explore | Mobile |
+| Night | The riverfront | Eight rivers |
 |---|---|---|
-| ![River](assets/img/screens/river.png) | ![Explore](assets/img/screens/explore.png) | ![Mobile](assets/img/screens/mobile-hero.png) |
+| ![Night](assets/img/screens/night-hero.png) | ![Riverfront](assets/img/screens/riverfront.png) | ![Rivers](assets/img/screens/river.png) |
+
+| Time machine | The living year | Explorer's Dial |
+|---|---|---|
+| ![Story](assets/img/screens/story.png) | ![Living](assets/img/screens/living.png) | ![Explore](assets/img/screens/explore.png) |
+
+| Mobile home | Mobile riverfront | Mobile Explore |
+|---|---|---|
+| ![Mobile](assets/img/screens/mobile-hero.png) | ![Mobile riverfront](assets/img/screens/mobile-riverfront.png) | ![Mobile Explore](assets/img/screens/mobile-explore.png) |
 
 ## Run locally
 
@@ -57,5 +68,8 @@ python -m http.server 8000
 - `assets/js/navfx.js` — the navbar animations
 - `assets/js/ghats.js` — the illustrated riverfront
 - `assets/js/festivals.js` — animated festival scenes and the match game
+- `assets/js/artnook.js` — the artists' corner easter egg (chowk, rose still, soop)
+- `assets/js/kitchen.js` — the kitchen corner easter egg (litti, chokha, launglata)
+- `assets/audio/` — `drip.mp3` (water click) and `chhathi-maiya.mp3` (the Chhath song)
 - `assets/js/audio.js` — music and sound effects (Web Audio)
 - `assets/js/i18n.js`, `assets/js/app.js` — languages and interactions

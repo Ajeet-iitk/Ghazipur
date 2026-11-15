@@ -1274,6 +1274,48 @@
 
     explore: [
       {
+        icon: "i-eye", act: "eye",
+        t: { en: "The eye", hi: "आँख", eh: "Aankh" },
+        d: { en: "Fade the whole page away and just watch the river. A slow day drifts by, with time and season pills.", hi: "पूरा पन्ना ओझल कर दीजिए और बस नदी देखिए। एक धीमा दिन गुज़रता है, समय और मौसम के बटन साथ हैं।", eh: "Poora page ojhal kar dijiye aur bas nadi dekhiye. Ek dheema din guzarta hai, samay aur mausam ke button saath hain." },
+        b: { en: "Watch the view", hi: "नज़ारा देखिए", eh: "Nazara dekhiye" }
+      },
+      {
+        icon: "i-music", act: "song",
+        t: { en: "The Chhathi Maiya song", hi: "छठी मैया का गीत", eh: "Chhathi Maiya ka geet" },
+        d: { en: "Play the Chhath song with a floating player: seek, jump 10 seconds, repeat and volume.", hi: "छठ का गीत चलाइए, तैरते प्लेयर के साथ: आगे-पीछे, 10 सेकंड की छलाँग, दोहराव और आवाज़।", eh: "Chhath ka geet chalaiye, tairte player ke saath: aage-peeche, 10 second ki chhalaang, dohrav aur awaaz." },
+        b: { en: "Play the song", hi: "गीत सुनिए", eh: "Geet suniye" }
+      },
+      {
+        icon: "i-spark", act: "match",
+        t: { en: "Match Ghazipur", hi: "गाजीपुर जोड़ी", eh: "Ghazipur jodi" },
+        d: { en: "A memory game of ten local things: three levels, two modes, streaks, peek and hint.", hi: "दस स्थानीय चीज़ों का याददाश्त का खेल: तीन स्तर, दो तरीक़े, लगातार जोड़ी, झाँकना और इशारा।", eh: "Das sthaniya cheezon ka yaaddaasht ka khel: teen level, do tareeke, lagataar jodi, jhaankna aur ishaara." },
+        b: { en: "Play the game", hi: "खेल खेलिए", eh: "Khel khelein" }
+      },
+      {
+        icon: "i-spark", act: "artnook",
+        t: { en: "The artists' corner", hi: "कलाकारों का कोना", eh: "Kalakaaron ka kona" },
+        d: { en: "A hidden corner: draw a mirrored chowk, distil rose water, weave a bamboo soop.", hi: "एक छुपा कोना: आईने जैसा चौक बनाइए, गुलाब जल खींचिए, बाँस का सूप बुनिए।", eh: "Ek chhupa kona: aaine jaisa chowk banaiye, gulab jal khinchiye, baans ka soop buniye." },
+        b: { en: "Peek inside", hi: "झाँकिए", eh: "Jhaankiye" }
+      },
+      {
+        icon: "i-lamp", act: "kitchen",
+        t: { en: "The kitchen corner", hi: "रसोई का कोना", eh: "Rasoi ka kona" },
+        d: { en: "Another hidden corner: roast litti on embers, mash chokha, fry launglata.", hi: "एक और छुपा कोना: अंगारों पर लिट्टी सेंकिए, चोखा मसलिए, लौंगलता तलिए।", eh: "Ek aur chhupa kona: angaaron par litti senkiye, chokha masliye, launglata taliye." },
+        b: { en: "Start cooking", hi: "पकाना शुरू करें", eh: "Pakana shuru karein" }
+      },
+      {
+        icon: "i-pin", act: "story",
+        t: { en: "The time machine", hi: "समय की मशीन", eh: "Samay ki machine" },
+        d: { en: "Eleven eras on one riverbank, from forest ashrams to the Scientific Society. Dig through the silt layers.", hi: "एक नदी-किनारे पर ग्यारह युग, जंगल के आश्रमों से वैज्ञानिक सोसायटी तक। गाद की परतें खोदिए।", eh: "Ek nadi-kinare par gyarah yug, jangal ke ashramon se Scientific Society tak. Gaad ki paratein khodiye." },
+        b: { en: "Run the centuries", hi: "सदियाँ चलाइए", eh: "Sadiyan chalaiye" }
+      },
+      {
+        icon: "i-boat", act: "riverfront",
+        t: { en: "The riverfront", hi: "नदी का किनारा", eh: "Nadi ka kinara" },
+        d: { en: "Nine ghats alive with walkers, vendors, animals and boats. Tap one, or row the whole riverfront.", hi: "नौ घाट, चलते लोग, दुकानदार, जानवर और नावें। किसी पर टैप कीजिए, या पूरे किनारे की सैर कीजिए।", eh: "Nau ghat, chalte log, dukaandaar, janwar aur naavein. Kisi par tap kijiye, ya poore kinare ki sair kijiye." },
+        b: { en: "Row the riverfront", hi: "किनारे की सैर", eh: "Kinare ki sair" }
+      },
+      {
         icon: "i-pin", act: "pillar",
         t: { en: "The Ashoka Pillar", hi: "अशोक स्तंभ", eh: "Ashoka Stambh" },
         d: { en: "At Latiya, about 30 km away, stands an Ashoka Pillar some 30 feet tall. Haul it upright with a rope, then decode the Brahmi-style writing.", hi: "लगभग 30 किमी दूर लटिया में क़रीब 30 फ़ुट ऊँचा अशोक स्तंभ खड़ा है। रस्सी से उसे खड़ा कीजिए, फिर ब्राह्मी-शैली का लेख पढ़िए।", eh: "Lagbhag 30 km door Latiya mein qareeb 30 feet ooncha Ashoka stambh khada hai. Rassi se use khada kijiye, phir Brahmi-style lekh padhiye." },
@@ -1318,8 +1360,8 @@
       {
         icon: "i-bell", act: "bell",
         t: { en: "Ring the temple bell", hi: "मंदिर की घंटी", eh: "Mandir ki ghanti" },
-        d: { en: "A bell synthesised from inharmonic partials, the way a real one behaves.", hi: "असमान अनुनादों से बनी घंटी, जैसे असली घंटी बजती है।", eh: "Inharmonic partials se bani ghanti, jaise asli ghanti bajti hai." },
-        b: { en: "Ring it", hi: "बजाइए", eh: "Bajaiye" }
+        d: { en: "Three brass bells hang under the chhatri on the ghat. Click them on desktop, shake your phone on mobile.", hi: "घाट की छतरी के नीचे पीतल की तीन घंटियाँ टँगी हैं। डेस्कटॉप पर क्लिक कीजिए, फ़ोन पर फ़ोन हिलाइए।", eh: "Ghat ki chhatri ke neeche peetal ki teen ghantiyan tangi hain. Desktop par click kijiye, phone par phone hilaiye." },
+        b: { en: "Ring them", hi: "बजाइए", eh: "Bajaiye" }
       },
       {
         icon: "i-search", act: "search",
