@@ -690,13 +690,24 @@
   /* ── three boys, one football: a proper game of passes ───────── */
   var fb = { holder: 0, target: 1, phase: 'hold', t0: -1, passes: 0, cheer: 0, puffs: [], spin: 0 };
   var KIDCOL = [[196, 84, 70], [70, 112, 168], [226, 178, 66]];
+  var lastKidsT = 0, fleeDir = [1, 1, 1], fleePrev = [0, 0, 0];
+  var WALKERS = [
+    { ph: 0.00, sp: 0.020, lane: 0.030, col: [190, 70, 90], item: 'pot', v: 2 },
+    { ph: 0.30, sp: 0.016, lane: 0.052, col: [70, 120, 96], item: 'bag', v: 0 },
+    { ph: 0.55, sp: 0.022, lane: 0.040, col: [214, 150, 60], v: 1 },
+    { ph: 0.78, sp: 0.014, lane: 0.075, col: [96, 90, 160], item: 'pot', v: 2 },
+    { ph: 0.12, sp: 0.018, lane: 0.095, col: [180, 60, 60], v: 0 },
+    { ph: 0.66, sp: 0.012, lane: 0.115, col: [60, 100, 140], item: 'bag', v: 1 },
+    { ph: 0.90, sp: 0.017, lane: 0.062, col: [226, 190, 90], item: 'pot', v: 2 }
+  ];
 
   function drawKid(x, y, s, ph, dark, o) {
     o = o || {};
     var dir = o.dir || 1, kick = o.kick || 0, cheer = o.cheer || 0, moving = o.moving ? 1 : 0;
-    var sw = Math.sin(time * 6 + ph) * (moving ? 1 : 0.25);
-    var jump = cheer ? Math.abs(Math.sin(time * 9 + ph)) * 6 : (moving ? Math.abs(Math.sin(time * 6 + ph)) * 2.2 : 0);
-    var shirt = rgba(mix(dark, KIDCOL[o.v || 0], 0.5), 0.97), shorts = rgba(mix(dark, [240, 236, 224], 0.18), 0.97);
+    var sp = o.fast ? 12 : 6, scared = !!o.scared;
+    var sw = Math.sin(time * sp + ph) * (moving ? 1 : 0.25);
+    var jump = cheer ? Math.abs(Math.sin(time * 9 + ph)) * 6 : (moving ? Math.abs(Math.sin(time * sp + ph)) * (o.fast ? 3 : 2.2) : 0);
+    var shirt = rgba(mix(dark, o.col || KIDCOL[o.v || 0], 0.5), 0.97), shorts = rgba(mix(dark, [240, 236, 224], 0.18), 0.97);
     var skin = rgba(mix(dark, [150, 98, 64], 0.45), 0.97);
 
     /* shadow */
@@ -736,7 +747,7 @@
     /* arms */
     ctx.strokeStyle = skin; ctx.lineWidth = 2.4;
     ctx.beginPath();
-    if (cheer) {
+    if (cheer || scared) {
       ctx.moveTo(-2.4, -16); ctx.lineTo(-7, -24 - Math.sin(time * 12 + ph) * 1.5);
       ctx.moveTo(3, -16); ctx.lineTo(8, -24 + Math.sin(time * 12 + ph) * 1.5);
     } else if (kick > 0) {
@@ -747,6 +758,15 @@
       ctx.moveTo(3, -16); ctx.lineTo(6 + sw * 3, -12 - sw * 1.8);
     }
     ctx.stroke();
+
+    if (o.item === 'pot') {
+      ctx.fillStyle = rgba(mix([200, 140, 60], dark, 0.25), 0.98);
+      ctx.beginPath(); ctx.arc(7.5, -9.5, 2.6, 0, 6.283); ctx.fill();
+      ctx.fillRect(6.4, -13, 2.2, 2);
+    } else if (o.item === 'bag') {
+      ctx.fillStyle = rgba(mix([120, 90, 60], dark, 0.3), 0.98);
+      ctx.fillRect(5, -12, 4.4, 5.4);
+    }
 
     /* head, hair or cap */
     ctx.fillStyle = skin;
@@ -770,6 +790,23 @@
     var base = [0.648, 0.716, 0.784];
     var HOLD = 1.1, PASS = 0.9;
     if (fb.t0 < 0) fb.t0 = time;
+    var dtk = lastKidsT ? Math.min(0.1, Math.max(0, time - lastKidsT)) : 0; lastKidsT = time;
+    var fleeG = smooth(0.15, 0.65, mon), wadeG = smooth(0.3, 0.8, sum);
+    var clearG = (1 - smooth(0.12, 0.45, mon)) * (1 - smooth(0.12, 0.45, sum));
+    if (fleeG > 0.02) fb.t0 += dtk;        /* the game stops while they run */
+
+    /* people walking the ghat on an ordinary day */
+    if (clearG > 0.02) {
+      ctx.save();
+      WALKERS.map(function (w) {
+        var f = (time * w.sp + w.ph) % 1, u = f < 0.5 ? f * 2 : 2 - f * 2, xn = 0.585 + 0.395 * u;
+        return { w: w, dir: f < 0.5 ? 1 : -1, x: W * xn, y: ghatEdgeY(xn) + H * w.lane };
+      }).sort(function (m, n) { return m.y - n.y; }).forEach(function (q) {
+        ctx.globalAlpha = a * clearG;
+        drawKid(q.x, q.y, sc * (1.18 + q.w.lane * 1.6), q.w.ph * 9, dark, { v: q.w.v, col: q.w.col, item: q.w.item, dir: q.dir, moving: true });
+      });
+      ctx.restore();
+    }
 
     /* the state of the game */
     var el = time - fb.t0;
@@ -784,10 +821,29 @@
     var cheering = time < fb.cheer;
 
     /* the boys drift a little toward the play */
-    var pos = base.map(function (b, i) { return { x: W * b, y: ghatEdgeY(b) + H * (0.008 + i * 0.002) }; });
+    var pos = base.map(function (b, i) { return { x: W * b, y: ghatEdgeY(b) + H * (0.008 + i * 0.002), k: 1, fi: 0, wi: 0 }; });
     var lead = fb.phase === 'pass' ? fb.target : fb.holder;
     pos[lead].x += W * 0.006 * Math.sin(time * 1.6);
     pos.forEach(function (q, i) { q.x += Math.sin(time * 0.9 + i * 2.1) * W * 0.0025; });
+
+    /* summer: they wade out to the dry sandbar; monsoon: they run up the steps, scared */
+    var hz = horizonY(), bar = BARS[3], bdep = 0.55 + bar[1] * 0.9;
+    var barC = { x: bar[0] * W + pX * 10 * bdep, y: hz + (H - hz) * bar[1] };
+    var barRx = W * bar[2] * 0.5 * Math.max(sum, 0.2);
+    pos.forEach(function (q, i) {
+      var wi = clamp(wadeG * 1.5 - i * 0.22, 0, 1), fi = clamp(fleeG * 1.6 - i * 0.22, 0, 1);
+      if (wi > 0) {
+        var tx = barC.x + (i - 1) * barRx * 0.5, ty = barC.y + H * (i === 1 ? -0.006 : 0.008);
+        var e = wi * wi * (3 - 2 * wi);
+        q.x = lerp(q.x, tx, e); q.y = lerp(q.y, ty, e); q.k = lerp(1, 0.8, e);
+      }
+      if (fi > 0) {
+        var ef = fi * fi * (3 - 2 * fi);
+        q.x = lerp(q.x, W * 1.1, ef); q.y = ghatEdgeY(clamp(q.x / W, 0, 1)) + H * 0.008;
+        if (Math.abs(fi - fleePrev[i]) > 0.0004) fleeDir[i] = fi > fleePrev[i] ? 1 : -1;
+      }
+      fleePrev[i] = fi; q.fi = fi; q.wi = wi;
+    });
 
     /* where the ball is */
     var foot = function (i, d) { return { x: pos[i].x + d * 9 * sc, y: pos[i].y + 0.5 }; };
@@ -807,9 +863,11 @@
 
     /* kicks and dust */
     var kicker = fb.holder, kk = 0;
-    if (fb.phase === 'hold' && el > HOLD - 0.28) kk = (el - (HOLD - 0.28)) / 0.28;
+    if (fleeG > 0.02) { bp = fb.rest || bp; } else { fb.rest = { x: bp.x, y: bp.y }; }
+    if (fleeG > 0.02) kk = 0;
+    else if (fb.phase === 'hold' && el > HOLD - 0.28) kk = (el - (HOLD - 0.28)) / 0.28;
     else if (fb.phase === 'pass' && el < 0.22) kk = 1 - el / 0.22;
-    if (fb.phase === 'pass' && el < 0.04 && (!fb.puffs.length || time - fb.puffs[fb.puffs.length - 1].t > 0.5)) {
+    if (fleeG <= 0.02 && fb.phase === 'pass' && el < 0.04 && (!fb.puffs.length || time - fb.puffs[fb.puffs.length - 1].t > 0.5)) {
       fb.puffs.push({ x: from.x, y: from.y + 3, t: time });
       if (fb.puffs.length > 5) fb.puffs.shift();
     }
@@ -833,7 +891,7 @@
     ctx.globalAlpha = a;
 
     /* the ball's shadow stays on the ground */
-    var gy0 = (fb.phase === 'hold' ? pos[fb.holder].y : lerp(from.y, foot(fb.target, 1).y, (time - fb.t0) / PASS)) + 3;
+    var gy0 = (fleeG > 0.02 ? bp.y + br * 0.4 : (fb.phase === 'hold' ? pos[fb.holder].y : lerp(from.y, foot(fb.target, 1).y, (time - fb.t0) / PASS))) + 3;
     var hAbove = clamp((gy0 - bp.y) / (H * 0.08), 0, 1);
     ctx.globalAlpha = a * (0.3 - hAbove * 0.18); ctx.fillStyle = rgba(dark);
     ctx.beginPath(); ctx.ellipse(bp.x, gy0, br * (1.1 - hAbove * 0.4), br * 0.34, 0, 0, 6.283); ctx.fill();
@@ -842,12 +900,45 @@
     /* the boys, back to front */
     var order = [0, 1, 2].sort(function (m, n) { return pos[m].y - pos[n].y; });
     order.forEach(function (i) {
-      var faceX = bp.x >= pos[i].x ? 1 : -1;
+      var q = pos[i];
+      if (q.fi > 0.985) return;                         /* gone up the steps */
+      var running = q.fi > 0.005, wading = q.wi > 0.01 && q.wi < 0.99;
+      var faceX = running ? fleeDir[i] : wading ? (barC.x >= base[i] * W ? 1 : -1) : (bp.x >= q.x ? 1 : -1);
       var receiving = fb.phase === 'pass' && i === fb.target;
-      drawKid(pos[i].x, pos[i].y, sc * (1 - i * 0.03), i * 2.3 + 0.4, dark, {
-        v: i, dir: faceX, kick: i === kicker ? kk : 0, cheer: cheering, moving: !cheering && (receiving || (fb.phase === 'hold' && i === fb.holder))
+      if (wading) {                                     /* ripples round the ankles */
+        ctx.globalAlpha = a * 0.5; ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5)); ctx.lineWidth = 1;
+        var rr = (time * 1.6 + i) % 1;
+        ctx.beginPath(); ctx.ellipse(q.x, q.y + 2, 6 + rr * 12, 2 + rr * 4, 0, 0, 6.283); ctx.stroke(); ctx.globalAlpha = a;
+      }
+      drawKid(q.x, q.y, sc * (1 - i * 0.03) * q.k, i * 2.3 + 0.4, dark, {
+        v: i, dir: faceX, kick: i === kicker ? kk : 0, cheer: cheering && !running,
+        scared: running, fast: running, moving: running || wading || (!cheering && (receiving || (fb.phase === 'hold' && i === fb.holder)))
       });
     });
+
+    /* summer: more children run out across the shallows to join the game */
+    var join = smooth(0.4, 0.9, wadeG);
+    if (join > 0.02) {
+      for (var k = 0; k < 4; k++) {
+        var jt = clamp(join * 1.4 - k * 0.15, 0, 1);
+        if (jt <= 0) continue;
+        var ang = time * (0.55 + k * 0.1) + k * 1.9;
+        var gx = barC.x + Math.cos(ang) * barRx * (0.7 + 0.15 * (k % 2)), gyy = barC.y + Math.sin(ang * 1.3) * H * 0.012 + H * 0.01;
+        var kx = lerp(W * 1.06, gx, jt * jt * (3 - 2 * jt)), ky = lerp(ghatEdgeY(0.95), gyy, jt);
+        var arrived = jt >= 1;
+        ctx.globalAlpha = a * smooth(0, 0.3, jt);
+        if (!arrived) {
+          ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5)); ctx.lineWidth = 1; ctx.globalAlpha *= 0.5;
+          var r2 = (time * 1.8 + k) % 1; ctx.beginPath(); ctx.ellipse(kx, ky + 2, 6 + r2 * 12, 2 + r2 * 4, 0, 0, 6.283); ctx.stroke();
+          ctx.globalAlpha = a * smooth(0, 0.3, jt);
+        }
+        drawKid(kx, ky, sc * 0.8 * (0.94 - k * 0.02), k * 1.7 + 3, dark, {
+          v: (k + 1) % 3, col: [[90, 160, 120], [214, 110, 150], [120, 120, 200], [230, 140, 70]][k], dir: arrived ? (Math.cos(ang) > 0 ? -1 : 1) : -1,
+          moving: true, cheer: arrived && Math.sin(time * 0.8 + k * 2) > 0.7
+        });
+      }
+      ctx.globalAlpha = a;
+    }
 
     /* the ball: a glow, a trail, a white ball with turning patches */
     var glow = ctx.createRadialGradient(bp.x, bp.y, 0, bp.x, bp.y, br * 4);

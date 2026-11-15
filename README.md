@@ -10,7 +10,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Day and night, blended smoothly.** By day, kids play on the ghat and a fisherman casts his net. At night, the Ganga Aarti begins, diyas are lit along the steps, and people sit and watch.
 - **The Ashoka Pillar at Latiya** — haul the ~30 ft pillar upright with a rope, then decode its Brahmi-style writing in a short game.
 - **Naav** — a small-boat game. Row, steer, collect floating diyas, with water and oar sound effects. A **Night lantern** level lights only your lamp, and cross-currents shove the boat sideways.
-- **Season switch** — Summer (the river thins, sandbars rise), Clear, or Monsoon (rain, thunder, a swollen river flooding the lower ghat steps).
+- **Season switch** — Summer (the river thins, sandbars rise and the kids wade out to play there, joined by more children), Clear (more people walk the ghat), or Monsoon (rain, thunder, a swollen river; the kids run up the steps, scared).
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
 - **Temple bells and a hidden diya** — three brass bells hang under the chhatri on the ghat: click them on desktop, shake your phone on mobile. A tiny lamp in the hero corner floats diyas onto the river.
