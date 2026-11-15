@@ -113,6 +113,9 @@
       "mixer.note": "Generated live with the Web Audio API. Works offline; no audio files.",
 
       "hero.cta3": "Row the Naav",
+      "hero.diya": "Release a diya",
+      "bells.label": "Temple bells. Tap to ring.",
+      "bells.hint": "Ring the temple bells",
 
       "poppy.yardKicker": "The works, after hours",
       "poppy.yardTitle": "The yard that never quite sleeps",
@@ -346,6 +349,9 @@
       "mixer.note": "वेब ऑडियो एपीआई से सीधे बनता है। बिना इंटरनेट चलता है; कोई ऑडियो फ़ाइल नहीं।",
 
       "hero.cta3": "नाव चलाइए",
+      "hero.diya": "दीया बहाइए",
+      "bells.label": "मंदिर की घंटियाँ। बजाने के लिए टैप कीजिए।",
+      "bells.hint": "मंदिर की घंटियाँ बजाइए",
 
       "poppy.yardKicker": "कारख़ाना, रात के बाद",
       "poppy.yardTitle": "वह अहाता जो कभी पूरा नहीं सोता",
@@ -579,6 +585,9 @@
       "mixer.note": "Web Audio API se seedha banta hai. Bina internet chalta hai; koi audio file nahi.",
 
       "hero.cta3": "Naav chalaiye",
+      "hero.diya": "Diya bahaiye",
+      "bells.label": "Mandir ki ghantiyan. Bajane ke liye tap kijiye.",
+      "bells.hint": "Mandir ki ghantiyan bajaiye",
 
       "poppy.yardKicker": "Karkhana, raat ke baad",
       "poppy.yardTitle": "Woh ahata jo kabhi pura nahi sota",

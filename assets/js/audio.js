@@ -292,6 +292,33 @@
     nz.start(when); nz.stop(when + 0.15);
   }
 
+  /* a hanging temple bell: bright brass strike, long hum; n picks one of five pitches */
+  function templeBell(n) {
+    if (!sfxOn || !ensureFx()) return;
+    var when = t() + 0.01;
+    var base = [262, 294, 330, 392, 440][(n | 0) % 5] * (1 + (Math.random() - 0.5) * 0.004);
+    var partials = [1, 2.0, 2.76, 5.4, 8.9], amps = [1, 0.6, 0.45, 0.2, 0.09];
+    var out = gainNode(0.9); out.connect(fx);
+    var send = gainNode(0.7); out.connect(send); send.connect(verb);
+    for (var i = 0; i < partials.length; i++) {
+      var o = ctx.createOscillator(); o.type = 'sine';
+      o.frequency.value = base * partials[i];
+      var g = gainNode(0.0001), dec = 4.2 - i * 0.6;
+      g.gain.setValueAtTime(0.0001, when);
+      g.gain.exponentialRampToValueAtTime(0.13 * amps[i], when + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + dec);
+      o.connect(g); g.connect(out);
+      o.start(when); o.stop(when + dec + 0.1);
+    }
+    var nz = ctx.createBufferSource(); nz.buffer = noiseBuf;
+    var nf = filter('bandpass', 3200, 1.2), ng = gainNode(0.0001);
+    ng.gain.setValueAtTime(0.0001, when);
+    ng.gain.exponentialRampToValueAtTime(0.07, when + 0.003);
+    ng.gain.exponentialRampToValueAtTime(0.0001, when + 0.06);
+    nz.connect(nf); nf.connect(ng); ng.connect(out);
+    nz.start(when); nz.stop(when + 0.1);
+  }
+
   function chime() {
     if (!ctx || !playing || !sfxOn) return;
     var when = t() + 0.01;
@@ -649,6 +676,7 @@
     sfxEnabled: function () { return sfxOn; },
     getMaster: function () { return masterLevel; },
     bell: bellSound,
+    templeBell: templeBell,
     chime: chime,
     plop: plop,
     tick: tick,
