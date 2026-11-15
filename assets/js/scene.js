@@ -712,7 +712,7 @@
   /* ── three boys, one football: a proper game of passes ───────── */
   var fb = { holder: 0, target: 1, phase: 'hold', t0: -1, passes: 0, cheer: 0, puffs: [], spin: 0 };
   var KIDCOL = [[196, 84, 70], [70, 112, 168], [226, 178, 66]];
-  var lastKidsT = 0, fleeDir = [1, 1, 1], fleePrev = [0, 0, 0];
+  var lastKidsT = 0;
   var WALKERS = [
     { ph: 0.00, sp: 0.020, lane: 0.030, col: [190, 70, 90], item: 'pot', v: 2 },
     { ph: 0.30, sp: 0.016, lane: 0.052, col: [70, 120, 96], item: 'bag', v: 0 },
@@ -805,6 +805,11 @@
     ctx.restore();
   }
 
+  /* ── the children follow the weather: they walk, they do not teleport ── */
+  var kidS = [0, 1, 2].map(function () { return { x: 0, y: 0, init: false, moving: false, dir: 1, switchAt: 0, fromFlee: false }; });
+  var xKids = [0, 1, 2, 3].map(function () { return { x: 0, y: 0, init: false, moving: false, dir: 1, switchAt: 0 }; });
+  var kidMode = 'play', walkA = 0;
+
   function drawKids(p, a) {
     if (a < 0.01) return;
     var dark = figureInk(p);
@@ -813,164 +818,204 @@
     var HOLD = 1.1, PASS = 0.9;
     if (fb.t0 < 0) fb.t0 = time;
     var dtk = lastKidsT ? Math.min(0.1, Math.max(0, time - lastKidsT)) : 0; lastKidsT = time;
-    var fleeG = smooth(0.15, 0.65, mon), wadeG = smooth(0.3, 0.8, sum);
-    var clearG = (1 - smooth(0.12, 0.45, mon)) * (1 - smooth(0.12, 0.45, sum));
-    if (fleeG > 0.02) fb.t0 += dtk;        /* the game stops while they run */
+    var hz = horizonY(), bar = BARS[3], bdep = 0.55 + bar[1] * 0.9;
+    var barC = { x: bar[0] * W + pX * 10 * bdep, y: hz + (H - hz) * bar[1] };
+    var barRx = W * bar[2] * 0.5 * Math.max(sum, 0.25);
+    var edgeX = W * 1.12, edgeYof = function (x) { return ghatEdgeY(clamp(x / W, 0, 1)); };
 
-    /* people walking the ghat on an ordinary day */
-    if (clearG > 0.02) {
+    /* what the sky asks of them (with a little hysteresis so they do not dither) */
+    var want = kidMode;
+    if (mon > 0.3) want = 'flee';
+    else if (mon >= 0.12) { if (kidMode === 'wade') want = 'play'; }
+    else if (sum > 0.4) want = 'wade';
+    else if (sum < 0.2) want = 'play';
+    else if (kidMode === 'flee') want = 'play';
+    if (want !== kidMode) {
+      kidMode = want;
+      kidS.forEach(function (k, i) { k.switchAt = time + 0.2 + i * 0.5 + Math.random() * 0.25; if (kidMode === 'flee') k.fromFlee = true; });
+      xKids.forEach(function (k, i) { k.switchAt = time + 0.8 + i * 1.1; });
+    }
+
+    var step = function (k, tx, ty, speed, snapY) {
+      if (time < k.switchAt) { k.moving = false; return; }
+      var dx = tx - k.x, dy = ty - k.y, d = Math.hypot(dx, dy), mv = Math.min(d, speed * dtk);
+      if (d > 0.01) { k.x += dx / d * mv; k.y += dy / d * mv; }
+      k.moving = d > 3;
+      if (k.moving && Math.abs(dx) > 1.5) k.dir = dx > 0 ? 1 : -1;
+    };
+
+    /* the three boys */
+    kidS.forEach(function (k, i) {
+      var hx = W * base[i] + Math.sin(time * 0.9 + i * 2.1) * W * 0.0025, hy = ghatEdgeY(base[i]) + H * (0.008 + i * 0.002);
+      if (!k.init) { k.x = hx; k.y = hy; k.init = true; }
+      if (kidMode === 'flee') {
+        step(k, edgeX, 0, W * 0.17);
+        k.y = edgeYof(k.x) + H * (0.008 + i * 0.002);
+      } else if (kidMode === 'wade') {
+        step(k, barC.x + (i - 1) * barRx * 0.5, barC.y + H * (i === 1 ? -0.006 : 0.008), W * 0.04);
+      } else if (k.fromFlee) {
+        step(k, hx, hy, W * 0.07);
+        k.y = edgeYof(k.x) + H * (0.008 + i * 0.002);
+        if (!k.moving && time >= k.switchAt) k.fromFlee = false;
+      } else {
+        step(k, hx, hy, W * 0.05);
+      }
+    });
+    var anyMoving = kidS.some(function (k) { return k.moving; });
+    var away = kidMode === 'flee' || anyMoving || time < kidS[2].switchAt;
+    var gone = kidMode === 'flee' && kidS.every(function (k) { return k.x > W * 1.03; });
+
+    /* the football waits for them */
+    if (away) {
+      fb.t0 += dtk;
+      if (fb.phase === 'pass') { fb.holder = fb.target; fb.phase = 'hold'; fb.t0 = time; }
+    }
+    var el = time - fb.t0;
+    if (!away) {
+      if (fb.phase === 'hold' && el > HOLD) {
+        var others = [0, 1, 2].filter(function (i) { return i !== fb.holder; });
+        fb.target = others[Math.random() < 0.5 ? 0 : 1];
+        fb.phase = 'pass'; fb.t0 = time; el = 0;
+      } else if (fb.phase === 'pass' && el > PASS) {
+        fb.holder = fb.target; fb.phase = 'hold'; fb.t0 = time; el = 0; fb.passes++;
+        if (fb.passes % 6 === 0) fb.cheer = time + 1.7;
+      }
+    }
+    var cheering = time < fb.cheer && !away;
+
+    var pos = kidS.map(function (k) { return { x: k.x, y: k.y }; });
+    var lead = fb.phase === 'pass' ? fb.target : fb.holder;
+    if (!away) pos[lead].x += W * 0.006 * Math.sin(time * 1.6);
+
+    /* where the ball is */
+    var foot = function (i, d) { return { x: pos[i].x + d * 9 * sc, y: pos[i].y + 0.5 }; };
+    var bp, br = 4.3 * sc;
+    var from = foot(fb.holder, pos[fb.target].x >= pos[fb.holder].x ? 1 : -1);
+    if (fb.phase === 'hold') {
+      var d1 = (pos[(fb.holder + 1) % 3].x > pos[fb.holder].x) ? 1 : -1;
+      bp = foot(fb.holder, d1);
+      bp.y -= Math.abs(Math.sin(time * 8)) * 3.4 * sc * (away ? 0.3 : 1) + br * 0.4;
+    } else {
+      var u = el / PASS, dst = foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1);
+      bp = { x: lerp(from.x, dst.x, u), y: lerp(from.y, dst.y, u) - H * 0.075 * Math.sin(Math.PI * u) * (1 - 0.3 * u) - br * 0.4 };
+    }
+    if (kidMode === 'flee') {                           /* left behind on the steps */
+      if (!fb.rest) fb.rest = { x: bp.x, y: bp.y + br * 0.4 };
+      bp = { x: fb.rest.x, y: fb.rest.y - br * 0.4 };
+    } else if (fb.rest) {                               /* picked up again, gently */
+      fb.rest.x += (bp.x - fb.rest.x) * Math.min(1, dtk * 5); fb.rest.y += ((bp.y + br * 0.4) - fb.rest.y) * Math.min(1, dtk * 5);
+      if (Math.hypot(bp.x - fb.rest.x, bp.y + br * 0.4 - fb.rest.y) < 6) fb.rest = null;
+      else bp = { x: fb.rest.x, y: fb.rest.y - br * 0.4 };
+    }
+    fb.spin += (fb.phase === 'pass' ? 0.4 : 0.12);
+
+    var kicker = fb.holder, kk = 0;
+    if (away) kk = 0;
+    else if (fb.phase === 'hold' && el > HOLD - 0.28) kk = (el - (HOLD - 0.28)) / 0.28;
+    else if (fb.phase === 'pass' && el < 0.22) kk = 1 - el / 0.22;
+    if (!away && fb.phase === 'pass' && el < 0.04 && (!fb.puffs.length || time - fb.puffs[fb.puffs.length - 1].t > 0.5)) {
+      fb.puffs.push({ x: from.x, y: from.y + 3, t: time });
+      if (fb.puffs.length > 5) fb.puffs.shift();
+    }
+
+    /* the walkers fade in and out slowly, so the crowd changes gently */
+    var clearNow = kidMode === 'play' && mon < 0.12 && sum < 0.12 ? 1 : 0;
+    walkA += (clearNow - walkA) * Math.min(1, dtk * 0.55);
+
+    ctx.save();
+    ctx.globalAlpha = a;
+
+    if (walkA > 0.02) {
       ctx.save();
       WALKERS.map(function (w) {
-        var f = (time * w.sp + w.ph) % 1, u = f < 0.5 ? f * 2 : 2 - f * 2, xn = 0.585 + 0.395 * u;
+        var f = (time * w.sp + w.ph) % 1, uu = f < 0.5 ? f * 2 : 2 - f * 2, xn = 0.585 + 0.395 * uu;
         return { w: w, dir: f < 0.5 ? 1 : -1, x: W * xn, y: ghatEdgeY(xn) + H * w.lane };
       }).sort(function (m, n) { return m.y - n.y; }).forEach(function (q) {
-        ctx.globalAlpha = a * clearG;
+        ctx.globalAlpha = a * walkA;
         drawKid(q.x, q.y, sc * (1.18 + q.w.lane * 1.6), q.w.ph * 9, dark, { v: q.w.v, col: q.w.col, item: q.w.item, dir: q.dir, moving: true });
       });
       ctx.restore();
     }
 
-    /* the state of the game */
-    var el = time - fb.t0;
-    if (fb.phase === 'hold' && el > HOLD) {
-      var others = [0, 1, 2].filter(function (i) { return i !== fb.holder; });
-      fb.target = others[Math.random() < 0.5 ? 0 : 1];
-      fb.phase = 'pass'; fb.t0 = time; el = 0;
-    } else if (fb.phase === 'pass' && el > PASS) {
-      fb.holder = fb.target; fb.phase = 'hold'; fb.t0 = time; el = 0; fb.passes++;
-      if (fb.passes % 6 === 0) fb.cheer = time + 1.7;
-    }
-    var cheering = time < fb.cheer;
-
-    /* the boys drift a little toward the play */
-    var pos = base.map(function (b, i) { return { x: W * b, y: ghatEdgeY(b) + H * (0.008 + i * 0.002), k: 1, fi: 0, wi: 0 }; });
-    var lead = fb.phase === 'pass' ? fb.target : fb.holder;
-    pos[lead].x += W * 0.006 * Math.sin(time * 1.6);
-    pos.forEach(function (q, i) { q.x += Math.sin(time * 0.9 + i * 2.1) * W * 0.0025; });
-
-    /* summer: they wade out to the dry sandbar; monsoon: they run up the steps, scared */
-    var hz = horizonY(), bar = BARS[3], bdep = 0.55 + bar[1] * 0.9;
-    var barC = { x: bar[0] * W + pX * 10 * bdep, y: hz + (H - hz) * bar[1] };
-    var barRx = W * bar[2] * 0.5 * Math.max(sum, 0.2);
-    pos.forEach(function (q, i) {
-      var wi = clamp(wadeG * 1.5 - i * 0.22, 0, 1), fi = clamp(fleeG * 1.6 - i * 0.22, 0, 1);
-      if (wi > 0) {
-        var tx = barC.x + (i - 1) * barRx * 0.5, ty = barC.y + H * (i === 1 ? -0.006 : 0.008);
-        var e = wi * wi * (3 - 2 * wi);
-        q.x = lerp(q.x, tx, e); q.y = lerp(q.y, ty, e); q.k = lerp(1, 0.8, e);
-      }
-      if (fi > 0) {
-        var ef = fi * fi * (3 - 2 * fi);
-        q.x = lerp(q.x, W * 1.1, ef); q.y = ghatEdgeY(clamp(q.x / W, 0, 1)) + H * 0.008;
-        if (Math.abs(fi - fleePrev[i]) > 0.0004) fleeDir[i] = fi > fleePrev[i] ? 1 : -1;
-      }
-      fleePrev[i] = fi; q.fi = fi; q.wi = wi;
-    });
-
-    /* where the ball is */
-    var foot = function (i, d) { return { x: pos[i].x + d * 9 * sc, y: pos[i].y + 0.5 }; };
-    var bp, grounded = false, br = 4.3 * sc;
-    var from = foot(fb.holder, pos[fb.target].x >= pos[fb.holder].x ? 1 : -1);
-    if (fb.phase === 'hold') {
-      var d1 = (pos[(fb.holder + 1) % 3].x > pos[fb.holder].x) ? 1 : -1;
-      bp = foot(fb.holder, d1);
-      var hop = Math.abs(Math.sin(time * 8)) * 3.4 * sc;
-      bp.y -= hop + br * 0.4; grounded = hop < 0.6;
-    } else {
-      var u = el / PASS, dst = foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1);
-      var e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
-      bp = { x: lerp(from.x, dst.x, u), y: lerp(from.y, dst.y, u) - H * 0.075 * Math.sin(Math.PI * u) * (1 - 0.3 * u) - br * 0.4 };
-    }
-    fb.spin += (fb.phase === 'pass' ? 0.4 : 0.12);
-
-    /* kicks and dust */
-    var kicker = fb.holder, kk = 0;
-    if (fleeG > 0.02) { bp = fb.rest || bp; } else { fb.rest = { x: bp.x, y: bp.y }; }
-    if (fleeG > 0.02) kk = 0;
-    else if (fb.phase === 'hold' && el > HOLD - 0.28) kk = (el - (HOLD - 0.28)) / 0.28;
-    else if (fb.phase === 'pass' && el < 0.22) kk = 1 - el / 0.22;
-    if (fleeG <= 0.02 && fb.phase === 'pass' && el < 0.04 && (!fb.puffs.length || time - fb.puffs[fb.puffs.length - 1].t > 0.5)) {
-      fb.puffs.push({ x: from.x, y: from.y + 3, t: time });
-      if (fb.puffs.length > 5) fb.puffs.shift();
-    }
-
-    ctx.save();
-    ctx.globalAlpha = a;
-
     /* a long evening shadow across the steps */
-    ctx.globalAlpha = a * 0.18; ctx.fillStyle = rgba(dark);
-    ctx.beginPath(); ctx.ellipse((pos[0].x + pos[2].x) / 2, (pos[0].y + pos[2].y) / 2 + 5, W * 0.1, 4, -0.17, 0, 6.283); ctx.fill();
-    ctx.globalAlpha = a;
+    if (!gone) {
+      ctx.globalAlpha = a * 0.18; ctx.fillStyle = rgba(dark);
+      ctx.beginPath(); ctx.ellipse((pos[0].x + pos[2].x) / 2, (pos[0].y + pos[2].y) / 2 + 5, W * 0.1, 4, -0.17, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = a;
+    }
 
     /* dust kicked up */
     for (var i = fb.puffs.length - 1; i >= 0; i--) {
-      var pf = fb.puffs[i], k = (time - pf.t) / 0.7;
-      if (k > 1) { fb.puffs.splice(i, 1); continue; }
-      ctx.globalAlpha = a * (1 - k) * 0.35;
+      var pf = fb.puffs[i], kq = (time - pf.t) / 0.7;
+      if (kq > 1) { fb.puffs.splice(i, 1); continue; }
+      ctx.globalAlpha = a * (1 - kq) * 0.35;
       ctx.fillStyle = rgba(mix(p.haze, [230, 214, 190], 0.4));
-      ctx.beginPath(); ctx.ellipse(pf.x - k * 6, pf.y - k * 7, 4 + k * 12, 2 + k * 5, 0, 0, 6.283); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(pf.x - kq * 6, pf.y - kq * 7, 4 + kq * 12, 2 + kq * 5, 0, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = a;
 
     /* the ball's shadow stays on the ground */
-    var gy0 = (fleeG > 0.02 ? bp.y + br * 0.4 : (fb.phase === 'hold' ? pos[fb.holder].y : lerp(from.y, foot(fb.target, 1).y, (time - fb.t0) / PASS))) + 3;
+    var gy0 = (away ? bp.y + br * 0.4 : (fb.phase === 'hold' ? pos[fb.holder].y : lerp(from.y, foot(fb.target, 1).y, (time - fb.t0) / PASS))) + 3;
     var hAbove = clamp((gy0 - bp.y) / (H * 0.08), 0, 1);
     ctx.globalAlpha = a * (0.3 - hAbove * 0.18); ctx.fillStyle = rgba(dark);
     ctx.beginPath(); ctx.ellipse(bp.x, gy0, br * (1.1 - hAbove * 0.4), br * 0.34, 0, 0, 6.283); ctx.fill();
     ctx.globalAlpha = a;
 
     /* the boys, back to front */
-    var order = [0, 1, 2].sort(function (m, n) { return pos[m].y - pos[n].y; });
-    order.forEach(function (i) {
-      var q = pos[i];
-      if (q.fi > 0.985) return;                         /* gone up the steps */
-      var running = q.fi > 0.005, wading = q.wi > 0.01 && q.wi < 0.99;
-      var faceX = running ? fleeDir[i] : wading ? (barC.x >= base[i] * W ? 1 : -1) : (bp.x >= q.x ? 1 : -1);
+    var inWater = function (x, y) {
+      var onBar = sum > 0.3 && Math.abs(x - barC.x) < barRx && Math.abs(y - barC.y) < H * 0.05;
+      return !onBar && y < ghatEdgeY(clamp(x / W, 0, 1)) - H * 0.014;
+    };
+    [0, 1, 2].sort(function (m, n) { return pos[m].y - pos[n].y; }).forEach(function (i) {
+      var k = kidS[i], q = pos[i];
+      if (q.x > W * 1.04) return;                       /* up the steps and gone */
+      var fleeing = kidMode === 'flee' && k.moving, faceX = k.moving ? k.dir : (bp.x >= q.x ? 1 : -1);
       var receiving = fb.phase === 'pass' && i === fb.target;
-      if (wading) {                                     /* ripples round the ankles */
+      var ks = lerp(1, 0.8, clamp((ghatEdgeY(base[i]) - q.y) / (H * 0.1), 0, 1));
+      if (k.moving && inWater(q.x, q.y)) {              /* ripples round the ankles */
         ctx.globalAlpha = a * 0.5; ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5)); ctx.lineWidth = 1;
         var rr = (time * 1.6 + i) % 1;
         ctx.beginPath(); ctx.ellipse(q.x, q.y + 2, 6 + rr * 12, 2 + rr * 4, 0, 0, 6.283); ctx.stroke(); ctx.globalAlpha = a;
       }
-      drawKid(q.x, q.y, sc * (1 - i * 0.03) * q.k, i * 2.3 + 0.4, dark, {
-        v: i, dir: faceX, kick: i === kicker ? kk : 0, cheer: cheering && !running,
-        scared: running, fast: running, moving: running || wading || (!cheering && (receiving || (fb.phase === 'hold' && i === fb.holder)))
+      drawKid(q.x, q.y, sc * (1 - i * 0.03) * ks, i * 2.3 + 0.4, dark, {
+        v: i, dir: faceX, kick: i === kicker ? kk : 0, cheer: cheering,
+        scared: fleeing, fast: fleeing, moving: k.moving || (!cheering && (receiving || (fb.phase === 'hold' && i === fb.holder)))
       });
     });
 
-    /* summer: more children run out across the shallows to join the game */
-    var join = smooth(0.4, 0.9, wadeG);
-    if (join > 0.02) {
-      for (var k = 0; k < 4; k++) {
-        var jt = clamp(join * 1.4 - k * 0.15, 0, 1);
-        if (jt <= 0) continue;
-        var ang = time * (0.55 + k * 0.1) + k * 1.9;
-        var gx = barC.x + Math.cos(ang) * barRx * (0.7 + 0.15 * (k % 2)), gyy = barC.y + Math.sin(ang * 1.3) * H * 0.012 + H * 0.01;
-        var kx = lerp(W * 1.06, gx, jt * jt * (3 - 2 * jt)), ky = lerp(ghatEdgeY(0.95), gyy, jt);
-        var arrived = jt >= 1;
-        ctx.globalAlpha = a * smooth(0, 0.3, jt);
-        if (!arrived) {
-          ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5)); ctx.lineWidth = 1; ctx.globalAlpha *= 0.5;
-          var r2 = (time * 1.8 + k) % 1; ctx.beginPath(); ctx.ellipse(kx, ky + 2, 6 + r2 * 12, 2 + r2 * 4, 0, 0, 6.283); ctx.stroke();
-          ctx.globalAlpha = a * smooth(0, 0.3, jt);
-        }
-        drawKid(kx, ky, sc * 0.8 * (0.94 - k * 0.02), k * 1.7 + 3, dark, {
-          v: (k + 1) % 3, col: [[90, 160, 120], [214, 110, 150], [120, 120, 200], [230, 140, 70]][k], dir: arrived ? (Math.cos(ang) > 0 ? -1 : 1) : -1,
-          moving: true, cheer: arrived && Math.sin(time * 0.8 + k * 2) > 0.7
-        });
+    /* summer: more children wade out across the shallows to join them */
+    xKids.forEach(function (k, i) {
+      var sx = W * 1.06, sy = edgeYof(W * 0.95);
+      if (!k.init) { k.x = sx; k.y = sy; k.init = true; }
+      var ang = time * (0.55 + i * 0.1) + i * 1.9;
+      var gx = barC.x + Math.cos(ang) * barRx * (0.7 + 0.15 * (i % 2)), gyy = barC.y + Math.sin(ang * 1.3) * H * 0.012 + H * 0.01;
+      if (kidMode === 'wade') step(k, gx, gyy, W * 0.045);
+      else step(k, sx, sy, W * 0.05);
+      var arrived = kidMode === 'wade' && Math.hypot(gx - k.x, gyy - k.y) < 24;
+      if (k.x > W * 1.03) return;
+      var fadeIn = smooth(W * 1.03, W * 0.98, k.x);
+      ctx.globalAlpha = a * fadeIn;
+      if (k.moving && inWater(k.x, k.y)) {
+        ctx.strokeStyle = rgba(mix(p.haze, [255, 255, 255], 0.5)); ctx.lineWidth = 1; ctx.globalAlpha = a * fadeIn * 0.5;
+        var r2 = (time * 1.8 + i) % 1; ctx.beginPath(); ctx.ellipse(k.x, k.y + 2, 6 + r2 * 12, 2 + r2 * 4, 0, 0, 6.283); ctx.stroke();
+        ctx.globalAlpha = a * fadeIn;
       }
-      ctx.globalAlpha = a;
-    }
+      drawKid(k.x, k.y, sc * 0.78 * (0.94 - i * 0.02), i * 1.7 + 3, dark, {
+        v: (i + 1) % 3, col: [[90, 160, 120], [214, 110, 150], [120, 120, 200], [230, 140, 70]][i],
+        dir: k.moving ? k.dir : (Math.cos(ang) > 0 ? -1 : 1), moving: k.moving || arrived, cheer: arrived && Math.sin(time * 0.8 + i * 2) > 0.7
+      });
+    });
+    ctx.globalAlpha = a;
 
     /* the ball: a glow, a trail, a white ball with turning patches */
     var glow = ctx.createRadialGradient(bp.x, bp.y, 0, bp.x, bp.y, br * 4);
     glow.addColorStop(0, 'rgba(255,218,150,0.32)'); glow.addColorStop(1, 'rgba(255,190,110,0)');
     ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(bp.x, bp.y, br * 4, 0, 6.283); ctx.fill();
-    if (fb.phase === 'pass') {
+    if (fb.phase === 'pass' && !away) {
       for (var t = 1; t <= 4; t++) {
-        var uu = clamp((time - fb.t0) / PASS - t * 0.035, 0, 1);
-        var tx = lerp(from.x, foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1).x, uu);
-        var ty = lerp(from.y, foot(fb.target, 1).y, uu) - H * 0.075 * Math.sin(Math.PI * uu) * (1 - 0.3 * uu) - br * 0.4;
+        var uu2 = clamp((time - fb.t0) / PASS - t * 0.035, 0, 1);
+        var tx = lerp(from.x, foot(fb.target, pos[fb.holder].x >= pos[fb.target].x ? 1 : -1).x, uu2);
+        var ty = lerp(from.y, foot(fb.target, 1).y, uu2) - H * 0.075 * Math.sin(Math.PI * uu2) * (1 - 0.3 * uu2) - br * 0.4;
         ctx.globalAlpha = a * (0.22 - t * 0.045); ctx.fillStyle = rgba([255, 244, 220]);
         ctx.beginPath(); ctx.arc(tx, ty, br * (1 - t * 0.12), 0, 6.283); ctx.fill();
       }
@@ -982,14 +1027,169 @@
     ctx.beginPath(); ctx.arc(0, 0, br, 0, 6.283); ctx.fill();
     ctx.fillStyle = rgba(mix([40, 40, 46], p.hill, 0.3), 0.85);
     ctx.beginPath(); ctx.arc(0, 0, br * 0.36, 0, 6.283); ctx.fill();
-    for (var q = 0; q < 5; q++) {
-      var an = q * 1.2566; ctx.beginPath(); ctx.arc(Math.cos(an) * br * 0.78, Math.sin(an) * br * 0.78, br * 0.2, 0, 6.283); ctx.fill();
+    for (var q2 = 0; q2 < 5; q2++) {
+      var an = q2 * 1.2566; ctx.beginPath(); ctx.arc(Math.cos(an) * br * 0.78, Math.sin(an) * br * 0.78, br * 0.2, 0, 6.283); ctx.fill();
     }
     ctx.restore();
     ctx.strokeStyle = sunRim(p, 0.55); ctx.lineWidth = 0.9;
     ctx.beginPath(); ctx.arc(bp.x, bp.y, br, -0.9, 0.9); ctx.stroke();
 
     ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  /* ── bathers and a diver in the Ganga (summer and clear days) ──────── */
+  var bathVis = 0, lastBathT = 0, splashP = [];
+  var dive = { phase: 'idle', t0: 0, nextAt: 3 };
+  var BATH = [
+    { xn: 0.598, kind: 'pour', ph: 0.4, col: null, lift: 0.032 },
+    { xn: 0.640, kind: 'pray', ph: 2.1, col: [196, 84, 110], lift: 0.034 },
+    { xn: 0.676, kind: 'dunk', ph: 4.0, col: null, lift: 0.036 },
+    { xn: 0.612, kind: 'scrub', ph: 5.2, col: [70, 120, 150], lift: 0.062 }
+  ];
+
+  function bathSpot(b) { return { x: W * b.xn, y: ghatEdgeY(b.xn) - H * b.lift }; }
+
+  function drawBather(x, y, s, dark, a, o) {
+    var skin = rgba(mix(dark, [150, 98, 64], 0.5), 0.97), t = time + o.ph;
+    var dunk = o.kind === 'dunk' ? smooth(0.55, 0.9, Math.sin(t * 0.7)) : 0;       /* ducks right under */
+    ctx.save();
+    ctx.beginPath(); ctx.rect(x - 40 * s, y - 70 * s, 80 * s, 70 * s); ctx.clip();
+    ctx.translate(x, y + dunk * 30 * s);
+    ctx.scale(s, s);
+    ctx.lineCap = 'round';
+    var torso = o.col ? rgba(mix(dark, o.col, 0.5), 0.97) : skin;
+    ctx.fillStyle = torso;
+    ctx.beginPath(); ctx.moveTo(-4.4, 2); ctx.lineTo(-4, -16); ctx.quadraticCurveTo(0, -19, 4.4, -16); ctx.lineTo(4.6, 2); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = skin; ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    if (o.kind === 'pour') {
+      var tilt = 0.5 + 0.5 * Math.sin(t * 1.3);
+      ctx.moveTo(-3, -15); ctx.lineTo(-6, -9); ctx.moveTo(3, -15); ctx.lineTo(8, -26);
+      ctx.stroke();
+      ctx.fillStyle = rgba(mix([210, 150, 70], dark, 0.2), 0.98);
+      ctx.beginPath(); ctx.ellipse(8.5, -29, 3, 2.6, 0.4 + tilt * 0.8, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = 'rgba(210,235,245,' + (0.35 + 0.35 * tilt) + ')'; ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.moveTo(7, -27.5); ctx.quadraticCurveTo(5, -24, 1.5, -21); ctx.stroke();
+    } else if (o.kind === 'pray') {
+      var sway = Math.sin(t * 0.8) * 1.2;
+      ctx.moveTo(-3, -15); ctx.lineTo(-3.5 + sway, -26); ctx.lineTo(0 + sway, -34);
+      ctx.moveTo(3, -15); ctx.lineTo(3.5 + sway, -26); ctx.lineTo(0 + sway, -34);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,224,160,' + (0.4 + 0.3 * Math.sin(t * 2.2)) + ')';
+      ctx.beginPath(); ctx.arc(0 + sway, -35.5, 2.2, 0, 6.283); ctx.fill();
+    } else if (o.kind === 'scrub') {
+      var sw2 = Math.sin(t * 5);
+      ctx.moveTo(-3, -15); ctx.lineTo(-7, -22); ctx.lineTo(-2 + sw2 * 3, -27);
+      ctx.moveTo(3, -15); ctx.lineTo(7, -22); ctx.lineTo(2 - sw2 * 3, -27);
+      ctx.stroke();
+    } else {
+      ctx.moveTo(-3, -15); ctx.lineTo(-9, -11 + Math.sin(t * 2) * 2); ctx.moveTo(3, -15); ctx.lineTo(9, -11 - Math.sin(t * 2) * 2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = skin;
+    ctx.beginPath(); ctx.arc(0, -21.6, 3.8, 0, 6.283); ctx.fill();
+    ctx.fillStyle = rgba(dark, 0.98);
+    ctx.beginPath(); ctx.arc(0, -22.6, 4, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
+    if (o.col) { ctx.beginPath(); ctx.arc(-3, -21, 1.9, 0, 6.283); ctx.fill(); }
+    ctx.restore();
+    /* the water line round the waist, and rings spreading */
+    ctx.save();
+    ctx.globalAlpha = a * 0.55; ctx.strokeStyle = rgba(mix([255, 255, 255], dark, 0.1)); ctx.lineWidth = 1.1;
+    for (var r = 0; r < 2; r++) {
+      var rr = (time * 0.7 + r * 0.5 + o.ph) % 1;
+      ctx.globalAlpha = a * 0.5 * (1 - rr);
+      ctx.beginPath(); ctx.ellipse(x, y + 1, (8 + rr * 20) * s, (2.4 + rr * 6) * s, 0, 0, 6.283); ctx.stroke();
+    }
+    ctx.restore();
+    if (dunk > 0.5) {                                      /* bubbles where he went under */
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      for (var bb = 0; bb < 3; bb++) { ctx.beginPath(); ctx.arc(x + Math.sin(time * 3 + bb) * 4 * s, y - ((time * 12 + bb * 5) % 14) * s * 0.5, 1.4 * s, 0, 6.283); ctx.fill(); }
+    }
+  }
+
+  function drawBathers(p, dayA) {
+    var dt = lastBathT ? Math.min(0.1, Math.max(0, time - lastBathT)) : 0; lastBathT = time;
+    var target = (mon < 0.12 ? 1 : 0) * dayA;
+    bathVis += (target - bathVis) * Math.min(1, dt * 0.7);
+    if (bathVis < 0.02 && splashP.length === 0) return;
+    var dark = figureInk(p), sc = clamp(Math.min(W, H) / 900, 0.55, 1.5) * 1.5, a = bathVis;
+
+    ctx.save();
+    ctx.globalAlpha = a;
+    BATH.forEach(function (b, i) {
+      var q = bathSpot(b);
+      drawBather(q.x + Math.sin(time * 0.5 + b.ph) * 1.2, q.y + Math.sin(time * 1.1 + b.ph) * 0.8, sc * (0.95 - i * 0.02), dark, a, b);
+    });
+    ctx.restore();
+
+    /* a boy dives from the steps now and then */
+    var S = { x: W * 0.745, y: ghatEdgeY(0.745) - H * 0.004 }, E = { x: W * 0.662, y: ghatEdgeY(0.662) - H * 0.036 };
+    var el = time - dive.t0;
+    if (dive.phase === 'idle' && time > dive.nextAt && a > 0.6) { dive.phase = 'run'; dive.t0 = time; el = 0; }
+    else if (dive.phase === 'run' && el > 0.55) { dive.phase = 'jump'; dive.t0 = time; el = 0; }
+    else if (dive.phase === 'jump' && el > 1.0) {
+      dive.phase = 'under'; dive.t0 = time; el = 0;
+      for (var k = 0; k < 16; k++) splashP.push({ x: E.x + (Math.random() - 0.5) * 8, y: E.y, vx: (Math.random() - 0.5) * 70, vy: -50 - Math.random() * 70, life: 0.8 + Math.random() * 0.4 });
+      ripples.push({ x: E.x, y: E.y + 3, t: 0 }); setTimeout(function () { ripples.push({ x: E.x + 6, y: E.y + 5, t: 0 }); }, 180);
+      if (window.Ambient && window.Ambient.splash) window.Ambient.splash(1);
+    }
+    else if (dive.phase === 'under' && el > 1.4) { dive.phase = 'surf'; dive.t0 = time; el = 0; ripples.push({ x: E.x - W * 0.028, y: E.y + 2, t: 0 }); if (window.Ambient && window.Ambient.splash) window.Ambient.splash(0.4); }
+    else if (dive.phase === 'surf' && el > 2.6) { dive.phase = 'idle'; dive.nextAt = time + 6 + Math.random() * 4; }
+
+    var ds = sc * 0.95;
+    if (dive.phase === 'run' || dive.phase === 'jump') {
+      var u = dive.phase === 'run' ? 0 : el / 1.0, jx, jy, ang;
+      if (dive.phase === 'run') { jx = S.x + Math.sin(el * 18) * 0.5; jy = S.y; ang = 0; }
+      else {
+        jx = lerp(S.x, E.x, u); jy = lerp(S.y, E.y, u * u) - H * 0.1 * Math.sin(Math.PI * u) * (1 - 0.25 * u);
+        ang = -2.5 * smooth(0.25, 0.95, u);
+      }
+      ctx.save();
+      ctx.globalAlpha = bathVis;
+      ctx.translate(jx, jy); ctx.scale(ds, ds); ctx.rotate(ang); ctx.lineCap = 'round';
+      var skin = rgba(mix(dark, [150, 98, 64], 0.5), 0.97);
+      ctx.strokeStyle = skin; ctx.lineWidth = 3;
+      var tuck = dive.phase === 'jump' ? 1 : 0;
+      ctx.beginPath();                                    /* legs */
+      ctx.moveTo(0, -4); ctx.lineTo(-1 - tuck * 2, 7); ctx.moveTo(1, -4); ctx.lineTo(1 + tuck * 1, 7);
+      ctx.stroke();
+      ctx.fillStyle = rgba(mix(dark, [235, 235, 225], 0.2), 0.97);   /* shorts */
+      ctx.fillRect(-3, -9, 6.4, 6);
+      ctx.fillStyle = skin;                                /* torso */
+      ctx.beginPath(); ctx.moveTo(-3, -9); ctx.lineTo(-3.4, -17); ctx.quadraticCurveTo(0, -19, 3.6, -17); ctx.lineTo(3.4, -9); ctx.closePath(); ctx.fill();
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();                                    /* arms: up and forward for the dive */
+      if (dive.phase === 'jump') { ctx.moveTo(-2, -16); ctx.lineTo(-1, -30); ctx.moveTo(2, -16); ctx.lineTo(1, -30); }
+      else { ctx.moveTo(-2, -16); ctx.lineTo(-6, -11); ctx.moveTo(2, -16); ctx.lineTo(6, -11); }
+      ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -22, 3.7, 0, 6.283); ctx.fill();
+      ctx.fillStyle = rgba(dark, 0.98); ctx.beginPath(); ctx.arc(0, -23, 3.9, Math.PI * 1.02, Math.PI * 1.98); ctx.fill();
+      ctx.restore();
+    } else if (dive.phase === 'under') {
+      var uu = el / 1.4, ux = E.x - W * 0.03 * uu, uy = E.y + 6;
+      ctx.save();
+      ctx.globalAlpha = bathVis * 0.28 * Math.sin(Math.PI * Math.min(1, uu * 1.1));
+      ctx.fillStyle = rgba(dark);
+      ctx.beginPath(); ctx.ellipse(ux, uy, 16 * ds, 4.5 * ds, -0.05, 0, 6.283); ctx.fill();
+      ctx.globalAlpha = bathVis * 0.6; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      for (var bq = 0; bq < 4; bq++) { ctx.beginPath(); ctx.arc(ux + 8 * ds - bq * 7 * ds, uy - ((time * 14 + bq * 6) % 16), 1.5, 0, 6.283); ctx.fill(); }
+      ctx.restore();
+    } else if (dive.phase === 'surf') {
+      var fa = Math.min(1, el / 0.3, (2.6 - el) / 0.5);
+      ctx.save(); ctx.globalAlpha = bathVis * fa;
+      drawBather(E.x - W * 0.03, E.y + 5, ds, dark, bathVis * fa, { kind: 'scrub', ph: 1.7, col: null });
+      ctx.restore();
+    }
+
+    /* droplets */
+    for (var i2 = splashP.length - 1; i2 >= 0; i2--) {
+      var sp = splashP[i2];
+      sp.life -= dt; sp.vy += 220 * dt; sp.x += sp.vx * dt; sp.y += sp.vy * dt;
+      if (sp.life <= 0) { splashP.splice(i2, 1); continue; }
+      ctx.globalAlpha = Math.min(1, sp.life * 2) * 0.8; ctx.fillStyle = 'rgba(235,246,250,1)';
+      ctx.beginPath(); ctx.arc(sp.x, sp.y, 1.8, 0, 6.283); ctx.fill();
+    }
     ctx.globalAlpha = 1;
   }
 
@@ -1256,6 +1456,7 @@
     var nightA = smooth(0.66, 0.88, day);
 
     drawKids(p, dayA);
+    drawBathers(p, dayA);
     drawFisherman(p, dayA);
     drawAarti(p, nightA);
 
