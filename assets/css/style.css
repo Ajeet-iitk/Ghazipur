@@ -1383,3 +1383,78 @@ html[lang="hi"] .pl-head p, html[lang="hi"] .pl-hold, html[lang="hi"] .pl-key{ t
 }
 .place-game .ic{ width:.8em; height:.8em; }
 html[lang="hi"] .place-game{ font-family:var(--deva); text-transform:none; letter-spacing:.02em; }
+
+/* ══ mobile pass ═════════════════════════════════════════════
+   1. A blurred header becomes the containing block for fixed children, which
+      shrank the open menu to the header's height once the page had scrolled.
+      The blur now lives on a pseudo-element, so the menu stays full-screen.
+   2. Hero: the scroll cue and the facts collided; the dock covered the copy.
+   3. Yard: the panorama is a swipeable strip instead of an unreadable thumbnail.
+   4. Pillar: the scene sits above the panel instead of hiding behind it.
+   5. Touch targets are at least 40px.
+   ═════════════════════════════════════════════════════════════ */
+@media (max-width:900px){
+  .site-head.is-stuck{ background:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .site-head::before{
+    content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    opacity:0; transition:opacity .5s var(--ease);
+    background:color-mix(in srgb, var(--paper) 78%, transparent);
+    -webkit-backdrop-filter:blur(18px) saturate(140%); backdrop-filter:blur(18px) saturate(140%);
+    border-bottom:1px solid var(--line);
+  }
+  .site-head.is-stuck::before{ opacity:1; }
+  body.nav-open .site-head::before{ opacity:0; }
+  .site-nav{ overflow-y:auto; }
+}
+
+@media (max-width:620px){
+  .hero{ padding-bottom:8rem; }
+  .hero-foot{ display:none; }
+  .hero-facts{
+    padding:1.1rem 1.1rem 1.2rem; border:1px solid var(--line); border-radius:14px; max-width:none;
+    background:color-mix(in srgb, var(--card-solid) 74%, transparent);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  }
+  .hero-weather{ margin-top:.9rem; }
+  .season{ width:100%; justify-content:space-between; }
+  .season button{ flex:1; justify-content:center; padding:.6rem .4rem; }
+  .site-foot{ padding-bottom:6rem; }
+}
+
+@media (max-width:700px){
+  .yard-frame{ overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity; overscroll-behavior-x:contain; }
+  .yard-frame svg{ width:860px; max-width:none; }
+  .yard-badge{ display:none; }
+  .yard-controls{ width:100%; }
+  .yard-btn{ flex:1; justify-content:center; }
+  .yard-head{ padding-bottom:1rem; }
+}
+@media (hover:none){
+  .yard-frame svg{ transform:none !important; }
+}
+
+@media (max-width:640px){
+  .pl-stage{ overflow-y:auto; }
+  .pl-scene{ position:relative; inset:auto; order:2; flex:none; height:auto; }
+  .pl-head{ order:0; padding-bottom:.4rem; }
+  .pl-tip{ order:1; padding-bottom:.6rem; font-size:.74rem; }
+  .pl-bar{ order:3; margin-top:.5rem; }
+  .pl-foot{ order:4; margin-top:0; flex:1 0 auto; background:#14100d; }
+  .pl-heave{ top:22%; }
+  .pl-tile{ min-width:3.1rem; padding:.35rem .45rem .25rem; }
+  .pg{ width:30px; height:30px; }
+}
+
+@media (pointer:coarse){
+  .icon-btn, .menu-btn{ min-width:40px; min-height:40px; }
+  .site-head .icon-btn{ width:40px; height:40px; }
+  .lang button{ min-width:36px; min-height:36px; }
+  .btn, .yard-btn, .ex-act, .season button, .naav-levels button, .naav-btn, .pl-btn, .pl-opt, .pl-tile{ min-height:42px; }
+  .brand{ min-height:40px; }
+  .mixer-close, .sheet-close, .naav-close, .pl-close{ min-width:42px; min-height:42px; }
+  input[type="range"]{ min-height:28px; }
+}
+@media (pointer:coarse){
+  .dock-more{ min-height:42px; min-width:42px; }
+  .site-foot a, .credits a{ display:inline-block; padding:.5rem 0; }
+}

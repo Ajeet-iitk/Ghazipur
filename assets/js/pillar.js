@@ -135,6 +135,14 @@
     window.addEventListener('keyup', function (e) { if (open && e.key === ' ') held = false; });
   }
 
+  /* a narrow screen crops to the pillar and the haulers so the scene stays readable */
+  function fit() {
+    if (!built) return;
+    var narrow = el.Stage.clientWidth < 640;
+    el.Scene.setAttribute('viewBox', narrow ? '110 30 660 430' : '0 0 800 460');
+  }
+  window.addEventListener('resize', fit);
+
   /* ── text ─────────────────────────────────────────────────── */
   function texts() {
     if (!built) return;
@@ -291,6 +299,7 @@
     if (window.Scene && window.Scene.pause) window.Scene.pause();
     texts();
     reset();
+    fit();
     last = 0;
     if (reduced) { prog = 1; }
     raf = requestAnimationFrame(frame);

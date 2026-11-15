@@ -25,6 +25,9 @@
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function ease(t) { return t * t * (3 - 2 * t); }
 
+  /* on a phone the yard is a swipeable strip; start near the middle of it */
+  if (frame.scrollWidth > frame.clientWidth) frame.scrollLeft = (frame.scrollWidth - frame.clientWidth) * 0.42;
+
   var crew = el('g', { id: 'yardCrew' }, svg);
   var back = el('g', {}, crew);      /* crane, machines */
   var people = el('g', {}, crew);    /* workers, sorted by depth */
