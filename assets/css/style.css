@@ -2502,3 +2502,11 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
 @media (prefers-reduced-motion:reduce){ .lk-i1,.lk-i2,.lk-wait{ animation:none !important; } }
 .lk-frame{ aspect-ratio:auto; height:clamp(440px,48vw,580px); }
 @media (max-width:620px){ .lk-frame{ aspect-ratio:auto; height:min(520px, 78vh); } }
+
+/* the three hidden cards share one shape */
+.living-col > .art-nook{ align-self:stretch; width:100%; }
+.art-nook .an-head{ min-height:96px; }
+.art-nook .an-ic{ width:96px; justify-content:space-between; }
+.art-nook .an-txt{ min-width:0; }
+@media (max-width:620px){ .art-nook .an-head{ min-height:84px; } .art-nook .an-ic{ width:84px; } .art-nook .an-ic svg{ width:22px; height:22px; } }
+@media (max-width:620px){ .art-nook .an-head{ min-height:132px; } .art-nook .an-txt em{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; } }
