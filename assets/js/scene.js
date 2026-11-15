@@ -474,7 +474,7 @@
     return true;
   }
   function stirBoats(cx, cy) {
-    var reach = Math.max(160, W * 0.2);
+    var reach = clamp(Math.min(W, H) * 0.11, 70, 120);      /* only a click close to the boat */
     stir(rockB, boatPos, cx, cy, reach);
     stir(rockF, fishPos, cx, cy, reach);
   }
@@ -2095,6 +2095,7 @@
     },
     getSeason: function () { return seasonTarget === 0 ? 'summer' : seasonTarget === 1 ? 'monsoon' : 'normal'; },
     callWild: function (id) { spawnWild(id); },
+    _rock: function () { return { boat: +Math.abs(rockOf(rockB)).toFixed(3), amp: +rockB.amp.toFixed(2), fish: +rockF.amp.toFixed(2) }; },
     ringBells: ringAllBells,
     ripple: function (x, y) {
       ripples.push({ x: x, y: y, t: 0 });
