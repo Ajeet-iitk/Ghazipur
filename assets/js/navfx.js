@@ -186,6 +186,15 @@
     clearTimeout(moreT);
     if (open) moreT = setTimeout(function () { foldBar(false); }, 7000);
   }
+  var he = document.getElementById('heroEye');
+  if (he) he.addEventListener('click', function () { if (viewBtn) viewBtn.click(); });
+  var vd = document.getElementById('viewDiya');
+  if (vd) vd.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (window.Scene && window.Scene.releaseDiya) window.Scene.releaseDiya(6);
+    if (window.Ambient && window.Ambient.plop) window.Ambient.plop();
+    vd.classList.remove('is-pop'); void vd.offsetWidth; vd.classList.add('is-pop');
+  });
   var vm = document.getElementById('viewMore');
   if (vm) vm.addEventListener('click', function () { foldBar(!viewBar.classList.contains('is-open')); });
   if (viewBar) viewBar.addEventListener('click', function () { if (viewBar.classList.contains('is-open')) foldBar(true); });

@@ -2561,3 +2561,9 @@ html[lang="hi"] .an-txt i, html[lang="hi"] .an-tab, html[lang="hi"] .an-btn{ tex
   .rf-svg{ height:clamp(300px,82vw,380px); }
   .rf-cap{ padding-inline:var(--pad); }
 }
+
+.view-diya{ display:inline-flex; align-items:center; gap:.45rem; padding:.55rem 1rem; border-radius:999px; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:#2b1a10; background:linear-gradient(160deg,#f6d08a,#e6993c); border:0; box-shadow:0 10px 24px -12px rgba(120,60,10,.7); transition:transform .25s; }
+.view-diya .ic{ width:1em; height:1em; } .view-diya:hover{ transform:translateY(-2px); } .view-diya.is-pop{ animation:vdPop .5s var(--ease-out); }
+@keyframes vdPop{ 0%{ transform:scale(.92); } 60%{ transform:scale(1.08); } 100%{ transform:none; } }
+html[lang="hi"] .view-diya{ text-transform:none; letter-spacing:.02em; }
+@media (max-width:620px){ .view-bar .view-diya{ display:none; } .view-bar.is-open .view-diya{ display:inline-flex; min-height:34px; padding:.35rem .8rem; font-size:.64rem; } }

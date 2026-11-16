@@ -128,10 +128,10 @@
     <p class="hero-sub rev" data-i18n="hero.sub">The City of Martyrs · Lahuri Kashi</p>
     <p class="hero-lede rev" data-i18n="hero.lede">Where the Ganga slows to listen. A district of river light, Mughal stone, mango shade and poppy fields — 80 km east of Varanasi, on the edge of Bihar.</p>
     <div class="hero-actions rev">
-      <a class="btn btn-solid" href="#river">
-        <span data-i18n="hero.cta1">Begin the walk</span>
-        <svg class="ic"><use href="#i-arrow"/></svg>
-      </a>
+      <button class="btn btn-solid" id="heroEye" type="button">
+        <svg class="ic"><use href="#i-eye"/></svg>
+        <span data-i18n="hero.eye">Watch the view</span>
+      </button>
       <button class="btn btn-ghost" id="heroNaav" type="button">
         <svg class="ic"><use href="#i-boat"/></svg>
         <span data-i18n="hero.cta3">Row the Naav</span>
@@ -729,6 +729,7 @@
 <div class="view-bar" id="viewBar" hidden>
   <button type="button" class="view-more" id="viewMore" aria-expanded="false" aria-label="Controls"><svg class="ic"><use href="#i-sliders"/></svg></button>
   <p class="view-hint" id="viewHint" data-i18n="view.hint">Tap the eye or press Esc to return</p>
+  <button type="button" class="view-diya" id="viewDiya"><svg class="ic"><use href="#i-lamp"/></svg><span data-i18n="view.diya">Release diyas</span></button>
   <div class="view-times view-seasons" role="group" data-i18n-aria="season.label" aria-label="Season of the river">
     <button type="button" data-vs="summer"><svg class="ic"><use href="#i-sun"/></svg><span data-i18n="season.summer">Summer</span></button>
     <button type="button" data-vs="normal"><svg class="ic"><use href="#i-spark"/></svg><span data-i18n="season.normal">Clear</span></button>

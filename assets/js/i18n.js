@@ -126,6 +126,8 @@
 
       "hero.cta3": "Row the Naav",
       "hero.diya": "Release a diya",
+      "hero.eye": "Watch the view",
+      "view.diya": "Release diyas",
       "view.enter": "Watch the view",
       "view.exit": "Back to the page",
       "view.hint": "Tap the eye or press Esc to return",
@@ -436,6 +438,8 @@
 
       "hero.cta3": "नाव चलाइए",
       "hero.diya": "दीया बहाइए",
+      "hero.eye": "नज़ारा देखिए",
+      "view.diya": "दीये बहाइए",
       "view.enter": "नज़ारा देखिए",
       "view.exit": "पन्ने पर लौटें",
       "view.hint": "लौटने के लिए आँख दबाइए या Esc",
@@ -746,6 +750,8 @@
 
       "hero.cta3": "Naav chalaiye",
       "hero.diya": "Diya bahaiye",
+      "hero.eye": "Nazara dekhiye",
+      "view.diya": "Diye bahaiye",
       "view.enter": "Nazara dekhiye",
       "view.exit": "Page par lautein",
       "view.hint": "Lautne ke liye aankh dabaiye ya Esc",
