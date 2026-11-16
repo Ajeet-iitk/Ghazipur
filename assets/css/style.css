@@ -2729,3 +2729,9 @@ html[data-theme="night"] .site-nav .nav-farm{ color:#9fcf7a; }
   .site-head .head-tools{ margin-left:auto; flex:none; }
   .site-head .brand-text{ display:none; }
 }
+
+/* Small Farm shortcut beside "Row the Naav". */
+.hero-farm{ width:46px; height:46px; flex:none; align-self:center; display:grid; place-items:center; border-radius:50%; color:#5a8a3a; border:1px solid var(--line-strong); background:color-mix(in srgb, var(--paper-2) 40%, transparent); transition:transform .35s var(--ease), background .3s, color .3s, border-color .3s; }
+.hero-farm .ic{ width:22px; height:22px; }
+.hero-farm:hover,.hero-farm:focus-visible{ background:#5a8a3a; color:#fff; border-color:#5a8a3a; transform:translateY(-2px) rotate(-6deg); }
+@media (max-width:700px){ .hero-actions .btn-ghost{ flex:1 1 0; } .hero-farm{ width:48px; height:48px; } }
