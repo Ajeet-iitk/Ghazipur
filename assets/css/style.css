@@ -2721,3 +2721,11 @@ html.petal-run main, html.petal-run .site-foot, html.petal-run .mapstrip, html.p
 
 .site-nav .nav-farm{ color:#5a8a3a; opacity:1; }
 html[data-theme="night"] .site-nav .nav-farm{ color:#9fcf7a; }
+
+/* Mobile header: keep the leaf mark, push the tools to the right edge, no dead space. */
+@media (max-width:900px){
+  .site-head{ justify-content:space-between; }
+  .site-head .brand{ display:flex !important; flex:none; min-width:0; }
+  .site-head .head-tools{ margin-left:auto; flex:none; }
+  .site-head .brand-text{ display:none; }
+}
