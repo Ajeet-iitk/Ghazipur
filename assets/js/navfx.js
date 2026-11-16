@@ -186,6 +186,10 @@
     clearTimeout(moreT);
     if (open) moreT = setTimeout(function () { foldBar(false); }, 7000);
   }
+  /* the sound player lives in the navbar */
+  var dockEl = document.getElementById('audioDock'), tools = head.querySelector('.head-tools'), mixEl = document.getElementById('mixer');
+  if (dockEl && tools) { tools.insertBefore(dockEl, tools.firstChild); dockEl.classList.add('in-nav'); }
+  if (mixEl) mixEl.classList.add('in-nav');
   var he = document.getElementById('heroEye');
   if (he) he.addEventListener('click', function () { if (viewBtn) viewBtn.click(); });
   var vd = document.getElementById('viewDiya');

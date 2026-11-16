@@ -2641,3 +2641,39 @@ html[lang="hi"] .pc-head i{ text-transform:none; letter-spacing:.02em; }
 .poppy-facts .fact span{ font-size:.7rem; line-height:1.35; }
 .poppy-cult{ padding:.8rem; gap:1rem; } .poppy-cult .pc-stage{ aspect-ratio:16/8.5; } .pc-cap{ font-size:.84rem; margin:.5rem 0 .4rem; } .pc-head b{ font-size:1.3rem; }
 @media (max-width:760px){ .poppy-grid > .panel p{ font-size:.82rem; } .poppy-facts .fact{ padding:.65rem .75rem; } .poppy-facts .fact b{ font-size:1.3rem; } }
+
+/* ══ the sound player, attached to the navbar ═════════════════ */
+.audio-dock.in-nav{
+  position:relative; left:auto; bottom:auto; z-index:2; gap:.5rem; padding:3px 4px 3px 3px; margin-right:.35rem; height:36px; max-width:none;
+  background:color-mix(in srgb, var(--paper) 55%, transparent); border:1px solid var(--line); box-shadow:none;
+  animation:dockIn .9s var(--ease-out) .5s backwards;
+}
+@keyframes dockIn{ from{ opacity:0; transform:translateY(-10px) scale(.9); } to{ opacity:1; transform:none; } }
+.audio-dock.in-nav .dock-meta{ display:none; }
+.audio-dock.in-nav .dock-play{ width:28px; height:28px; min-width:28px; min-height:28px; }
+.audio-dock.in-nav .dock-play .ic{ width:12px; height:12px; }
+.audio-dock.in-nav .dock-bars{ height:14px; margin:0 .1rem; }
+.audio-dock.in-nav .dock-more{ width:28px; height:28px; min-width:28px; min-height:28px; padding:0; display:grid; place-items:center; border-radius:50%; }
+.audio-dock.in-nav .dock-more span{ display:none; }
+.audio-dock.in-nav[data-on="true"]{ border-color:color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent), 0 6px 18px -8px var(--accent); }
+.audio-dock.in-nav[data-on="true"] .dock-play{ animation:dockPulse 2.4s ease-in-out infinite; }
+@keyframes dockPulse{ 0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); } 50%{ box-shadow:0 0 0 6px transparent; } }
+.audio-dock.in-nav:hover{ border-color:var(--line-strong); }
+/* the mixer drops down from the navbar */
+.mixer.in-nav{ position:fixed; top:4.2rem; right:clamp(.8rem,2vw,1.5rem); left:auto; bottom:auto; transform-origin:top right; animation:mixDrop .4s var(--ease-out); }
+@keyframes mixDrop{ from{ opacity:0; transform:translateY(-10px) scale(.96); } to{ opacity:1; transform:none; } }
+.mixer.in-nav::before{ content:""; position:absolute; top:-6px; right:2.2rem; width:12px; height:12px; background:inherit; border-left:1px solid var(--line-strong); border-top:1px solid var(--line-strong); transform:rotate(45deg); }
+body.view-mode .site-head .head-tools > #audioDock{ opacity:1; pointer-events:auto; }
+body.view-mode .site-head{ pointer-events:none; } body.view-mode .site-head .head-tools > #audioDock, body.view-mode .site-head #viewBtn{ pointer-events:auto; }
+/* the old bottom-left spot is free now */
+.song-bar{ bottom:1.2rem; } body.view-mode .song-bar{ bottom:1.2rem; }
+@media (max-width:620px){
+  .audio-dock.in-nav{ margin-right:0; height:34px; gap:.15rem; padding:2px; }
+  .audio-dock.in-nav .dock-bars{ display:none; }
+  .audio-dock.in-nav .dock-play, .audio-dock.in-nav .dock-more{ width:30px; height:30px; min-width:30px; min-height:30px; }
+  .song-bar{ bottom:1rem; } .view-bar{ bottom:1.6rem; } .view-bar .view-diya{ bottom:1rem; }
+  .mixer.in-nav{ top:3.9rem; right:.6rem; }
+}
+@media (max-width:420px){ .lang button{ min-width:26px; } .brand-mark{ width:22px; height:22px; } }
+@media (max-width:360px){ .brand{ display:none; } .audio-dock.in-nav .dock-more{ display:none; } }
+@media (max-width:480px){ .brand-text{ display:none; } .brand{ min-width:34px; } }

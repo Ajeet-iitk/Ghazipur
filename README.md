@@ -30,7 +30,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **A small Google Map strip** above the footer, loaded only when you scroll near it, with an "Open in Google Maps" link.
 - **The Explorer's Dial** — every feature as a small coloured tile (filter by Play, Sound, Sky & weather, Go to). A stage card shows and launches the chosen one, with orbiting rings, and it cycles through them on its own.
 - **Home-screen details** — click the water and it drips (only on the home view); click near a boat and it rocks; a boy flies a kite; kids, bathers, a diver, walkers, wildlife.
-- Audio controller, language switch (English / हिन्दी / Hinglish), day and night theme, command search, and a custom favicon.
+- Audio controller (a glowing player pill in the navbar, with a drop-down mixer), language switch (English / हिन्दी / Hinglish), day and night theme, command search, and a custom favicon.
 
 | Clear day | Monsoon | Summer |
 |---|---|---|
