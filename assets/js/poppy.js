@@ -54,7 +54,7 @@
   }
 
   function build() {
-    host.innerHTML = '<div class="pc-head"><i></i><b></b></div><div class="pc-stage"></div><p class="pc-cap" aria-live="polite"></p><div class="pc-dots" role="tablist"></div><p class="pc-note"></p>';
+    host.innerHTML = '<div class="pc-stage"></div><div class="pc-info"><div class="pc-head"><i></i><b></b></div><p class="pc-cap" aria-live="polite"></p><div class="pc-dots" role="tablist"></div><p class="pc-note"></p></div>';
     var st = host.querySelector('.pc-stage');
     for (var n = 0; n < 5; n++) { var d = document.createElementNS(NS, 'svg'); d.setAttribute('viewBox', '0 0 320 180'); d.setAttribute('class', 'pc-sc'); d.setAttribute('aria-hidden', 'true'); d.innerHTML = scene(n); st.appendChild(d); }
     var dots = host.querySelector('.pc-dots');

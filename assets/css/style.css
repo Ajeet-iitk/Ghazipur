@@ -2608,3 +2608,24 @@ html[lang="hi"] .view-diya{ text-transform:none; letter-spacing:.02em; }
 .pc-smoke{ animation:pcSmoke 3s ease-out infinite; } @keyframes pcSmoke{ from{ transform:translateY(0) scale(.6); opacity:.6; } to{ transform:translateY(-22px) scale(1.8); opacity:0; } }
 html[lang="hi"] .pc-head i{ text-transform:none; letter-spacing:.02em; }
 @media (prefers-reduced-motion:reduce){ .pc-sc *{ animation:none !important; } }
+
+/* ── poppy chapter layout: prose and facts match in height; the crop story spans the width ── */
+.poppy-grid{ align-items:stretch; }
+.poppy-side{ display:contents; }
+.poppy-facts{ height:100%; grid-auto-rows:1fr; }
+.poppy-cult{
+  grid-column:1 / -1; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:clamp(1rem,3vw,2.2rem); align-items:center; padding:clamp(.9rem,2vw,1.4rem);
+}
+.poppy-cult .pc-stage{ aspect-ratio:16/9; width:100%; }
+.pc-info{ display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.pc-head b{ font-size:clamp(1.3rem,2.4vw,1.8rem); line-height:1.1; }
+.pc-cap{ min-height:0; font-size:.9rem; margin:.8rem 0 .6rem; } .pc-cap b{ font-size:1.25rem; }
+.pc-dots{ gap:.35rem; } .pc-dots button{ height:6px; }
+@media (max-width:1000px){ .poppy-side{ display:contents; } }
+@media (max-width:760px){
+  .poppy-cult{ grid-template-columns:1fr; gap:.8rem; padding:.8rem; }
+  .pc-cap{ font-size:.84rem; min-height:7.4em; margin-top:.2rem; }
+  .pc-dots button{ height:8px; }
+  .poppy-facts{ height:auto; }
+}
