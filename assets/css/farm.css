@@ -67,3 +67,10 @@ button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; 
 .fm-help button{ padding:.5rem 1.3rem; border-radius:999px; background:var(--green); color:#fff; font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; }
 @media (max-width:760px){ .fm-lang{ order:3; } }
 @media (prefers-reduced-motion:reduce){ .fm-help,.fm-help-card{ animation:none; } }
+@media (max-width:760px){
+  .fm-top{ flex-wrap:wrap; align-items:center; padding:.5rem .7rem; }
+  .fm-title{ white-space:nowrap; font-size:1.25rem; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+  .fm-lang{ width:32px; height:32px; font-size:.85rem; flex:none; }
+  .fm-stats{ gap:.4rem; } .fm-meters{ gap:.6rem; } .mt{ flex:1; } .mt i{ flex:1; width:auto; }
+}
+@media (max-width:480px){ .fm-back span{ display:none; } .fm-back{ padding:.3rem; } .fm-top{ gap:.4rem .45rem; } }
