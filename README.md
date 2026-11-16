@@ -31,6 +31,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **The riverfront** — nine ghats drawn as one swipeable panorama, alive with walkers, a chai-wala, a flower seller, a pandit and a kulfi cart, cows, goats, a dog, pigeons and a monkey, trees, birds and kites, a flowing river with drifting boats, garlands and diyas, and leaping fish. Tap a ghat and the boatman rows to it, or take the tour.
 - **A small Google Map strip** above the footer, loaded only when you scroll near it, with an "Open in Google Maps" link.
 - **The Explorer's Dial** — every feature as a small coloured tile (filter by Play, Sound, Sky & weather, Go to). A stage card shows and launches the chosen one, with orbiting rings, and it cycles through them on its own.
+- **Ajeet's Farm** (`Farm.html`, linked from the navbar) — a story-driven farm game: plough with a tractor, grow tomato, brinjal, cauliflower and okra, feed and milk cows, rear a calf, collect eggs, and build solar panels over the crops (agrovoltaics). Seven story chapters with Ajeet, Priya and Amma, a smooth two-minute day and night, passing rain showers, a "How to play" guide, a synthesised soundscape (birds, crickets, rain, tractor, a soft tune) and English / हिन्दी. Works with mouse and touch.
 - **Home-screen details** — click the water and it drips (only on the home view); click near a boat and it rocks; a boy flies a kite; kids, bathers, a diver, walkers, wildlife.
 - Audio controller (a glowing player pill in the navbar, with a drop-down mixer), language switch (English / हिन्दी / Hinglish), day and night theme, command search, and a custom favicon.
 
@@ -61,6 +62,7 @@ python -m http.server 8000
 ## Structure
 
 - `index.html` — page
+- `Farm.html`, `assets/css/farm.css`, `assets/js/farm.js` — Ajeet's Farm game
 - `assets/css/style.css` — styles
 - `assets/js/scene.js` — canvas scene (day/night, ghat life)
 - `assets/js/naav.js` — boat game

@@ -23,6 +23,10 @@
       tomato: 'Tomato', brinjal: 'Brinjal', cauli: 'Cauliflower', okra: 'Okra',
       sellVeg: 'Sell vegetables ({n})', sellMilk: 'Sell milk ({n})', buyHay: 'Buy hay · 5 for 5', buyCalf: 'Buy a calf · 40',
       day: 'Day', coins: 'coins',
+      howTitle: 'How to play', close: 'Got it', soundOn: 'Sound on', soundOff: 'Sound off', fastOn: 'Time x4', fastOff: 'Normal time',
+      how: ['Pick a tool under the farm, then tap the farm to use it. Ajeet walks over and does the work.', 'Plough first: the Hoe does one plot, the Tractor does a whole row. Then choose Seeds and a vegetable, and tap a ploughed plot.', 'Water the plants (watch the Water meter; rain fills it for free). When a plant sparkles, it is ripe: use Harvest.', 'Feed a cow when she shows a hay bubble, and Milk her when she shows a milk bubble. Tap the eggs the hens lay.', 'Solar panels over a plot cost 30 coins. They shade the crop, save water, add +1 vegetable per harvest, run the pump and the night lamps, and sell spare power to the grid.', 'Use the Mandi buttons to sell, buy hay or buy a calf. Follow the chapters at the top left to hear the story.', 'A farm day lasts two minutes. The fast-forward button speeds time up, the note button turns sound on or off. On a phone, drag the farm sideways to look around.'],
+      eggMsg: '+2 coins: fresh egg', rainOn: 'A shower! The plots drink for free.', rainOff: 'The rain has passed.', night: 'Night: the lamps run on your solar power.',
+
       t_hoe: 'Hoe: tap a bare plot and Ajeet will turn the soil by hand.', t_tractor: 'Tractor: tap any plot, and the tractor ploughs that whole row.',
       t_seed: 'Seeds: pick a vegetable, then tap a ploughed plot. Each packet costs 2 coins.', t_water: 'Water: tap a planted plot. The tank refills faster with solar power.',
       t_harvest: 'Harvest: tap a ripe plot to pick the vegetables.', t_feed: 'Feed: tap a cow. Hungry cows give no milk.', t_milk: 'Milk: tap a cow whose bucket is full.', t_solar: 'Solar: build panels over a plot for 30 coins. Tap again to remove them.',
@@ -55,6 +59,10 @@
       tomato: 'टमाटर', brinjal: 'बैंगन', cauli: 'फूलगोभी', okra: 'भिंडी',
       sellVeg: 'सब्ज़ी बेचिए ({n})', sellMilk: 'दूध बेचिए ({n})', buyHay: 'भूसा लीजिए · 5 का 5', buyCalf: 'बछड़ा लीजिए · 40',
       day: 'दिन', coins: 'सिक्के',
+      howTitle: 'कैसे खेलें', close: 'समझ गया', soundOn: 'आवाज़ चालू', soundOff: 'आवाज़ बंद', fastOn: 'समय x4', fastOff: 'सामान्य समय',
+      how: ['खेत के नीचे से औज़ार चुनिए, फिर खेत पर दबाइए। अजीत वहाँ जाकर काम करेगा।', 'पहले जुताई: कुदाल एक क्यारी जोतती है, ट्रैक्टर पूरी पंक्ति। फिर बीज और सब्ज़ी चुनिए और जुती क्यारी पर दबाइए।', 'पौधों को पानी दीजिए (पानी का मीटर देखिए; बारिश मुफ़्त में भर देती है)। जब पौधा चमके तो पक गया है: कटाई कीजिए।', 'गाय के ऊपर भूसे का बुलबुला दिखे तो चारा दीजिए, दूध का बुलबुला दिखे तो दुहिए। मुर्गियों के अंडों पर दबाइए।', 'क्यारी पर सौर पैनल 30 सिक्कों के हैं। ये छाँव देते हैं, पानी बचाते हैं, हर कटाई में +1 सब्ज़ी देते हैं, पंप और रात की बत्तियाँ चलाते हैं और बची बिजली ग्रिड को बेचते हैं।', 'मंडी के बटनों से बेचिए, भूसा या बछड़ा लीजिए। कहानी के लिए ऊपर-बाएँ अध्याय देखिए।', 'खेत का एक दिन दो मिनट का है। तेज़ बटन समय बढ़ाता है, सुर वाला बटन आवाज़ चालू-बंद करता है। फ़ोन पर खेत को बग़ल में खींचिए।'],
+      eggMsg: '+2 सिक्के: ताज़ा अंडा', rainOn: 'बौछार! क्यारियाँ मुफ़्त में पानी पी रही हैं।', rainOff: 'बारिश थम गई।', night: 'रात: बत्तियाँ आपकी सौर बिजली से जल रही हैं।',
+
       t_hoe: 'कुदाल: ख़ाली क्यारी पर दबाइए, अजीत हाथ से मिट्टी पलटेगा।', t_tractor: 'ट्रैक्टर: किसी क्यारी पर दबाइए, ट्रैक्टर पूरी पंक्ति जोत देगा।',
       t_seed: 'बीज: सब्ज़ी चुनिए, फिर जुती क्यारी पर दबाइए। हर पैकेट 2 सिक्के।', t_water: 'पानी: बोई हुई क्यारी पर दबाइए। सौर ऊर्जा से टंकी जल्दी भरती है।',
       t_harvest: 'कटाई: पकी क्यारी पर दबाइए।', t_feed: 'चारा: गाय पर दबाइए। भूखी गाय दूध नहीं देती।', t_milk: 'दूध: जिस गाय की बाल्टी भरी हो उस पर दबाइए।', t_solar: 'सौर: क्यारी पर 30 सिक्कों में पैनल लगाइए। फिर दबाने पर हट जाते हैं।',
@@ -82,6 +90,7 @@
       s7: [['Amma', 'अजीत, खेत पर सूर्यास्त देखो। ट्रैक्टर, गायें, पैनल, सब्ज़ियाँ। किसने सोचा था।'], ['Ajeet', 'यह तो बस शुरुआत है। बढ़ते रहो!']]
     }
   };
+  var Tr = function () { return T.apply(null, arguments); };
   var lang = store.get('gzp.lang') === 'hi' ? 'hi' : 'en';
   function T(k, o) { var s = (STR[lang][k] !== undefined ? STR[lang][k] : STR.en[k]) || k; if (typeof s !== 'string') return s; return s.replace(/\{(\w+)\}/g, function (m, x) { return o && o[x] !== undefined ? o[x] : m; }); }
 
@@ -98,7 +107,7 @@
   var st = { rows: 0, seed: 0, water: 0, fed: 0, milked: 0, panels: 0, harvest: 0, sold: 0, calves: 0 };
   var plots = [];
   for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) plots.push({ r: r, c: c, x: 330 + c * 118, y: 318 + r * 76, w: 110, h: 66, state: 'empty', crop: null, prog: 0, water: 0, panel: false, plough: 0 });
-  var cows = [], hens = [], dog, farmer, priya, amma, tractor, jobs = [], cur = null, floats = [], parts = [], clouds = [], birds = [], flies = [], talkQ = [], talkOpen = false, quest = 0, questLock = false, shown = {};
+  var rainAmt = 0, rainOn = false, rainT = 40, eggs = [], ts = 1, drops = [], cows = [], hens = [], dog, farmer, priya, amma, tractor, jobs = [], cur = null, floats = [], parts = [], clouds = [], birds = [], flies = [], talkQ = [], talkOpen = false, quest = 0, questLock = false, shown = {};
   var PEN = { x0: 716, x1: 926, y0: 392, y1: 506 }, PARK = { x: 220, y: 506 }, HOUSE = { x: 40, y: 170, w: 210, h: 150 }, TANK = { x: 668, y: 300 };
 
   function mkCow(i, calf) {
@@ -107,7 +116,7 @@
   }
   function init() {
     cows = [mkCow(0), mkCow(1)];
-    for (var i = 0; i < 4; i++) hens.push({ x: rnd(60, 250), y: rnd(330, 420), tx: 0, ty: 0, dir: 1, w: 0, peck: rnd(0, 6), wait: rnd(0, 2) });
+    for (var i = 0; i < 4; i++) hens.push({ lay: rnd(15, 40), x: rnd(60, 250), y: rnd(330, 420), tx: 0, ty: 0, dir: 1, w: 0, peck: rnd(0, 6), wait: rnd(0, 2) });
     dog = { x: 200, y: 400, dir: 1, w: 0, wag: 0 };
     farmer = { x: 280, y: 372, dir: 1, w: 0, act: null, actT: 0, vis: true, talk: 0 };
     priya = { x: 150, y: 420, dir: 1, w: 0, tx: 150, ty: 420, wait: 1, jump: 0 };
@@ -119,18 +128,55 @@
   }
 
   /* ── sound: a few small synthesised sounds ───────────────── */
-  var ac = null;
-  function sfx(k) {
+  var ac = null, master = null, amb = {}, muted = store.get('gzp.farmsnd') === '0', nextBird = 3, nextMelody = 4, mi = 0, started = false;
+  function noiseBuf() { var b = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; }
+  function initAudio() {
+    if (started) { if (ac && ac.state === 'suspended') ac.resume(); return; }
     try {
-      if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
-      if (ac.state === 'suspended') ac.resume();
-      var t = ac.currentTime, o = ac.createOscillator(), gn = ac.createGain(); o.connect(gn); gn.connect(ac.destination);
-      var f = { coin: [880, 1320, 0.16, 'sine'], tick: [520, 600, 0.06, 'triangle'], water: [300, 180, 0.2, 'sine'], moo: [150, 95, 0.7, 'sawtooth'], err: [200, 150, 0.12, 'square'], good: [660, 990, 0.3, 'sine'], engine: [70, 60, 0.4, 'sawtooth'] }[k] || [440, 440, 0.1, 'sine'];
-      o.type = f[3]; o.frequency.setValueAtTime(f[0], t); o.frequency.exponentialRampToValueAtTime(f[1], t + f[2]);
-      gn.gain.setValueAtTime(0.0001, t); gn.gain.exponentialRampToValueAtTime(k === 'moo' ? 0.08 : 0.07, t + 0.02); gn.gain.exponentialRampToValueAtTime(0.0001, t + f[2] + 0.05);
-      o.start(t); o.stop(t + f[2] + 0.08);
-    } catch (e) {}
+      ac = new (window.AudioContext || window.webkitAudioContext)(); started = true;
+      master = ac.createGain(); master.gain.value = muted ? 0 : 0.9; master.connect(ac.destination);
+      var nb = noiseBuf();
+      function loop(type, f, q) { var src = ac.createBufferSource(); src.buffer = nb; src.loop = true; var fl = ac.createBiquadFilter(); fl.type = type; fl.frequency.value = f; if (q) fl.Q.value = q; var gn = ac.createGain(); gn.gain.value = 0; src.connect(fl); fl.connect(gn); gn.connect(master); src.start(); return gn; }
+      amb.wind = loop('lowpass', 420, 0.7); amb.rain = loop('highpass', 2400, 0.4);
+      /* crickets: a high tone chopped fast by a low-frequency oscillator */
+      var co = ac.createOscillator(), cg = ac.createGain(), cl = ac.createOscillator(), cd = ac.createGain(), cm = ac.createGain(); co.frequency.value = 4300; cl.frequency.value = 17; cd.gain.value = 0.5; cg.gain.value = 0.5; cm.gain.value = 0;
+      cl.connect(cd); cd.connect(cg.gain); co.connect(cg); cg.connect(cm); cm.connect(master); co.start(); cl.start(); amb.cricket = cm;
+      /* tractor engine */
+      var eo = ac.createOscillator(), ef = ac.createBiquadFilter(), eg = ac.createGain(), el = ac.createOscillator(), ed = ac.createGain(); eo.type = 'sawtooth'; eo.frequency.value = 52; ef.type = 'lowpass'; ef.frequency.value = 240; el.frequency.value = 9; ed.gain.value = 8; el.connect(ed); ed.connect(eo.frequency); eg.gain.value = 0; eo.connect(ef); ef.connect(eg); eg.connect(master); eo.start(); el.start(); amb.engine = eg;
+    } catch (e) { ac = null; }
   }
+  function tone(f0, f1, dur, type, vol, delay) {
+    if (!ac || muted) return; var t = ac.currentTime + (delay || 0), o = ac.createOscillator(), gn = ac.createGain(); o.type = type || 'sine'; o.connect(gn); gn.connect(master);
+    o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    gn.gain.setValueAtTime(0.0001, t); gn.gain.exponentialRampToValueAtTime(vol || 0.07, t + 0.02); gn.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.05); o.start(t); o.stop(t + dur + 0.08);
+  }
+  function sfx(k) {
+    if (!ac) return;
+    if (k === 'coin') { tone(988, 988, 0.1, 'triangle', 0.07); tone(1318, 1318, 0.25, 'triangle', 0.07, 0.09); }
+    else if (k === 'tick') tone(520, 640, 0.07, 'triangle', 0.06);
+    else if (k === 'water') { tone(700, 260, 0.25, 'sine', 0.05); tone(900, 300, 0.2, 'sine', 0.04, 0.08); }
+    else if (k === 'moo') { tone(150, 100, 0.8, 'sawtooth', 0.045); tone(300, 200, 0.7, 'sine', 0.04); }
+    else if (k === 'err') tone(200, 140, 0.14, 'square', 0.04);
+    else if (k === 'good') { tone(523, 523, 0.12, 'triangle', 0.07); tone(659, 659, 0.12, 'triangle', 0.07, 0.1); tone(784, 784, 0.3, 'triangle', 0.07, 0.2); }
+    else if (k === 'cluck') { tone(500, 380, 0.07, 'square', 0.025); tone(520, 400, 0.07, 'square', 0.025, 0.1); }
+    else if (k === 'egg') { tone(880, 1180, 0.1, 'sine', 0.06); }
+    else if (k === 'bark') { tone(380, 200, 0.12, 'sawtooth', 0.05); }
+    else if (k === 'engine') tone(90, 60, 0.4, 'sawtooth', 0.04);
+    else if (k === 'thunder') tone(70, 40, 1.4, 'sawtooth', 0.05);
+  }
+  var PENT = [261.6, 293.7, 329.6, 392, 440, 523.3, 587.3, 659.3];
+  function audioTick(dt, p, n, L) {
+    if (!ac || muted) return;
+    var tt = ac.currentTime, dayAmt = clamp(L * 1.3, 0, 1);
+    function sm(g2, v) { g2.gain.setTargetAtTime(v, tt, 0.6); }
+    sm(amb.wind, 0.05 + 0.04 * Math.sin(S.t * 0.4) + rainAmt * 0.04); sm(amb.rain, rainAmt * 0.06); sm(amb.cricket, 0.025 * n * (1 - rainAmt));
+    sm(amb.engine, tractor.state !== 'park' ? 0.09 : 0);
+    nextBird -= dt; if (nextBird <= 0) { nextBird = rnd(2.5, 7); if (dayAmt > 0.3 && rainAmt < 0.3) { var b0 = rnd(2200, 3400); tone(b0, b0 * 1.35, 0.09, 'sine', 0.03); tone(b0 * 1.3, b0 * 0.9, 0.12, 'sine', 0.03, 0.12); tone(b0 * 1.2, b0 * 1.5, 0.08, 'sine', 0.025, 0.28); } else if (n > 0.6 && Math.random() < 0.3) { tone(330, 290, 0.5, 'sine', 0.025); tone(290, 260, 0.6, 'sine', 0.022, 0.6); } }
+    if (Math.random() < dt * 0.06) { sfx(Math.random() < 0.5 ? 'cluck' : 'moo'); }
+    /* a gentle generative tune, soft and slow, from a pentatonic scale; it is quieter at night */
+    nextMelody -= dt; if (nextMelody <= 0) { nextMelody = rnd(0.9, 2.2); mi = clamp(mi + (Math.random() < 0.5 ? -1 : 1) * (Math.random() < 0.3 ? 2 : 1), 0, 7); tone(PENT[mi], PENT[mi], 1.2, 'triangle', 0.018 * (1 - n * 0.4)); if (Math.random() < 0.3) tone(PENT[mi] / 2, PENT[mi] / 2, 1.8, 'sine', 0.014); }
+  }
+  function setMuted(m) { muted = m; store.set('gzp.farmsnd', m ? '0' : '1'); if (master) master.gain.setTargetAtTime(m ? 0 : 0.9, ac.currentTime, 0.1); var b = $('#fmSnd'); b.classList.toggle('is-off', m); b.setAttribute('aria-pressed', m ? 'false' : 'true'); b.title = T(m ? 'soundOff' : 'soundOn'); }
 
   /* ── the sky and the light ───────────────────────────────── */
   var SKY = [
@@ -412,6 +458,7 @@
 
   function tap(wx, wy) {
     if (talkOpen) return;
+    for (var ei = 0; ei < eggs.length; ei++) { var E = eggs[ei]; if (Math.hypot(wx - E.x, wy - E.y + 4) < 18) { eggs.splice(ei, 1); S.coins += 2; pop(E.x, E.y - 10, '+2', '#ffe08a'); burst(E.x, E.y, 6, '#fff'); sfx('egg'); say(T('eggMsg')); return; } }
     var P = plotAt(wx, wy), C = cowAt(wx, wy), tool = S.tool;
     if (tool === 'tractor') { if (!P) { say(T('wrongSpot')); sfx('err'); return; } if (tractor.state !== 'park') return; tractor.state = 'go'; tractor.row = P.r; tractor.plowed = 0; sfx('engine'); return; }
     if (tool === 'feed') { if (!C) { say(T('wrongSpot')); sfx('err'); return; } if (S.hay <= 0) { say(T('noHay')); sfx('err'); return; } addJob({ type: 'feed', x: C.x - 40, y: C.y + 4, ref: C }); return; }
@@ -495,8 +542,10 @@
     $('#crops').innerHTML = Object.keys(CROPS).map(function (k) { var c = CROPS[k].col; return '<button type="button" class="cr" data-crop="' + k + '"><i style="background:rgb(' + c.join(',') + ');box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)"></i>' + T(k) + '</button>'; }).join('');
     document.querySelectorAll('[data-t]').forEach(function (e) { e.textContent = T(e.getAttribute('data-t')); });
     $('#fmLang').textContent = lang === 'hi' ? 'En' : 'हि'; document.documentElement.setAttribute('data-lang', lang); document.documentElement.lang = lang;
-    setTool(S.tool); setCrop(S.crop); refreshHud(); showQuest();
+    $('#howTitle').textContent = T('howTitle'); $('#howClose').textContent = T('close'); $('#howList').innerHTML = T('how').map(function (x) { return '<li>' + x + '</li>'; }).join(''); $('#fmHelp').title = T('howTitle');
+    setTool(S.tool); setCrop(S.crop); refreshHud(); showQuest(); if (started || true) setMutedUi();
   }
+  function setMutedUi() { var b = $('#fmSnd'); b.classList.toggle('is-off', muted); b.title = T(muted ? 'soundOff' : 'soundOn'); }
   function setTool(t) {
     S.tool = t;
     document.querySelectorAll('.tl').forEach(function (b) { var on = b.getAttribute('data-tool') === t; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
@@ -513,7 +562,7 @@
     var pan = 0; plots.forEach(function (P) { if (P.panel) pan++; });
     S.power = clamp(S.power + pan * L * 6 * dt - (night(p) > 0.4 && S.power > 0 ? 0.35 * dt : 0) - 0.02 * dt, 0, 100);
     S.tank = clamp(S.tank + (1.3 + (S.power > 4 ? pan * 2.2 : 0)) * dt, 0, 100); if (pan > 0 && S.power > 50) S.tank = clamp(S.tank + dt, 0, 100);
-    if (S.power >= 99.5 && pan > 0) { S.grid += dt; if (S.grid > 6) { S.grid = 0; S.coins++; pop(TANK.x, TANK.y - 14, '+1', '#ffe08a'); if (!shown.grid) { shown.grid = 1; say(T('gridMsg')); } } }
+    if (S.power >= 99.5 && pan > 0) { S.grid += dt; if (S.grid > 6) { S.grid = 0; S.coins++; pop(TANK.x, TANK.y - 14, '+1', '#ffe08a'); if (!shown.grid) { shown.grid = 1; say(Tr('gridMsg')); } } }
     /* crops: thirst, heat, growth. Panels shade the crop, so it needs less water and does not wilt at noon. */
     plots.forEach(function (P) {
       if (P.state === 'seed' || P.state === 'grow') {
@@ -535,12 +584,12 @@
     var T = tractor;
     if (T.state === 'go') { var row = plots[T.row * 3]; if (moveTo(T, 250, row.y + row.h - 8, 170, dt)) { T.state = 'plough'; T.dir = 1; } T.w += dt * 8; farmer.vis = false; }
     else if (T.state === 'plough') { T.x += 70 * dt; T.w += dt * 5; for (var i = 0; i < 3; i++) { var P = plots[T.row * 3 + i]; if (P.state === 'empty' && T.x - 60 > P.x) { P.plough = clamp((T.x - 60 - P.x) / P.w, 0, 1); if (P.plough >= 1) { P.state = 'ploughed'; P.plough = 0; T.plowed++; burst(P.x + 55, P.y + 30, 6, '#8a6a3a'); } } }
-      if (T.x > 700) { if (T.plowed > 0) st.rows++; T.state = 'back'; T.dir = -1; checkQuest(); } camFocus(T.x); }
+      if (T.x > 760) { if (T.plowed > 0) st.rows++; T.state = 'back'; T.dir = -1; checkQuest(); } camFocus(T.x); }
     else if (T.state === 'back') { if (moveTo(T, PARK.x, PARK.y, 170, dt)) { T.state = 'park'; T.dir = 1; } T.w -= dt * 8; }
     /* cows */
     cows.forEach(function (c) {
       c.hunger = Math.min(1, c.hunger + 0.011 * dt); if (c.hunger < 0.55 && !c.calf) c.milk = Math.min(1, c.milk + 0.03 * dt); c.chew = Math.max(0, c.chew - dt); c.moo = Math.max(0, c.moo - dt);
-      if (c.calf) { c.age += dt; if (c.age > 45) { c.calf = false; say(T('grew')); } }
+      if (c.calf) { c.age += dt; if (c.age > 45) { c.calf = false; say(Tr('grew')); } }
       c.wait -= dt; if (c.wait <= 0 && (!c.tx || Math.hypot(c.tx - c.x, c.ty - c.y) < 4)) { c.tx = rnd(PEN.x0 + 24, PEN.x1 - 24); c.ty = rnd(PEN.y0 + 34, PEN.y1 - 6); c.wait = rnd(2, 6); }
       if (c.tx && Math.hypot(c.tx - c.x, c.ty - c.y) > 3) moveTo(c, c.tx, c.ty, 16, dt);
     });
@@ -549,6 +598,14 @@
     var fx = farmer.vis ? farmer.x - farmer.dir * 36 : T.x, fy = (farmer.vis ? farmer.y : T.y) + 6; if (Math.hypot(fx - dog.x, fy - dog.y) > 14) moveTo(dog, fx, fy, 110, dt);
     priya.wait -= dt; if (priya.wait <= 0 && Math.hypot(priya.tx - priya.x, priya.ty - priya.y) < 4) { priya.tx = rnd(80, 280); priya.ty = rnd(380, 440); priya.wait = rnd(2, 5); }
     priya.moving = Math.hypot(priya.tx - priya.x, priya.ty - priya.y) > 4; if (priya.moving) moveTo(priya, priya.tx, priya.ty, 50, dt);
+    /* rain showers: they water every plot for free */
+    rainT -= dt; if (rainT <= 0) { rainOn = !rainOn; rainT = rainOn ? rnd(14, 22) : rnd(70, 130); if (rainOn) { say(Tr('rainOn')); sfx('thunder'); } else say(Tr('rainOff')); }
+    rainAmt += ((rainOn ? 1 : 0) - rainAmt) * Math.min(1, dt * 0.6);
+    if (rainAmt > 0.3) { plots.forEach(function (P) { if (P.state === 'seed' || P.state === 'grow') P.water = Math.min(1, P.water + 0.12 * dt); }); S.tank = clamp(S.tank + 4 * dt, 0, 100); }
+    hens.forEach(function (h) { h.lay -= dt; if (h.lay <= 0 && eggs.length < 6) { h.lay = rnd(30, 60); eggs.push({ x: h.x + h.dir * -6, y: h.y + 2, t: 0 }); sfx('cluck'); } });
+    eggs.forEach(function (e) { e.t += dt; });
+    if (night(p) > 0.5 && !shown.nightMsg && S.power > 1) { shown.nightMsg = 1; say(Tr('night')); } if (night(p) < 0.1) shown.nightMsg = 0;
+    audioTick(dt, p, night(p), L);
     /* weather */
     clouds.forEach(function (c) { c.x += c.v * dt; if (c.x > VW + 120) c.x = -140; });
     birds.forEach(function (b) { b.x += b.v * dt; b.ph += dt * 9; if (b.x > VW + 40) { b.x = -40; b.y = rnd(40, 150); } });
@@ -600,18 +657,26 @@
     ents.push({ y: tractor.y, f: function () { drawTractor(t); } });
     ents.sort(function (a, b) { return a.y - b.y; }).forEach(function (e) { e.f(); });
     plots.forEach(function (P) { drawPanels(P, t, p); });
+    eggs.forEach(function (e) { var pulse = 1 + 0.12 * Math.sin(e.t * 6); g.fillStyle = 'rgba(0,0,0,.2)'; g.beginPath(); g.ellipse(e.x, e.y, 5, 2, 0, 0, 6.283); g.fill(); g.fillStyle = '#fbf3e2'; g.beginPath(); g.ellipse(e.x, e.y - 4, 4 * pulse, 5.4 * pulse, 0, 0, 6.283); g.fill(); g.strokeStyle = 'rgba(255,224,138,' + (0.5 + 0.4 * Math.sin(e.t * 6)) + ')'; g.lineWidth = 1.4; g.stroke(); });
     /* butterflies, particles */
     flies.forEach(function (f) { var x = f.x + Math.sin(f.ph) * 40, y = f.y + Math.sin(f.ph * 1.7) * 14; g.fillStyle = f.c; var w2 = Math.abs(Math.sin(f.ph * 6)) * 4 + 1; g.beginPath(); g.ellipse(x - w2 * 0.6, y, w2, 3, 0, 0, 6.283); g.ellipse(x + w2 * 0.6, y, w2, 3, 0, 0, 6.283); g.fill(); });
     parts.forEach(function (q) { g.globalAlpha = clamp(q.life * 2, 0, 1); g.fillStyle = q.col; g.beginPath(); g.arc(q.x, q.y, q.r, 0, 6.283); g.fill(); }); g.globalAlpha = 1;
     floats.forEach(function (f) { g.globalAlpha = 1 - f.t / 1.4; g.font = '700 15px Inter, sans-serif'; g.textAlign = 'center'; g.fillStyle = 'rgba(0,0,0,.4)'; g.fillText(f.txt, f.x + 1, f.y - f.t * 34 + 1); g.fillStyle = f.col; g.fillText(f.txt, f.x, f.y - f.t * 34); }); g.globalAlpha = 1; g.textAlign = 'left';
+    /* sunrise and sunset glow, then the rain */
+    var dusk = Math.max(0, 1 - Math.abs(p - 0.64) / 0.1), dawn = Math.max(0, 1 - Math.abs(p - 0.02) / 0.07) + Math.max(0, 1 - Math.abs(p - 1.0) / 0.05);
+    if (dusk + dawn > 0.01) { g.fillStyle = 'rgba(255,130,60,' + (0.2 * Math.min(1, dusk + dawn)) + ')'; g.fillRect(camX - 4, camY - 4, viewW + 8, viewH + 8); }
+    if (rainAmt > 0.02) { g.fillStyle = 'rgba(40,56,80,' + (0.28 * rainAmt) + ')'; g.fillRect(camX - 4, camY - 4, viewW + 8, viewH + 8); g.strokeStyle = 'rgba(200,225,255,' + (0.5 * rainAmt) + ')'; g.lineWidth = 1.2; g.beginPath();
+      for (var di = 0; di < 90; di++) { var dx = (di * 83.7 + t * 90) % (viewW + 40), dy = (di * 47.3 + t * 520) % viewH; g.moveTo(camX + dx, camY + dy); g.lineTo(camX + dx - 4, camY + dy + 12); } g.stroke(); }
+    if (n > 0.3) { flies.forEach(function (f, i) { var fx = f.x + Math.sin(f.ph * 0.7 + i) * 60, fy = f.y + Math.sin(f.ph * 1.3) * 20, a = n * (0.4 + 0.6 * Math.abs(Math.sin(f.ph * 1.5))); var gl2 = g.createRadialGradient(fx, fy, 0, fx, fy, 9); gl2.addColorStop(0, 'rgba(210,255,120,' + a + ')'); gl2.addColorStop(1, 'rgba(210,255,120,0)'); g.fillStyle = gl2; g.fillRect(fx - 9, fy - 9, 18, 18); }); }
     /* night: a blue wash, with lamps lit by the farm's own power */
-    if (n > 0.02) { g.fillStyle = 'rgba(10,16,48,' + (0.55 * n) + ')'; g.fillRect(camX - 4, camY - 4, viewW + 8, viewH + 8);
+    if (n > 0.02) { var ne = n * n * (3 - 2 * n); g.fillStyle = 'rgba(10,16,64,' + (0.6 * ne) + ')'; g.fillRect(camX - 4, camY - 4, viewW + 8, viewH + 8);
       if (S.power > 1) { [[268, 330], [660, 300], [700, 400]].forEach(function (l) { var gl = g.createRadialGradient(l[0], l[1], 0, l[0], l[1], 90); gl.addColorStop(0, 'rgba(255,214,120,' + (0.55 * n) + ')'); gl.addColorStop(1, 'rgba(255,200,100,0)'); g.fillStyle = gl; g.fillRect(l[0] - 90, l[1] - 90, 180, 180); g.fillStyle = 'rgba(255,230,160,' + n + ')'; g.beginPath(); g.arc(l[0], l[1], 3, 0, 6.283); g.fill(); }); } }
   }
 
   /* ── input ───────────────────────────────────────────────── */
   var ptr = null;
   function world(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / scale + camX, y: (e.clientY - r.top) / scale + camY }; }
+  document.addEventListener('pointerdown', initAudio);
   cv.addEventListener('pointerdown', function (e) { ptr = { x: e.clientX, y: e.clientY, cx: camX, moved: false, id: e.pointerId }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
   cv.addEventListener('pointermove', function (e) { if (!ptr) return; var dx = e.clientX - ptr.x; if (Math.abs(dx) > 8) ptr.moved = true; if (ptr.moved && viewW < VW - 1) { camX = clamp(ptr.cx - dx / scale, 0, VW - viewW); userPan = 2.5; } });
   cv.addEventListener('pointerup', function (e) { if (ptr && !ptr.moved) { var w = world(e); tap(w.x, w.y); } ptr = null; });
@@ -620,6 +685,13 @@
   $('#crops').addEventListener('click', function (e) { var b = e.target.closest('[data-crop]'); if (b) { setCrop(b.getAttribute('data-crop')); sfx('tick'); } });
   $('#mandi').addEventListener('click', function (e) { var b = e.target.closest('[data-m]'); if (b && !b.disabled) market(b.getAttribute('data-m')); });
   $('#fmLang').addEventListener('click', function () { lang = lang === 'hi' ? 'en' : 'hi'; store.set('gzp.lang', lang); buildUi(); });
+  function openHelp() { $('#help').hidden = false; $('#howClose').focus(); }
+  function closeHelp() { $('#help').hidden = true; store.set('gzp.farmhelp', '1'); }
+  $('#fmHelp').addEventListener('click', openHelp); $('#howClose').addEventListener('click', closeHelp);
+  $('#help').addEventListener('click', function (e) { if (e.target.id === 'help') closeHelp(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeHelp(); });
+  $('#fmSnd').addEventListener('click', function () { initAudio(); setMuted(!muted); sfx('tick'); });
+  $('#fmFast').addEventListener('click', function () { ts = ts === 1 ? 4 : 1; this.classList.toggle('is-on', ts > 1); this.title = T(ts > 1 ? 'fastOn' : 'fastOff'); });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', function () { last = 0; });
 
@@ -627,10 +699,10 @@
   var last = 0;
   function frame(now) {
     if (!last) last = now; var dt = Math.min(0.05, (now - last) / 1000); last = now;
-    update(dt); draw(); requestAnimationFrame(frame);
+    update(dt * ts); draw(); requestAnimationFrame(frame);
   }
   init(); buildUi(); resize();
-  setTimeout(function () { resize(); startQuest(0); }, 400);
-  window.Farm = { _s: function () { return { S: S, st: st, quest: quest, plots: plots.map(function (p) { return p.state; }), cows: cows.length, tractor: tractor.state }; }, _tap: tap, _market: market, _tool: setTool, _crop: setCrop };
+  setTimeout(function () { resize(); if (!store.get('gzp.farmhelp')) { openHelp(); var w = setInterval(function () { if ($('#help').hidden) { clearInterval(w); startQuest(0); } }, 300); } else startQuest(0); }, 400);
+  window.Farm = { _s: function () { return { S: S, st: st, quest: quest, plots: plots.map(function (p) { return p.state; }), cows: cows.length, tractor: tractor.state }; }, _tap: tap, _market: market, _tool: setTool, _rain: function () { rainT = 0; }, _eggs: function () { return eggs.length; }, _t: function (v) { S.t = v * DAY; }, _crop: setCrop };
   requestAnimationFrame(frame);
 })();

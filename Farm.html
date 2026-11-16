@@ -26,6 +26,9 @@
     <label class="mt"><span data-t="tank">Water</span><i><u id="mTank"></u></i></label>
     <label class="mt"><span data-t="power">Solar</span><i><u id="mPower" class="pw"></u></i></label>
   </div>
+  <button class="fm-lang" id="fmFast" type="button" aria-label="Speed" title="x4">&#9193;</button>
+  <button class="fm-lang" id="fmSnd" type="button" aria-label="Sound">&#9834;</button>
+  <button class="fm-lang" id="fmHelp" type="button" aria-label="How to play">?</button>
   <button class="fm-lang" id="fmLang" type="button" aria-label="Language">हि</button>
 </header>
 
@@ -52,6 +55,13 @@
     <p class="fm-tip" id="tip"></p>
   </section>
 </main>
+<div class="fm-help" id="help" hidden role="dialog" aria-modal="true" aria-labelledby="howTitle">
+  <div class="fm-help-card">
+    <h2 id="howTitle"></h2>
+    <ol id="howList"></ol>
+    <button type="button" id="howClose"></button>
+  </div>
+</div>
 <script src="assets/js/farm.js"></script>
 </body>
 </html>
