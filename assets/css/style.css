@@ -2730,8 +2730,12 @@ html[data-theme="night"] .site-nav .nav-farm{ color:#9fcf7a; }
   .site-head .brand-text{ display:none; }
 }
 
-/* Small Farm shortcut beside "Row the Naav". */
-.hero-farm{ width:46px; height:46px; flex:none; align-self:center; display:grid; place-items:center; border-radius:50%; color:#5a8a3a; border:1px solid var(--line-strong); background:color-mix(in srgb, var(--paper-2) 40%, transparent); transition:transform .35s var(--ease), background .3s, color .3s, border-color .3s; }
-.hero-farm .ic{ width:22px; height:22px; }
-.hero-farm:hover,.hero-farm:focus-visible{ background:#5a8a3a; color:#fff; border-color:#5a8a3a; transform:translateY(-2px) rotate(-6deg); }
-@media (max-width:700px){ .hero-actions .btn-ghost{ flex:1 1 0; } .hero-farm{ width:48px; height:48px; } }
+/* Farm shortcut beside "Row the Naav": a green medallion with a barn, a soft pulse ring and a gentle bob. */
+.hero-farm{ --farm-door:#4f7a31; position:relative; width:50px; height:50px; flex:none; align-self:center; display:grid; place-items:center; border-radius:50%; color:#fff; background:radial-gradient(circle at 32% 26%,#8fc45a,#5a8a3a 58%,#3f6a28); border:2px solid rgba(255,255,255,.55); box-shadow:0 10px 22px -10px rgba(50,90,30,.8), inset 0 -4px 8px rgba(30,60,15,.35); transition:transform .35s var(--ease), box-shadow .3s; animation:farmBob 3.6s ease-in-out infinite; }
+.hero-farm::before{ content:""; position:absolute; inset:-5px; border-radius:50%; border:1.5px solid rgba(90,138,58,.55); animation:farmRing 2.8s ease-out infinite; pointer-events:none; }
+.hero-farm .ic{ width:26px; height:26px; filter:drop-shadow(0 1px 1px rgba(20,50,10,.4)); }
+.hero-farm:hover,.hero-farm:focus-visible{ transform:translateY(-3px) scale(1.08) rotate(-6deg); box-shadow:0 16px 28px -10px rgba(50,90,30,.9), inset 0 -4px 8px rgba(30,60,15,.35); }
+@keyframes farmBob{ 0%,100%{ translate:0 0; } 50%{ translate:0 -2px; } }
+@keyframes farmRing{ 0%{ transform:scale(.88); opacity:.9; } 80%,100%{ transform:scale(1.28); opacity:0; } }
+@media (max-width:700px){ .hero-actions .btn-ghost{ flex:1 1 0; } .hero-farm{ width:52px; height:52px; } }
+@media (prefers-reduced-motion:reduce){ .hero-farm,.hero-farm::before{ animation:none; } }
