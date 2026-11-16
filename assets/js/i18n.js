@@ -1355,6 +1355,12 @@
 
     explore: [
       {
+        icon: "i-spark", act: "poppycult",
+        t: { en: "From seed to opium", hi: "बीज से अफ़ीम तक", eh: "Beej se afeem tak" },
+        d: { en: "A small storyboard of the licensed poppy crop: sowing, bloom, pods, scoring the latex, and the journey to the Opium Works.", hi: "लाइसेंसशुदा पोस्त की फ़सल की छोटी कहानी-पट्टी: बुवाई, फूल, डोडे, रस की चीरा-कटाई और कारख़ाने तक का सफ़र।", eh: "Licensed post ki fasal ki chhoti kahani-patti: buwai, phool, dode, ras ki cheera-katai aur karkhane tak ka safar." },
+        b: { en: "See the crop", hi: "फ़सल देखिए", eh: "Fasal dekhiye" }
+      },
+      {
         icon: "i-arrow", act: "lanka",
         t: { en: "Visit Lanka Maidan and kill Ravan", hi: "लंका मैदान जाइए, रावण का वध कीजिए", eh: "Lanka Maidan jaiye, Ravan ka vadh kijiye" },
         d: { en: "A bow-and-arrow battle: draw, loose, and strike all ten heads of Ravan, right here in the page.", hi: "धनुष-बाण का युद्ध: खींचिए, छोड़िए, और रावण के दसों सिर भेदिए, यहीं इसी पन्ने में।", eh: "Dhanush-baan ka yuddh: khinchiye, chhodiye, aur Ravan ke dason sir bhediye, yahin is page mein." },
