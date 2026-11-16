@@ -17,7 +17,7 @@
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function lerp(a, b, t) { return a + (b - a) * t; }
 
-  var VW = 640, VH = 400, GROUND = 340, SLING = { x: 92, y: 282 }, MAXPULL = 84, BASKET = { x: 34, y: GROUND };
+  var VW = 640, VH = 400, GROUND = 340, SLING = { x: 92, y: 282 }, MAXPULL = 90, POWER = 10.5, tut = 0, BASKET = { x: 34, y: GROUND };
   var cv, g, built = false, open = false, visible = false, raf = 0, last = 0, dpr = 1, scale = 1;
   var mangoes = [], stone = null, pull = null, kid, watch, score = 0, lives = 3, time = 60, over = false, started = false, best = parseInt(store.get('gzp.mango.best') || '0', 10) || 0, msgT = 0, msg = '', sway = 0, parts = [];
   var statusEl = null;
@@ -57,7 +57,7 @@
     box.querySelector('.mg-again').addEventListener('click', function () { reset(); });
     cv.addEventListener('pointerdown', function (e) {
       if (over) return; var p = pt(e);
-      if (Math.hypot(p.x - SLING.x, p.y - SLING.y) < 70 && !stone) { pull = { x: p.x, y: p.y }; started = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); }
+      if (p.x < VW * 0.58 && !stone) { pull = { x: p.x, y: p.y }; started = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); }
     });
     cv.addEventListener('pointermove', function (e) { if (!pull) return; var p = pt(e); pull.x = p.x; pull.y = p.y; e.preventDefault(); });
     function release() {
@@ -65,7 +65,7 @@
       var dx = SLING.x - pull.x, dy = SLING.y - pull.y, d = Math.hypot(dx, dy);
       if (d > 14) {
         var k = Math.min(d, MAXPULL) / d; dx *= k; dy *= k;
-        stone = { x: SLING.x - dx, y: SLING.y - dy, vx: dx * 6.2, vy: dy * 6.2, life: 3 };
+        stone = { x: SLING.x - dx, y: SLING.y - dy, vx: dx * POWER, vy: dy * POWER, life: 3 }; tut = 99;
         snd('tick'); if (navigator.vibrate) try { navigator.vibrate(12); } catch (x) {}
         if (watch.state === 'watch') spotted();
       }
@@ -117,7 +117,7 @@
       stone.vy += 620 * dt; stone.x += stone.vx * dt; stone.y += stone.vy * dt; stone.life -= dt;
       mangoes.forEach(function (m) {
         if (m.state !== 'hang' || !stone) return;
-        if (Math.hypot(stone.x - m.x, stone.y - m.y) < m.r + 6) {
+        if (Math.hypot(stone.x - m.x, stone.y - m.y) < m.r + 10) {
           m.state = 'fall'; m.vx = stone.vx * 0.12 + rnd(-12, 12); m.vy = -40; stone = null; snd('coin');
           for (var i = 0; i < 8; i++) parts.push({ x: m.x, y: m.y, vx: rnd(-80, 80), vy: rnd(-90, 20), life: rnd(0.3, 0.7), c: '#3f8f3a' });
         }
@@ -134,16 +134,16 @@
     if (!kid.carry) {
       if (!kid.target || kid.target.state === 'gone') kid.target = mangoes.filter(function (m) { return m.state === 'ground' || m.state === 'fall'; })[0] || null;
       var tx = kid.target ? kid.target.x : 120;
-      var dx = tx - kid.x; if (Math.abs(dx) > 2) { kid.dir = dx > 0 ? 1 : -1; kid.x += kid.dir * Math.min(Math.abs(dx), 150 * dt); kid.wob += dt * 14; }
+      var dx = tx - kid.x; if (Math.abs(dx) > 2) { kid.dir = dx > 0 ? 1 : -1; kid.x += kid.dir * Math.min(Math.abs(dx), 300 * dt); kid.wob += dt * 14; }
       if (kid.target && kid.target.state === 'ground' && Math.abs(dx) < 10) { kid.carry = kid.target; kid.target.state = 'carried'; }
     } else {
-      var d2 = BASKET.x + 20 - kid.x; kid.dir = d2 > 0 ? 1 : -1; kid.x += kid.dir * Math.min(Math.abs(d2), 150 * dt); kid.wob += dt * 14;
+      var d2 = BASKET.x + 20 - kid.x; kid.dir = d2 > 0 ? 1 : -1; kid.x += kid.dir * Math.min(Math.abs(d2), 300 * dt); kid.wob += dt * 14;
       kid.carry.x = kid.x + kid.dir * 6; kid.carry.y = GROUND - 26;
       if (Math.abs(d2) < 6) {
         var pts = kid.carry.ripe > 0.66 ? 3 : kid.carry.ripe > 0.33 ? 2 : 1; score += pts; kid.carry.state = 'gone'; kid.carry = null; kid.target = null; snd('bell'); say('+' + pts); hud();
       }
     }
-    msgT = Math.max(0, msgT - dt);
+    msgT = Math.max(0, msgT - dt); tut += dt;
     parts.forEach(function (p) { p.life -= dt; p.vy += 300 * dt; p.x += p.vx * dt; p.y += p.vy * dt; }); parts = parts.filter(function (p) { return p.life > 0; });
     if (mangoes.every(function (m) { return m.state === 'gone'; })) mkMangoes();
   }
@@ -198,12 +198,19 @@
     g.strokeStyle = '#2b2018'; g.lineWidth = 2.4; g.beginPath(); g.moveTo(SLING.x - 16, SLING.y - 6); g.lineTo(px, py); g.lineTo(SLING.x + 16, SLING.y - 6); g.stroke();
     if (!stone) { g.fillStyle = '#6a6a72'; g.beginPath(); g.arc(px, py, 5, 0, 6.283); g.fill(); }
     if (pull) {          /* the aim: a dotted arc */
-      var ddx = SLING.x - px, ddy = SLING.y - py, vx = ddx * 6.2, vy = ddy * 6.2, x = px, y = py;
+      var ddx = SLING.x - px, ddy = SLING.y - py, vx = ddx * POWER, vy = ddy * POWER, x = px, y = py;
       g.fillStyle = 'rgba(40,30,20,.55)';
-      for (var t = 0, n = 0; n < 16; n++, t += 0.07) { x = px + vx * t; y = py + vy * t + 0.5 * 620 * t * t; if (y > GROUND) break; g.beginPath(); g.arc(x, y, 2.2 - n * 0.06, 0, 6.283); g.fill(); }
+      for (var t = 0, n = 0; n < 26; n++, t += 0.06) { x = px + vx * t; y = py + vy * t + 0.5 * 620 * t * t; if (y > GROUND) break; g.beginPath(); g.arc(x, y, Math.max(1, 2.6 - n * 0.06), 0, 6.283); g.fill(); }
     }
     if (stone) { g.fillStyle = '#4a4a52'; g.beginPath(); g.arc(stone.x, stone.y, 5, 0, 6.283); g.fill(); }
     parts.forEach(function (p) { g.globalAlpha = clamp(p.life * 2, 0, 1); g.fillStyle = p.c || '#fff'; g.fillRect(p.x, p.y, 3, 3); }); g.globalAlpha = 1;
+    /* a first-time hint: a little hand shows the drag */
+    if (!started && !pull && !over) {
+      var ph = (sway * 0.8) % 1.6, f2 = Math.min(1, ph / 1.0), hx2 = SLING.x - 62 * f2, hy2 = SLING.y + 30 * f2 + 8;
+      g.globalAlpha = 0.9 - (ph > 1.2 ? (ph - 1.2) * 2 : 0); g.fillStyle = 'rgba(255,255,255,.9)'; g.beginPath(); g.arc(hx2, hy2, 11, 0, 6.283); g.fill();
+      g.strokeStyle = 'rgba(40,30,20,.5)'; g.lineWidth = 2; g.setLineDash([4, 5]); g.beginPath(); g.moveTo(SLING.x, SLING.y); g.lineTo(hx2, hy2); g.stroke(); g.setLineDash([]); g.globalAlpha = 1;
+    }
+    if (pull) { var pw = Math.min(1, Math.hypot(px - SLING.x, py - SLING.y) / MAXPULL); g.fillStyle = 'rgba(40,30,20,.2)'; g.fillRect(SLING.x - 30, SLING.y + 52, 60, 7); g.fillStyle = pw > 0.85 ? '#d8433a' : '#e08a3c'; g.fillRect(SLING.x - 30, SLING.y + 52, 60 * pw, 7); }
     if (msgT > 0) { g.font = '700 22px serif'; g.textAlign = 'center'; g.fillStyle = 'rgba(40,20,10,' + Math.min(1, msgT) + ')'; g.fillText(msg, VW / 2, 60 - (1.6 - msgT) * 14); g.textAlign = 'left'; }
   }
   function frame(now) {

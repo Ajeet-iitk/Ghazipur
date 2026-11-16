@@ -20,7 +20,7 @@
   var A = { x: 0, y: 0 };                       /* the player's anchor: a hand on the ghat */
   var P = { x: 0, y: 0, vx: 0, vy: 0, ang: 0, alive: true, respawn: 0, speed: 0 };
   var tgt = { x: 0, y: 0 }, wind = 0, windT = 0, clock = 0;
-  var rivals = [], parts = [], fall = [];
+  var rivals = [], parts = [], fall = [], pKid = { cheer: 0, sad: 0 }, pTail = [];
   var score = 0, lives = 3, best = parseInt(store.get('gzp.kite.best') || '0', 10) || 0, over = false, grind = null, flash = 0;
   var COLS = [['#d8433a', '#f2b73f'], ['#2f7fb5', '#f4ead2'], ['#3f9a6a', '#f2b73f'], ['#8a4aa8', '#f4ead2']];
 
@@ -34,11 +34,11 @@
 
   function mkRival(i) {
     var c = COLS[(i + 1) % COLS.length];
-    return { i: i, x: W * (0.1 + i * 0.2), y: H * 0.4, vx: 0, vy: 0, ax: W * (0.08 + i * 0.17), ay: H * 0.97, cols: c, dive: 0, nextDive: rnd(4, 8), ph: rnd(0, 6), alive: true, respawn: 0, speed: 0, ang: 0, fresh: 1 };
+    return { i: i, x: W * (0.1 + i * 0.2), y: H * 0.4, vx: 0, vy: 0, ax: W * (0.12 + i * 0.17), ay: H * 0.88, cheer: 0, sad: 0, tail: [], cols: c, dive: 0, nextDive: rnd(4, 8), ph: rnd(0, 6), alive: true, respawn: 0, speed: 0, ang: 0, fresh: 1 };
   }
   function reset() {
     score = 0; lives = 3; over = false; grind = null; clock = 0; parts = []; fall = [];
-    P.x = W * 0.6; P.y = H * 0.38; P.vx = P.vy = 0; P.alive = true; tgt.x = P.x; tgt.y = P.y;
+    P.x = W * 0.6; P.y = H * 0.38; P.vx = P.vy = 0; P.alive = true; tgt.x = P.x; tgt.y = P.y; pKid.cheer = pKid.sad = 0; pTail = [];
     rivals = [mkRival(0), mkRival(1)];
     if (hud) { hud.querySelector('.kg-over').hidden = true; }
     updateHud();
@@ -105,10 +105,10 @@
 
     /* where the strings cross, and who wins the cut */
     if (!over && P.alive) {
-      var ps = string(A.x, A.y, P.x, P.y, H * 0.05), hit = null;
+      var ps = string(A.x, A.y - 22, P.x, P.y, H * 0.05), hit = null;
       rivals.forEach(function (r) {
         if (!r.alive || hit) return;
-        var rs = string(r.ax, r.ay, r.x, r.y, H * 0.05);
+        var rs = string(r.ax, r.ay - 22, r.x, r.y, H * 0.05);
         for (var i = 0; i < ps.length - 1 && !hit; i++) for (var j = 0; j < rs.length - 1; j++) {
           var c = cross(ps[i], ps[i + 1], rs[j], rs[j + 1]);
           if (c) { hit = { r: r, x: c.x, y: c.y }; break; }
@@ -125,6 +125,17 @@
         }
       } else grind = null;
     }
+    function tailStep(k, tail, w, n) {
+      if (!tail.length) for (var i = 0; i < n; i++) tail.push({ x: k.x, y: k.y + 20 + i * 7 });
+      var hx = k.x - Math.sin(k.ang) * 22, hy = k.y + Math.cos(k.ang) * 22; tail[0].x += (hx - tail[0].x) * 0.7; tail[0].y += (hy - tail[0].y) * 0.7;
+      for (var j = 1; j < n; j++) {
+        var a = tail[j - 1], b = tail[j]; b.x += w * 0.5 * dt + Math.sin(clock * 3 + j) * 12 * dt; b.y += 70 * dt;
+        var dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, L = 7.5; b.x = a.x + dx / d * L; b.y = a.y + dy / d * L;
+      }
+    }
+    if (P.alive) tailStep(P, pTail, w, 11);
+    rivals.forEach(function (r) { if (r.alive) tailStep(r, r.tail, w, 9); r.cheer = Math.max(0, r.cheer - dt); r.sad = Math.max(0, r.sad - dt); });
+    pKid.cheer = Math.max(0, pKid.cheer - dt); pKid.sad = Math.max(0, pKid.sad - dt);
     fall.forEach(function (f) { f.t += dt; f.vy += 520 * dt; f.vx += w * 0.4 * dt; f.x += f.vx * dt; f.y += f.vy * dt * 0.6; f.ang += f.vr * dt; f.life -= dt; });
     fall = fall.filter(function (f) { return f.life > 0 && f.y < H + 60; });
     parts.forEach(function (p) { p.life -= dt; p.vy += 260 * dt; p.x += p.vx * dt; p.y += p.vy * dt; });
@@ -132,11 +143,11 @@
     flash = Math.max(0, flash - dt * 2.4);
   }
   function cutRival(r, x, y) {
-    r.alive = false; r.respawn = 3; falling(r, r.cols); spark(x, y, 26, '#fff'); score++; flash = 0.35; snd('coin'); snd('splash', 0.4); updateHud();
+    r.alive = false; r.respawn = 3; r.sad = 2.2; pKid.cheer = 1.6; falling(r, r.cols); spark(x, y, 26, '#fff'); score++; flash = 0.35; snd('coin'); snd('splash', 0.4); updateHud();
     if (navigator.vibrate) try { navigator.vibrate(30); } catch (e) {}
   }
   function cutPlayer(x, y) {
-    P.alive = false; P.respawn = 1.6; falling(P, COLS[0]); spark(x, y, 26, '#ff8a5c'); lives--; snd('thud'); updateHud();
+    P.alive = false; P.respawn = 1.6; pKid.sad = 1.8; rivals.forEach(function (q) { if (q.alive) q.cheer = 1.6; }); falling(P, COLS[0]); spark(x, y, 26, '#ff8a5c'); lives--; snd('thud'); updateHud();
     if (navigator.vibrate) try { navigator.vibrate([40, 40, 40]); } catch (e) {}
     if (lives <= 0) endGame();
   }
@@ -149,15 +160,55 @@
     updateHud();
   }
 
-  function drawKite(x, y, ang, cols, s, alpha) {
-    g.save(); g.translate(x, y); g.rotate(ang); g.globalAlpha = alpha === undefined ? 1 : alpha;
-    var u = s;
-    g.fillStyle = cols[0]; g.beginPath(); g.moveTo(0, -20 * u); g.lineTo(13 * u, 0); g.lineTo(0, 22 * u); g.lineTo(-13 * u, 0); g.closePath(); g.fill();
-    g.fillStyle = cols[1]; g.beginPath(); g.moveTo(0, -20 * u); g.lineTo(13 * u, 0); g.lineTo(0, 0); g.closePath(); g.fill();
-    g.beginPath(); g.moveTo(0, 22 * u); g.lineTo(-13 * u, 0); g.lineTo(0, 0); g.closePath(); g.fill();
-    g.strokeStyle = 'rgba(255,248,230,.85)'; g.lineWidth = 1; g.beginPath(); g.moveTo(0, -20 * u); g.lineTo(0, 22 * u); g.moveTo(-13 * u, 0); g.lineTo(13 * u, 0); g.stroke();
-    g.strokeStyle = cols[0]; g.lineWidth = 1.4; g.beginPath(); g.moveTo(0, 22 * u);
-    for (var i = 1; i <= 8; i++) g.lineTo(Math.sin(clock * 5 + i) * (2 + i) * u, (22 + i * 7) * u);
+  function drawKite(x, y, ang, cols, s, alpha, tail) {
+    g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha;
+    /* the tail: bows on a lagging chain */
+    if (tail && tail.length) {
+      g.strokeStyle = 'rgba(255,248,230,.8)'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(tail[0].x, tail[0].y);
+      for (var t = 1; t < tail.length; t++) g.lineTo(tail[t].x, tail[t].y); g.stroke();
+      for (var u = 1; u < tail.length; u += 2) {
+        var q = tail[u], tc = u % 4 === 1 ? cols[1] : cols[0], w2 = 6 * s;
+        g.fillStyle = tc; g.save(); g.translate(q.x, q.y); g.rotate(Math.sin(clock * 6 + u) * 0.6);
+        g.beginPath(); g.moveTo(0, 0); g.lineTo(-w2, -3 * s); g.lineTo(-w2, 3 * s); g.closePath(); g.fill(); g.beginPath(); g.moveTo(0, 0); g.lineTo(w2, -3 * s); g.lineTo(w2, 3 * s); g.closePath(); g.fill(); g.restore();
+      }
+    }
+    g.translate(x, y); g.rotate(ang + Math.sin(clock * 9 + x * 0.01) * 0.05);
+    var h = 22 * s, wd = 14 * s, flutter = Math.sin(clock * 11 + x * 0.02) * 0.9 * s;
+    var f4 = [[0, -h], [wd + flutter, -2 * s], [0, h * 1.08], [-wd - flutter, -2 * s]];
+    /* four panels: alternating colours, a little shading toward the bottom */
+    function panel(a, b, c, col) { g.fillStyle = col; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(c[0], c[1]); g.closePath(); g.fill(); }
+    var cen = [0, -2 * s];
+    panel(f4[0], f4[1], cen, cols[0]); panel(f4[1], f4[2], cen, cols[1]); panel(f4[2], f4[3], cen, cols[0]); panel(f4[3], f4[0], cen, cols[1]);
+    var sh = g.createLinearGradient(0, -h, 0, h); sh.addColorStop(0, 'rgba(255,255,255,.28)'); sh.addColorStop(1, 'rgba(0,0,0,.2)');
+    g.fillStyle = sh; g.beginPath(); g.moveTo(f4[0][0], f4[0][1]); g.lineTo(f4[1][0], f4[1][1]); g.lineTo(f4[2][0], f4[2][1]); g.lineTo(f4[3][0], f4[3][1]); g.closePath(); g.fill();
+    g.strokeStyle = 'rgba(255,250,235,.9)'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(0, -h); g.lineTo(0, h * 1.08); g.moveTo(-wd, -2 * s); g.quadraticCurveTo(0, -6 * s, wd, -2 * s); g.stroke();
+    g.strokeStyle = 'rgba(60,30,10,.35)'; g.lineWidth = 1; g.beginPath(); g.moveTo(f4[0][0], f4[0][1]); g.lineTo(f4[1][0], f4[1][1]); g.lineTo(f4[2][0], f4[2][1]); g.lineTo(f4[3][0], f4[3][1]); g.closePath(); g.stroke();
+    g.fillStyle = '#fff6dc'; g.beginPath(); g.arc(0, -2 * s, 2.2 * s, 0, 6.283); g.fill();
+    g.restore();
+  }
+  /* a boy holding the string, with his reel: cheering, sad, or just concentrating */
+  function drawBoy(x, y, kx, ky, col, mood, s, boat) {
+    g.save(); g.translate(x, y);
+    if (boat) {
+      g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(0, 40 * s, 34 * s, 5 * s, 0, 0, 6.283); g.fill();
+      g.fillStyle = '#3a2a22'; g.beginPath(); g.moveTo(-34 * s, 28 * s); g.quadraticCurveTo(0, 46 * s, 34 * s, 28 * s); g.lineTo(26 * s, 22 * s); g.lineTo(-26 * s, 22 * s); g.closePath(); g.fill();
+      g.strokeStyle = '#8a6a52'; g.lineWidth = 2; g.beginPath(); g.moveTo(-22 * s, 18 * s); g.lineTo(-32 * s, 34 * s); g.stroke();
+    } else { g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.ellipse(0, 38 * s, 16 * s, 4 * s, 0, 0, 6.283); g.fill(); }
+    var jump = mood > 0 ? Math.abs(Math.sin(clock * 12)) * 8 * s : 0, droop = mood < 0 ? 3 * s : 0;
+    g.translate(0, -jump + droop);
+    g.strokeStyle = '#3a2a22'; g.lineWidth = 5 * s; g.lineCap = 'round'; g.beginPath(); g.moveTo(-4 * s, 22 * s); g.lineTo(-5 * s, 38 * s); g.moveTo(4 * s, 22 * s); g.lineTo(5 * s, 38 * s); g.stroke();
+    g.fillStyle = col; g.beginPath(); g.moveTo(-9 * s, 6 * s); g.lineTo(9 * s, 6 * s); g.lineTo(8 * s, 24 * s); g.lineTo(-8 * s, 24 * s); g.closePath(); g.fill();
+    var look = Math.atan2(ky - y, kx - x), hx = Math.cos(look) * 2.4 * s;
+    /* arms up to the hands at the anchor, with a reel */
+    g.strokeStyle = '#a56d47'; g.lineWidth = 3.6 * s; g.beginPath();
+    var armUp = mood > 0 ? -22 * s : -10 * s;
+    g.moveTo(-7 * s, 8 * s); g.lineTo(-8 * s + hx, armUp); g.moveTo(7 * s, 8 * s); g.lineTo(8 * s + hx, armUp + 2 * s); g.stroke();
+    g.fillStyle = '#e8d6a8'; g.beginPath(); g.arc(hx, armUp - 1 * s, 5 * s, 0, 6.283); g.fill(); g.strokeStyle = '#8a6a42'; g.lineWidth = 1; g.beginPath(); g.moveTo(hx - 4 * s, armUp - 1 * s); g.lineTo(hx + 4 * s, armUp - 1 * s); g.stroke();
+    g.fillStyle = '#a56d47'; g.beginPath(); g.arc(hx * 0.6, -2 * s, 7 * s, 0, 6.283); g.fill();
+    g.fillStyle = '#2b2420'; g.beginPath(); g.arc(hx * 0.6, -4 * s, 7.4 * s, Math.PI * 1.05, Math.PI * 1.95); g.fill();
+    g.fillStyle = '#1c1512'; g.beginPath(); g.arc(hx * 0.6 - 2.4 * s, -2 * s, 1 * s, 0, 6.283); g.arc(hx * 0.6 + 2.4 * s, -2 * s, 1 * s, 0, 6.283); g.fill();
+    g.strokeStyle = '#7a2a1e'; g.lineWidth = 1.2; g.beginPath();
+    if (mood > 0) { g.arc(hx * 0.6, 1.2 * s, 2.6 * s, 0.1, 3.04); } else if (mood < 0) { g.arc(hx * 0.6, 4 * s, 2.2 * s, 3.3, 6.1); } else { g.moveTo(hx * 0.6 - 2 * s, 2.6 * s); g.lineTo(hx * 0.6 + 2 * s, 2.6 * s); }
     g.stroke();
     g.restore();
   }
@@ -170,18 +221,19 @@
     if (flash > 0) { g.fillStyle = 'rgba(255,255,255,' + flash * 0.25 + ')'; g.fillRect(0, 0, W, H); }
     rivals.forEach(function (r) {
       if (!r.alive) return;
-      drawString(string(r.ax, r.ay, r.x, r.y, H * 0.05), 'rgba(250,244,230,.85)', 1.1);
-      drawKite(r.x, r.y, r.ang, r.cols, 0.9);
+      drawString(string(r.ax, r.ay - 22, r.x, r.y, H * 0.05), 'rgba(250,244,230,.85)', 1.1);
+      drawKite(r.x, r.y, r.ang, r.cols, 0.95, 1, r.tail);
       if (r.dive > 0) { g.fillStyle = 'rgba(255,90,60,.9)'; g.font = '700 16px sans-serif'; g.fillText('!', r.x - 3, r.y - 28); }
     });
     if (P.alive) {
-      drawString(string(A.x, A.y, P.x, P.y, H * 0.05), 'rgba(255,236,190,.95)', 1.5);
-      drawKite(P.x, P.y, P.ang, COLS[0], 1.15);
+      drawString(string(A.x, A.y - 22, P.x, P.y, H * 0.05), 'rgba(255,236,190,.95)', 1.5);
+      drawKite(P.x, P.y, P.ang, COLS[0], 1.2, 1, pTail);
       /* a ring that shows the contact being ground through */
       if (grind) { g.strokeStyle = 'rgba(255,214,120,.9)'; g.lineWidth = 2; g.beginPath(); g.arc(grind.x, grind.y, 8 + grind.t * 40, 0, 6.283); g.stroke(); }
     }
-    /* the hand at the anchor */
-    g.fillStyle = 'rgba(20,16,14,.8)'; g.beginPath(); g.arc(A.x, A.y, 5, 0, 6.283); g.fill();
+    /* the boys: yours on the ghat, the rivals in their boats */
+    rivals.forEach(function (r) { drawBoy(r.ax, r.ay, r.x, r.y, r.cols[0], r.cheer > 0 ? 1 : (r.sad > 0 ? -1 : 0), 0.9, true); });
+    drawBoy(A.x, A.y, P.x, P.y, '#c0504a', pKid.cheer > 0 ? 1 : (pKid.sad > 0 ? -1 : 0), 1.05, false);
     fall.forEach(function (f) { drawKite(f.x, f.y, f.ang, f.cols, 1, clamp(f.life / 2, 0, 1)); });
     parts.forEach(function (p) { g.globalAlpha = clamp(p.life * 2, 0, 1); g.fillStyle = p.col; g.fillRect(p.x, p.y, 2.4, 2.4); }); g.globalAlpha = 1;
     /* the wind */
