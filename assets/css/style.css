@@ -2586,3 +2586,25 @@ html[lang="hi"] .view-diya{ text-transform:none; letter-spacing:.02em; }
 .view-bar{ left:0; right:0; transform:none; width:fit-content; margin-inline:auto; animation:viewBar2 1.2s var(--ease-out) .5s backwards; }
 @keyframes viewBar2{ from{ opacity:0; translate:0 16px; } to{ opacity:1; translate:0 0; } }
 @media (max-width:620px){ .view-bar{ left:auto; right:.7rem; margin:0; animation:none; } }
+
+/* ── from seed to opium ── */
+.poppy-side{ display:flex; flex-direction:column; gap:clamp(.8rem,2vw,1.2rem); min-width:0; }
+.poppy-cult{ padding:1rem; border:1px solid var(--line-strong); border-radius:var(--r); background:color-mix(in srgb, var(--card-solid) 60%, transparent); }
+.pc-head{ display:flex; flex-direction:column; margin-bottom:.6rem; } .pc-head i{ font-style:normal; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); } .pc-head b{ font-family:var(--serif); font-weight:500; font-size:1.2rem; }
+.pc-stage{ position:relative; aspect-ratio:320/180; border-radius:12px; overflow:hidden; }
+.pc-sc{ position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .7s; } .pc-sc.is-on{ opacity:1; }
+.pc-cap{ margin:.7rem 0 .4rem; font-size:.78rem; line-height:1.5; color:var(--soft); min-height:6.2em; } .pc-cap b{ font-family:var(--serif); font-weight:500; font-size:1.05rem; color:var(--ink); } .pc-cap em{ font-style:normal; font-size:.62rem; letter-spacing:.12em; color:var(--accent); margin-left:.4rem; } .pc-cap span{ display:block; margin-top:.2rem; }
+.pc-dots{ display:flex; gap:.4rem; } .pc-dots button{ flex:1; height:5px; border-radius:3px; background:var(--line-strong); transition:background .3s; padding:0; min-height:0 !important; } .pc-dots button.is-on{ background:var(--accent); }
+.pc-dots{ padding:.4rem 0; } .pc-note{ margin:.4rem 0 0; font-size:.66rem; color:var(--soft); }
+.pc-plant{ transform-box:fill-box; transform-origin:50% 100%; animation:pcSway 4s ease-in-out infinite; } @keyframes pcSway{ 0%,100%{ transform:rotate(-2deg); } 50%{ transform:rotate(2.4deg); } }
+.pc-bloom{ animation:pcBloom 3s ease-in-out infinite; transform-box:fill-box; transform-origin:center; } @keyframes pcBloom{ 0%,100%{ transform:scale(.9); } 50%{ transform:scale(1.12); } }
+.pc-petal{ animation:pcPetal 3s ease-in infinite; } @keyframes pcPetal{ from{ transform:translate(0,0) rotate(0); opacity:1; } to{ transform:translate(-6px,60px) rotate(240deg); opacity:0; } }
+.pc-seed{ animation:pcSeed 2.4s ease-in infinite; } @keyframes pcSeed{ from{ transform:translate(-30px,-26px); opacity:0; } 20%{ opacity:1; } to{ transform:translate(0,14px); opacity:1; } }
+.pc-farmer .pc-arm{ transform-box:fill-box; transform-origin:0 0; } .pc-farmer.sow .pc-arm{ animation:pcSow 1.2s ease-in-out infinite alternate; } .pc-farmer.score .pc-arm{ animation:pcScore .8s ease-in-out infinite alternate; } .pc-farmer.walk{ animation:pcWalk 2s ease-in-out infinite alternate; }
+@keyframes pcSow{ from{ transform:rotate(-40deg); } to{ transform:rotate(30deg); } } @keyframes pcScore{ from{ transform:rotate(-10deg); } to{ transform:rotate(26deg); } } @keyframes pcWalk{ from{ transform:translateX(0); } to{ transform:translateX(-10px); } }
+.pc-latex{ animation:pcLatex 2.6s ease-in infinite; } @keyframes pcLatex{ 0%{ transform:translateY(0) scale(.5); opacity:0; } 30%{ opacity:1; transform:scale(1); } 100%{ transform:translateY(16px); opacity:.2; } }
+.pc-cart{ animation:pcCart 3s ease-in-out infinite alternate; } @keyframes pcCart{ from{ transform:translateX(0); } to{ transform:translateX(34px); } }
+.pc-trail{ animation:pcTrail 1.2s linear infinite; } @keyframes pcTrail{ to{ stroke-dashoffset:-22; } }
+.pc-smoke{ animation:pcSmoke 3s ease-out infinite; } @keyframes pcSmoke{ from{ transform:translateY(0) scale(.6); opacity:.6; } to{ transform:translateY(-22px) scale(1.8); opacity:0; } }
+html[lang="hi"] .pc-head i{ text-transform:none; letter-spacing:.02em; }
+@media (prefers-reduced-motion:reduce){ .pc-sc *{ animation:none !important; } }

@@ -685,6 +685,7 @@
     if (window.Pillar && window.Pillar.refresh) window.Pillar.refresh();
     if (window.ArtNook && window.ArtNook.build) window.ArtNook.build();
     if (window.Kitchen && window.Kitchen.build) window.Kitchen.build();
+    if (window.PoppyCult && window.PoppyCult.build) window.PoppyCult.build();
 
     if (announce) {
       window.Ambient.chime();

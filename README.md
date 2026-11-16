@@ -14,6 +14,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **Naav** — a small-boat game. Row, steer, collect floating diyas, with water and oar sound effects. A **Night lantern** level lights only your lamp, and cross-currents shove the boat sideways.
 - **Season switch** — a boy flies a kite from the ghat in clear weather and summer. Summer (the river thins, sandbars rise; the kids wade out to play there and more children follow), Clear (more people walk the ghat; people bathe, pray and dive in the Ganga), or Monsoon (rain, thunder, a swollen river; the kids run up the steps, scared). People walk to wherever the weather sends them, one after another.
 - **Wildlife spotter** — Gangetic dolphins, bar-headed geese and ruddy shelduck cross the river now and then. Tap them when they appear.
+- **From seed to opium** — a small animated storyboard beside the Poppy facts: sowing, bloom, pods, scoring and collecting the latex, and the gum going to the Opium Works.
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
 - **Temple bells and a hidden diya** — three brass bells hang under the chhatri on the ghat: click them on desktop, shake your phone on mobile. A tiny lamp in the hero corner floats diyas onto the river.
 - **Lanka Maidan** (a third hidden card) — open it to play a bow-and-arrow game against Ravan, embedded from a companion page, with a full-screen button.
