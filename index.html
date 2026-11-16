@@ -515,6 +515,14 @@
       <div class="living-col">
         <article class="panel art-nook rev" id="artNook"></article>
         <article class="panel art-nook kitchen-nook rev" id="kitchenNook"></article>
+        <article class="panel art-nook mango-nook rev" id="mangoNook">
+          <button type="button" class="an-head" id="mgHead" aria-expanded="false" aria-controls="mgBody">
+            <span class="an-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4q6 1 6 8t-6 8q-6-1-6-8t6-8z" fill="currentColor" class="mg-i1"/></svg><svg viewBox="0 0 24 24"><path d="M5 20l7-8M12 12l-4-6M12 12l4-6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><svg viewBox="0 0 24 24"><circle cx="18" cy="6" r="2.4" fill="currentColor" class="mg-i2"/><path d="M4 20h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <span class="an-txt"><i data-i18n="mango.kicker">Psst, the grove is ripe</i><b data-i18n="mango.title">The mango grove</b><em data-i18n="mango.lede">Steal a mango with a slingshot. Tap to try.</em></span>
+            <span class="an-plus" aria-hidden="true"></span>
+          </button>
+          <div class="an-body" id="mgBody"><div class="an-in"><div id="mgBox" class="mg-box"></div></div></div>
+        </article>
         <article class="panel art-nook lanka-nook rev" id="lankaNook">
           <button type="button" class="an-head" id="lkHead" aria-expanded="false" aria-controls="lkBody">
             <span class="an-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20 18 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" class="lk-i1"/><path d="M18 5l-1 6-5-5z" fill="currentColor"/></svg><svg viewBox="0 0 24 24"><path d="M4 18q8-14 16 0z" fill="currentColor" class="lk-i2"/><circle cx="12" cy="9" r="1.6" fill="currentColor"/></svg><svg viewBox="0 0 24 24"><path d="M5 20V9l7-5 7 5v11z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20v-6h4v6" fill="currentColor"/></svg></span>
@@ -732,6 +740,7 @@
 <div class="view-bar" id="viewBar" hidden>
   <button type="button" class="view-more" id="viewMore" aria-expanded="false" aria-label="Controls"><svg class="ic"><use href="#i-sliders"/></svg></button>
   <p class="view-hint" id="viewHint" data-i18n="view.hint">Tap the eye or press Esc to return</p>
+  <button type="button" class="view-kite" id="viewKite" aria-label="Fly a kite" title="Fly a kite"><svg viewBox="0 0 24 24" class="ic"><path d="M12 2l7 9-7 11-7-11z" fill="currentColor"/><path d="M12 2v20M5 11h14" stroke="#fff" stroke-width="1" opacity=".7"/></svg></button>
   <button type="button" class="view-diya" id="viewDiya" data-i18n-aria="view.diya" aria-label="Release diyas" title="Release diyas"><svg class="ic"><use href="#i-lamp"/></svg></button>
   <div class="view-times view-seasons" role="group" data-i18n-aria="season.label" aria-label="Season of the river">
     <button type="button" data-vs="summer"><svg class="ic"><use href="#i-sun"/></svg><span data-i18n="season.summer">Summer</span></button>
@@ -837,6 +846,8 @@
 <script src="assets/js/poppy.js"></script>
 <script src="assets/js/kitchen.js"></script>
 <script src="assets/js/lanka.js"></script>
+<script src="assets/js/mango.js"></script>
+<script src="assets/js/kite.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/navfx.js"></script>
 </body>

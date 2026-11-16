@@ -512,7 +512,7 @@
     toggle: 'sound', mixer: 'sound', sfx: 'sound', phrases: 'sound', 'yard-siren': 'sound',
     monsoon: 'sky', sky: 'sky', theme: 'sky', aarti: 'sky', 'ghat-life': 'sky',
     atlas: 'go', places: 'go', 'yard-train': 'go', search: 'go', lang: 'go',
-    poppycult: 'go', lanka: 'play', eye: 'sky', song: 'sound', match: 'play', artnook: 'play', kitchen: 'play', story: 'go', riverfront: 'go' };
+    kite: 'play', mango: 'play', poppycult: 'go', lanka: 'play', eye: 'sky', song: 'sound', match: 'play', artnook: 'play', kitchen: 'play', story: 'go', riverfront: 'go' };
   function exOf(i) { return window.DATA.explore[i]; }
   function exVisibleList() {
     var out = [];
@@ -685,6 +685,8 @@
     if (window.Pillar && window.Pillar.refresh) window.Pillar.refresh();
     if (window.ArtNook && window.ArtNook.build) window.ArtNook.build();
     if (window.Kitchen && window.Kitchen.build) window.Kitchen.build();
+    if (window.Kite && window.Kite.refresh) window.Kite.refresh();
+    if (window.Mango && window.Mango.refresh) window.Mango.refresh();
     if (window.PoppyCult && window.PoppyCult.build) window.PoppyCult.build();
 
     if (announce) {
@@ -1038,6 +1040,14 @@
       var nid = act === 'artnook' ? 'artNook' : 'kitchenNook', hid = act === 'artnook' ? 'anHead' : 'knHead';
       scrollTo(nid);
       setTimeout(function () { var h = $('#' + hid), n = $('#' + nid); if (h && n && !n.classList.contains('is-open')) h.click(); }, 800);
+    }
+    else if (act === 'kite') {
+      var kb = $('#viewBtn'); if (kb && !document.body.classList.contains('view-mode')) kb.click();
+      setTimeout(function () { var kk = $('#viewKite'); if (kk && !kk.disabled) kk.click(); }, 1800);
+    }
+    else if (act === 'mango') {
+      scrollTo('mangoNook');
+      setTimeout(function () { if (window.Mango) window.Mango.open(); }, 800);
     }
     else if (act === 'poppycult') {
       scrollTo('poppyCult');
