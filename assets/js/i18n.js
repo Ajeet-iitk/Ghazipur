@@ -1441,7 +1441,7 @@
       {
         icon: "i-lamp", act: "mango",
         t: { en: "The mango grove", hi: "आम का बाग़", eh: "Aam ka baagh" },
-        d: { en: "A hidden card: pull back a slingshot and steal ripe mangoes, but never when the watchman looks.", hi: "एक छुपा कार्ड: ग़ुलेल खींचिए और पके आम चुराइए, पर चौकीदार देखे तो नहीं।", eh: "Ek chhupa card: gulel kheenchiye aur pake aam churaiye, par chaukidaar dekhe to nahin." },
+        d: { en: "A hidden card: pull back a slingshot and steal ripe mangoes, but never when the watchman looks. Or bonk the watchman himself.", hi: "एक छुपा कार्ड: ग़ुलेल खींचिए और पके आम चुराइए, पर चौकीदार देखे तो नहीं।", eh: "Ek chhupa card: gulel kheenchiye aur pake aam churaiye, par chaukidaar dekhe to nahin." },
         b: { en: "Take aim", hi: "निशाना लगाइए", eh: "Nishana lagaiye" }
       },
       {
@@ -1449,6 +1449,12 @@
         t: { en: "From seed to opium", hi: "बीज से अफ़ीम तक", eh: "Beej se afeem tak" },
         d: { en: "A small storyboard of the licensed poppy crop: sowing, bloom, pods, scoring the latex, and the journey to the Opium Works.", hi: "लाइसेंसशुदा पोस्त की फ़सल की छोटी कहानी-पट्टी: बुवाई, फूल, डोडे, रस की चीरा-कटाई और कारख़ाने तक का सफ़र।", eh: "Licensed post ki fasal ki chhoti kahani-patti: buwai, phool, dode, ras ki cheera-katai aur karkhane tak ka safar." },
         b: { en: "See the crop", hi: "फ़सल देखिए", eh: "Fasal dekhiye" }
+      },
+      {
+        icon: "i-spark", act: "farm",
+        t: { en: "Ajeet's Farm", hi: "अजीत का खेत", eh: "Ajeet ka khet" },
+        d: { en: "A story farm on its own page: plough with a tractor, grow vegetables, feed and milk the cows, rear a calf, and put solar panels over the crops. Day, night and rain included.", hi: "अलग पन्ने पर एक कहानी वाला खेत: ट्रैक्टर से जुताई, सब्ज़ियाँ उगाइए, गायों को चारा और दूध, बछड़ा पालिए, और फ़सल पर सौर पैनल लगाइए। दिन, रात और बारिश साथ हैं।", eh: "Alag page par ek kahani wala khet: tractor se jutai, sabziyan ugaiye, gaayon ko chara aur doodh, bachhda paaliye, aur fasal par solar panel lagaiye. Din, raat aur baarish saath hain." },
+        b: { en: "Visit the farm", hi: "खेत चलिए", eh: "Khet chaliye" }
       },
       {
         icon: "i-arrow", act: "lanka",

@@ -512,7 +512,7 @@
     toggle: 'sound', mixer: 'sound', sfx: 'sound', phrases: 'sound', 'yard-siren': 'sound',
     monsoon: 'sky', sky: 'sky', theme: 'sky', aarti: 'sky', 'ghat-life': 'sky',
     atlas: 'go', places: 'go', 'yard-train': 'go', search: 'go', lang: 'go',
-    kite: 'play', mango: 'play', poppycult: 'go', lanka: 'play', eye: 'sky', song: 'sound', match: 'play', artnook: 'play', kitchen: 'play', story: 'go', riverfront: 'go' };
+    kite: 'play', farm: 'play', mango: 'play', poppycult: 'go', lanka: 'play', eye: 'sky', song: 'sound', match: 'play', artnook: 'play', kitchen: 'play', story: 'go', riverfront: 'go' };
   function exOf(i) { return window.DATA.explore[i]; }
   function exVisibleList() {
     var out = [];
@@ -1053,6 +1053,7 @@
       scrollTo('poppyCult');
       setTimeout(function () { var d = $('.pc-dots button'); if (d) d.click(); }, 800);
     }
+    else if (act === 'farm') { window.location.href = 'Farm.html'; }
     else if (act === 'lanka') {
       scrollTo('lankaNook');
       setTimeout(function () { if (window.Lanka) window.Lanka.open(); }, 800);
