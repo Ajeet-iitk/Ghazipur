@@ -2718,3 +2718,6 @@ html.petal-run main, html.petal-run .site-foot, html.petal-run .mapstrip, html.p
 @keyframes kiSway{ 0%,100%{ transform:rotate(-8deg); } 50%{ transform:rotate(9deg); } } @keyframes kiTail{ 0%,100%{ transform:rotate(7deg); } 50%{ transform:rotate(-8deg); } }
 @media (max-width:620px){ .view-kite .kite-ic{ width:27px; height:27px; } }
 @media (prefers-reduced-motion:reduce){ .view-kite .ki-body, .view-kite .ki-tail, .view-kite .ki-bow{ animation:none !important; } }
+
+.site-nav .nav-farm{ color:#5a8a3a; opacity:1; }
+html[data-theme="night"] .site-nav .nav-farm{ color:#9fcf7a; }

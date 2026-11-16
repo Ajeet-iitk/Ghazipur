@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Ajeet's Farm — Ghazipur</title>
+<meta name="description" content="A small animated farm near Ghazipur: plough with a tractor, grow vegetables, feed and milk the cows, rear a calf, and try solar panels over the crops (agrovoltaics)." />
+<meta name="theme-color" content="#f3ead8" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/farm.css" />
+</head>
+<body>
+<header class="fm-top">
+  <a class="fm-back" href="index.html" id="fmBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="back">Ghazipur</span></a>
+  <h1 class="fm-title" data-t="title">Ajeet's Farm</h1>
+  <div class="fm-stats" aria-live="polite">
+    <span class="st" title="Coins"><i class="ico-coin"></i><b id="sCoins">0</b></span>
+    <span class="st" title="Hay"><i class="ico-hay"></i><b id="sHay">0</b></span>
+    <span class="st" title="Vegetables"><i class="ico-veg"></i><b id="sVeg">0</b></span>
+    <span class="st" title="Milk"><i class="ico-milk"></i><b id="sMilk">0</b></span>
+  </div>
+  <div class="fm-meters">
+    <label class="mt"><span data-t="tank">Water</span><i><u id="mTank"></u></i></label>
+    <label class="mt"><span data-t="power">Solar</span><i><u id="mPower" class="pw"></u></i></label>
+  </div>
+  <button class="fm-lang" id="fmLang" type="button" aria-label="Language">हि</button>
+</header>
+
+<main class="fm-main">
+  <div class="fm-stage" id="stage">
+    <canvas id="farm" aria-label="An animated farm"></canvas>
+    <div class="fm-quest" id="quest"></div>
+    <div class="fm-clock" id="clock"></div>
+    <div class="fm-talk" id="talk" hidden>
+      <canvas id="portrait" width="96" height="96" aria-hidden="true"></canvas>
+      <div class="fm-say"><b id="talkWho"></b><p id="talkText"></p><button type="button" id="talkNext"></button></div>
+    </div>
+    <div class="fm-toast" id="toast" role="status"></div>
+    <div class="fm-pan" aria-hidden="true"><span data-t="drag">drag to look around</span></div>
+  </div>
+
+  <section class="fm-ui">
+    <div class="fm-tools" id="tools" role="toolbar" aria-label="Tools"></div>
+    <div class="fm-crops" id="crops" role="group" aria-label="Seeds" hidden></div>
+    <div class="fm-mandi" id="mandi">
+      <button type="button" data-m="sellVeg"></button><button type="button" data-m="sellMilk"></button>
+      <button type="button" data-m="buyHay"></button><button type="button" data-m="buyCalf"></button>
+    </div>
+    <p class="fm-tip" id="tip"></p>
+  </section>
+</main>
+<script src="assets/js/farm.js"></script>
+</body>
+</html>

@@ -15,6 +15,7 @@
       "nav.living": "Living",
       "nav.atlas": "Atlas",
       "nav.explore": "Explore",
+      "nav.farm": "Farm",
 
       "hero.eyebrow": "Uttar Pradesh · India · 25.58°N 83.57°E",
       "hero.sub": "The City of Martyrs · Lahuri Kashi",
@@ -370,6 +371,7 @@
       "nav.living": "जीवन",
       "nav.atlas": "नक्शा",
       "nav.explore": "खोजें",
+      "nav.farm": "खेत",
 
       "hero.eyebrow": "उत्तर प्रदेश · भारत · 25.58°उ 83.57°पू",
       "hero.sub": "शहीदों का शहर · लाहुरी काशी",
@@ -725,6 +727,7 @@
       "nav.living": "Zindagi",
       "nav.atlas": "Naksha",
       "nav.explore": "Explore",
+      "nav.farm": "Khet",
 
       "hero.eyebrow": "Uttar Pradesh · India · 25.58°N 83.57°E",
       "hero.sub": "Shaheedon ka Sheher · Lahuri Kashi",
