@@ -2629,3 +2629,15 @@ html[lang="hi"] .pc-head i{ text-transform:none; letter-spacing:.02em; }
   .pc-dots button{ height:8px; }
   .poppy-facts{ height:auto; }
 }
+
+/* ── a compact Poppy intro ── */
+.poppy-grid{ align-items:center; gap:clamp(.8rem,2vw,1.4rem); }
+.poppy-grid > .panel{ padding:clamp(.9rem,1.8vw,1.3rem); }
+.poppy-grid > .panel p{ font-size:.86rem; line-height:1.6; margin:0 0 .55rem; }
+.poppy-grid > .panel p:last-child{ margin-bottom:0; }
+.poppy-facts{ height:auto; grid-auto-rows:auto; align-self:center; }
+.poppy-facts .fact{ padding:.8rem .9rem; gap:.1rem; }
+.poppy-facts .fact b{ font-size:1.5rem; }
+.poppy-facts .fact span{ font-size:.7rem; line-height:1.35; }
+.poppy-cult{ padding:.8rem; gap:1rem; } .poppy-cult .pc-stage{ aspect-ratio:16/8.5; } .pc-cap{ font-size:.84rem; margin:.5rem 0 .4rem; } .pc-head b{ font-size:1.3rem; }
+@media (max-width:760px){ .poppy-grid > .panel p{ font-size:.82rem; } .poppy-facts .fact{ padding:.65rem .75rem; } .poppy-facts .fact b{ font-size:1.3rem; } }
