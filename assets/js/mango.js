@@ -20,14 +20,14 @@
   var VW = 640, VH = 400, GROUND = 340, SLING = { x: 92, y: 282 }, MAXPULL = 90, POWER = 10.5, tut = 0, BASKET = { x: 34, y: GROUND };
   var cv, g, built = false, open = false, visible = false, raf = 0, last = 0, dpr = 1, scale = 1;
   var mangoes = [], stone = null, pull = null, kid, watch, score = 0, lives = 3, time = 60, over = false, started = false, best = parseInt(store.get('gzp.mango.best') || '0', 10) || 0, msgT = 0, msg = '', sway = 0, parts = [];
-  var statusEl = null;
+  var statusEl = null, bonks = 0, turban = null;
 
   function mkMangoes() {
     var spots = [[452, 120], [500, 96], [548, 132], [478, 168], [530, 176], [584, 110], [436, 150], [566, 160]];
     mangoes = spots.map(function (s, i) { return { x: s[0], y: s[1], hx: s[0], hy: s[1], r: 11, ripe: Math.random(), state: 'hang', vx: 0, vy: 0, bounce: 0, ph: i * 1.3 }; });
   }
   function reset() {
-    score = 0; lives = 3; time = 60; over = false; started = false; stone = null; pull = null; parts = []; msg = ''; msgT = 0;
+    bonks = 0; turban = null; score = 0; lives = 3; time = 60; over = false; started = false; stone = null; pull = null; parts = []; msg = ''; msgT = 0;
     mkMangoes();
     kid = { x: 90, y: GROUND, dir: 1, carry: null, target: null, wob: 0 };
     watch = { x: 400, y: GROUND, dir: 1, state: 'doze', t: rnd(3, 5), stir: 0, step: 0 };
@@ -108,6 +108,7 @@
     else if (watch.state === 'watch' && watch.t <= 0) { watch.state = 'walk'; watch.t = rnd(2, 3.5); watch.dir = Math.random() < 0.5 ? -1 : 1; }
     else if (watch.state === 'walk' && watch.t <= 0) { watch.state = 'doze'; watch.t = rnd(3, 5.5); }
     else if (watch.state === 'chase' && watch.t <= 0) { watch.state = 'walk'; watch.t = 2; }
+    else if (watch.state === 'dazed' && watch.t <= 0) { watch.state = 'walk'; watch.t = 2.5; watch.dir = Math.random() < 0.5 ? -1 : 1; }
     if (watch.state === 'walk' || watch.state === 'chase') {
       watch.x += watch.dir * (watch.state === 'chase' ? 70 : 34) * dt; watch.step += dt * 8;
       if (watch.x < 330) { watch.x = 330; watch.dir = 1; } if (watch.x > 560) { watch.x = 560; watch.dir = -1; }
@@ -122,6 +123,12 @@
           for (var i = 0; i < 8; i++) parts.push({ x: m.x, y: m.y, vx: rnd(-80, 80), vy: rnd(-90, 20), life: rnd(0.3, 0.7), c: '#3f8f3a' });
         }
       });
+      if (stone && Math.abs(stone.x - watch.x) < 15 && stone.y > GROUND - 60 && stone.y < GROUND + 2 && watch.state !== 'dazed') {
+        watch.state = 'dazed'; watch.t = 3.6; score += 2; bonks++; say(bonks > 2 ? L('mango.bonk3') : L('mango.bonk')); snd('thud'); snd('coin'); hud();
+        for (var q = 0; q < 10; q++) parts.push({ x: stone.x, y: stone.y - 10, vx: rnd(-90, 90), vy: rnd(-120, -20), life: rnd(0.4, 0.9), c: '#ffd27a' });
+        turban = { x: watch.x, y: watch.y - 52, vx: rnd(-60, 60), vy: -150, rot: 0, on: true }; stone = null;
+        if (navigator.vibrate) try { navigator.vibrate(25); } catch (x) {}
+      }
       if (stone && (stone.y > GROUND + 4 || stone.x > VW + 20 || stone.life <= 0)) stone = null;
     }
     /* falling mangoes, then the kid fetches them */
@@ -143,6 +150,7 @@
         var pts = kid.carry.ripe > 0.66 ? 3 : kid.carry.ripe > 0.33 ? 2 : 1; score += pts; kid.carry.state = 'gone'; kid.carry = null; kid.target = null; snd('bell'); say('+' + pts); hud();
       }
     }
+    if (turban && turban.on) { turban.vy += 620 * dt; turban.x += turban.vx * dt; turban.y += turban.vy * dt; turban.rot += 6 * dt; if (turban.y > GROUND - 4) { turban.y = GROUND - 4; turban.vx = 0; turban.vy = 0; if (watch.state !== 'dazed') turban.on = false; } }
     msgT = Math.max(0, msgT - dt); tut += dt;
     parts.forEach(function (p) { p.life -= dt; p.vy += 300 * dt; p.x += p.vx * dt; p.y += p.vy * dt; }); parts = parts.filter(function (p) { return p.life > 0; });
     if (mangoes.every(function (m) { return m.state === 'gone'; })) mkMangoes();
@@ -181,8 +189,13 @@
     g.fillStyle = '#9a6a3a'; g.fillRect(BASKET.x - 22, GROUND - 16, 44, 16); g.strokeStyle = '#6a4a28'; g.lineWidth = 1.4; for (var b = -18; b < 22; b += 8) { g.beginPath(); g.moveTo(BASKET.x + b, GROUND - 16); g.lineTo(BASKET.x + b, GROUND); g.stroke(); }
     var inB = Math.min(6, Math.floor(score / 2)); for (var q = 0; q < inB; q++) { g.fillStyle = '#f2a63b'; g.beginPath(); g.arc(BASKET.x - 12 + (q % 3) * 12, GROUND - 17 - Math.floor(q / 3) * 7, 6, 0, 6.283); g.fill(); }
     /* the watchman */
-    var ws = watch.state; person(watch.x, watch.y, '#2f4f6f', watch.dir, ws === 'walk' || ws === 'chase', watch.step, true);
-    g.fillStyle = '#e9dcc0'; g.beginPath(); g.ellipse(watch.x, watch.y - 52, 8, 4, 0, 0, 6.283); g.fill();
+    var ws = watch.state, dz = ws === 'dazed';
+    g.save(); if (dz) { g.translate(watch.x + Math.sin(sway * 30) * 1.6, watch.y); g.rotate(Math.sin(sway * 5) * 0.18); g.translate(-watch.x, -watch.y); }
+    person(watch.x, watch.y, '#2f4f6f', watch.dir, ws === 'walk' || ws === 'chase', watch.step, true);
+    if (!(turban && turban.on)) { g.fillStyle = '#e9dcc0'; g.beginPath(); g.ellipse(watch.x, watch.y - 52, 8, 4, 0, 0, 6.283); g.fill(); }
+    g.restore();
+    if (turban && turban.on) { g.save(); g.translate(turban.x, turban.y); g.rotate(turban.rot); g.fillStyle = '#e9dcc0'; g.beginPath(); g.ellipse(0, 0, 9, 4.5, 0, 0, 6.283); g.fill(); g.restore(); }
+    if (dz) { for (var st = 0; st < 4; st++) { var sa = sway * 5 + st * 1.57; g.fillStyle = '#ffd24a'; g.font = '700 13px sans-serif'; g.fillText('★', watch.x - 6 + Math.cos(sa) * 14, watch.y - 62 + Math.sin(sa) * 5); } }
     g.font = '700 18px sans-serif'; g.textAlign = 'center';
     if (ws === 'doze') { g.fillStyle = 'rgba(40,40,60,.7)'; g.fillText('z', watch.x + 10, watch.y - 58 - ((sway * 14) % 12)); g.fillText('Z', watch.x + 18, watch.y - 66 - ((sway * 14) % 12)); }
     if (ws === 'stir') { g.fillStyle = '#e8a020'; g.fillText('?', watch.x, watch.y - 64); }
@@ -224,5 +237,5 @@
     card.classList.toggle('is-open', open); head.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) { if (!built) build(); setTimeout(function () { sizeCanvas(); kick(); }, 120); snd('chime'); }
   });
-  window.Mango = { open: function () { if (!card.classList.contains('is-open')) head.click(); }, refresh: labels };
+  window.Mango = { _dbg: function () { return { stone: stone ? [Math.round(stone.x), Math.round(stone.y)] : null, watch: [Math.round(watch.x), watch.state], score: score, bonks: bonks }; }, open: function () { if (!card.classList.contains('is-open')) head.click(); }, refresh: labels };
 })();

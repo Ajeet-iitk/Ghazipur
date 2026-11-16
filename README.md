@@ -18,7 +18,7 @@ Light and dark modes, mobile friendly, with background music, ambient animation 
 - **The Opium Factory yard** — a working crew (loaders carrying sacks, a screw press, sorters, a crane, a foreman, a watchman), an operable narrow-gauge trolley, and an industrial siren that sends everyone hurrying.
 - **Temple bells and a hidden diya** — three brass bells hang under the chhatri on the ghat: click them on desktop, shake your phone on mobile. A tiny lamp in the hero corner floats diyas onto the river.
 - **Kite fight** (eye view, clear and summer) — a Makar Sankranti nod: steer a kite in gusting wind and sweep your string across a rival's to cut it. Mouse or touch.
-- **The mango grove** (a hidden card) — pull back a slingshot and knock ripe mangoes from the tree for a kid to catch, but hold your fire when the watchman looks.
+- **The mango grove** (a hidden card) — pull back a slingshot and knock ripe mangoes from the tree for a kid to catch, but hold your fire when the watchman looks (or give him a bonk on purpose for a bonus).
 - **Lanka Maidan** (a third hidden card) — open it to play a bow-and-arrow game against Ravan, embedded from a companion page, with a full-screen button.
 - **The kitchen corner** (a second easter egg) — with cooks who blink, smile and clap, and a child who cheers: roast litti on embers and serve them, mash a chokha from six ingredients, or fry launglata and dip it in syrup.
 - **The artists' corner** (an easter egg) — peek inside to draw your own mirrored chowk, drop petals into a copper rose-water still, or weave a bamboo soop.
