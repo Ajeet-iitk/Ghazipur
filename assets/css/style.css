@@ -2321,8 +2321,8 @@ html[lang="hi"] .ms-kicker, html[lang="hi"] .ms-open, html[lang="hi"] .ms-load{ 
 #viewBtn:hover{ background:color-mix(in srgb, var(--accent) 14%, transparent); }
 body.view-mode #viewBtn{ border-color:var(--accent); color:var(--accent); }
 
-main, .site-foot, .mapstrip, .ticker, #rail{ transition:opacity 1.1s var(--ease), visibility 0s; }
-body.view-mode main, body.view-mode .site-foot, body.view-mode .mapstrip, body.view-mode .ticker, body.view-mode #rail{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity 1.1s var(--ease), visibility 0s 1.1s; }
+main, .site-foot, .mapstrip, .ticker, #rail{ transition:none; }
+body.view-hidden main, body.view-hidden .site-foot, body.view-hidden .mapstrip, body.view-hidden .ticker, body.view-hidden #rail{ opacity:0; visibility:hidden; pointer-events:none; transition:none; }
 body.view-mode .site-head{ top:0 !important; background:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; border-color:transparent !important; }
 body.view-mode .site-head::before{ opacity:0 !important; }
 .site-head .brand, .site-head .site-nav, .site-head .head-tools > *, .head-river{ transition:opacity .9s var(--ease); }
@@ -2703,3 +2703,11 @@ body.kite-on .view-bar .view-times, body.kite-on .view-hint{ opacity:.0; pointer
 .mg-i1{ animation:knRoll 2.6s ease-in-out infinite; transform-box:fill-box; } .mg-i2{ animation:knRoll 2s ease-in-out infinite; transform-box:fill-box; }
 html[lang="hi"] .mg-hud i, html[lang="hi"] .kg-stats i, html[lang="hi"] .kg-exit{ text-transform:none; letter-spacing:.02em; }
 @media (prefers-reduced-motion:reduce){ .view-kite, .mg-i1, .mg-i2{ animation:none !important; } }
+
+/* ══ petals carry the page away, and bring it back ══ */
+.petal-fx{ position:fixed; inset:0; z-index:97; pointer-events:none; }
+.petal-fx[hidden]{ display:none; }
+html.petal-run main, html.petal-run .site-foot, html.petal-run .mapstrip, html.petal-run .ticker{
+  -webkit-mask-image:linear-gradient(90deg, transparent calc(var(--ps,0) * 150% - 50%), #000 calc(var(--ps,0) * 150% - 14%));
+          mask-image:linear-gradient(90deg, transparent calc(var(--ps,0) * 150% - 50%), #000 calc(var(--ps,0) * 150% - 14%));
+}

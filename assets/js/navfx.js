@@ -147,10 +147,61 @@
       var on = b.getAttribute('data-vs') === cur; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
+  /* ── petals: a wave of flower petals sweeps across, carrying the page away (or back) ── */
+  var pc = null, pg = null, petals = [], pBusy = false, PCOL = [['#f2a63b', '#e07a2a'], ['#e8557a', '#c93a62'], ['#fff3d8', '#e9d6a8'], ['#f27a3a', '#d65a22'], ['#ffd27a', '#f0a63b'], ['#f7a1b8', '#e5557a']];
+  function petalCanvas() {
+    if (pc) return pc;
+    pc = document.createElement('canvas'); pc.className = 'petal-fx'; pc.hidden = true; pc.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(pc); pg = pc.getContext('2d'); return pc;
+  }
+  function drawPetal(p) {
+    var f = Math.sin(p.fl), s = p.r;
+    pg.save(); pg.translate(p.x, p.y); pg.rotate(p.rot); pg.scale(0.4 + 0.6 * Math.abs(f), 1); pg.globalAlpha = Math.max(0, Math.min(1, p.life * 2.2, (p.max - p.life) * 4)) * 0.95;
+    var gr = pg.createLinearGradient(0, -s, 0, s * 1.2); gr.addColorStop(0, p.c[0]); gr.addColorStop(1, p.c[1]);
+    pg.fillStyle = gr; pg.beginPath(); pg.moveTo(0, -s); pg.bezierCurveTo(s * 0.9, -s * 0.5, s * 0.8, s * 0.7, 0, s * 1.2); pg.bezierCurveTo(-s * 0.8, s * 0.7, -s * 0.9, -s * 0.5, 0, -s); pg.fill();
+    pg.strokeStyle = 'rgba(255,255,255,.28)'; pg.lineWidth = 0.8; pg.beginPath(); pg.moveTo(0, -s * 0.8); pg.lineTo(0, s * 0.9); pg.stroke();
+    pg.restore();
+  }
+  function petalRun(dir, done) {
+    var dur = 1900, root = document.documentElement;
+    if (reduced) { done(); return; }
+    pBusy = true; petalCanvas(); pc.hidden = false;
+    var W = window.innerWidth, H = window.innerHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+    pc.width = Math.round(W * dpr); pc.height = Math.round(H * dpr); pg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    root.classList.add('petal-run'); petals = [];
+    var t0 = performance.now(), last = t0, finished = false;
+    (function step(now) {
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      var k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      var ps = dir > 0 ? e : 1 - e;
+      root.style.setProperty('--ps', ps.toFixed(4));
+      var front = (ps * 1.5 - 0.32) * W;
+      if (k < 1) {
+        var n = Math.round(dt * 340);
+        for (var i = 0; i < n; i++) petals.push({
+          x: front + (Math.random() - 0.5) * W * 0.22, y: Math.random() * H, r: 5 + Math.random() * 8, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 7,
+          fl: Math.random() * 6.28, vf: 4 + Math.random() * 6, vx: (dir > 0 ? 1 : -1) * (150 + Math.random() * 260), vy: -30 + Math.random() * 130, life: 0, max: 1.6 + Math.random() * 1.4,
+          sw: Math.random() * 6.28, c: PCOL[Math.floor(Math.random() * PCOL.length)]
+        });
+      }
+      pg.clearRect(0, 0, W, H);
+      for (var j = petals.length - 1; j >= 0; j--) {
+        var p = petals[j]; p.life += dt;
+        if (p.life >= p.max) { petals.splice(j, 1); continue; }
+        p.sw += dt * 3; p.x += (p.vx + Math.sin(p.sw) * 60) * dt; p.y += (p.vy + Math.cos(p.sw * 1.3) * 40) * dt; p.vy += 40 * dt; p.rot += p.vr * dt; p.fl += p.vf * dt;
+        drawPetal(p);
+      }
+      if (k >= 1 && !finished) { finished = true; pBusy = false; done(); }
+      if (k < 1 || petals.length) requestAnimationFrame(step);
+      else { pc.hidden = true; if (!pBusy) { root.classList.remove('petal-run'); root.style.removeProperty('--ps'); } }
+    })(t0);
+  }
+
   function enterView() {
-    if (viewing) return;
+    if (viewing || pBusy) return;
     viewing = true;
     document.body.classList.add('view-mode');
+    petalRun(1, function () { document.body.classList.add('view-hidden'); });
     viewBtn.setAttribute('aria-pressed', 'true'); labelEye();
     if (viewBar) viewBar.hidden = false;
     foldBar(false);
@@ -166,9 +217,12 @@
     if (window.Ambient && window.Ambient.chime) window.Ambient.chime();
   }
   function exitView() {
-    if (!viewing) return;
+    if (!viewing || pBusy) return;
     viewing = false;
     clearInterval(driftTimer); clearTimeout(lockTimer);
+    document.documentElement.style.setProperty('--ps', 1); document.documentElement.classList.add('petal-run');
+    document.body.classList.remove('view-hidden');
+    petalRun(-1, function () {});
     document.body.classList.remove('view-mode');
     document.documentElement.classList.remove('view-lock');
     viewBtn.setAttribute('aria-pressed', 'false'); labelEye();
